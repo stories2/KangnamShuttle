@@ -6,3 +6,11 @@ const functions = require('firebase-functions');
 exports.helloWorld = functions.https.onRequest((request, response) => {
  response.send("Hello from Firebase!");
 });
+
+exports.keyboard = functions.https.onRequest((request, response) => {
+
+    responseMessage = {"type" : "buttons", "buttons" : ["선택 1", "선택 2", "선택 3"]}
+
+ response.setHeader('Content-Type', 'application/json');
+ response.status(200).send(JSON.stringify(responseMessage))
+});
