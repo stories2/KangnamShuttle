@@ -37,6 +37,7 @@ exports.message = functions.https.onRequest((request, response) => {
     databaseSnapshot = {}
     responseText = ""
     labelButton = ""
+    responseMessage = {}
 
     admin.database().ref('/').once('value', (snapshot) => {
         databaseSnapshot = snapshot.val()
@@ -47,10 +48,16 @@ exports.message = functions.https.onRequest((request, response) => {
                 requestMessage = request.body
                 userContent = requestMessage["content"]
                 // console.log("content: " + userContent)
-                if(userContent == LEAVE_AS_SOON_AS_SHUTTLE || userContent == ALL_SHUTTLE_TIME) {
+                if(userContent == LEAVE_AS_SOON_AS_SHUTTLE) {
                     // console.log("selection: leave soon, all")
                     responseButton = SHUTTLE_START_POINT_BUTTONS
                     responseText = "selection: " + userContent
+                    responseMessage["text"] = responseText
+                }
+                else if(userContent == ALL_SHUTTLE_TIME) {
+                    responseButton = MAIN_BUTTONS
+                    responseText = PrintAllShuttle(userContent, databaseSnapshot)
+                    responseMessage["text"] = responseText
                 }
                 else if(userContent == SERVICE_INFO) {
                     // console.log("selection: service info")
@@ -61,24 +68,51 @@ exports.message = functions.https.onRequest((request, response) => {
                         "\n개발자: " + systemData["developer"] + "\n메일: " + systemData["email"]
 
                     labelButton = {"label": "공유하기", "url": "https://firebasestorage.googleapis.com/v0/b/kangnamshuttle.appspot.com/o/poster.png?alt=media&token=fb60f794-50a2-40c8-be0c-f2400eabaad4"}
+                    responseMessage["message_button"] = labelButton
+                    responseMessage["text"] = responseText
                 }
                 else {
                     // console.log("selection: else")
                     responseButton = MAIN_BUTTONS
-                    responseText = "selection: " + userContent
+                    switch (userContent){
+                        case GIHEUNG_TO_SCHOOL:
+                            responseText = PrintFastestShuttle(userContent, databaseSnapshot["GiheungToSchool"])
+                            break;
+                        case KANGNAM_UNIV_STATION_TO_SCHOOL:
+                            responseText = PrintFastestShuttle(userContent, databaseSnapshot["KangnamUnivToSchool"])
+                            break;
+                        case SCHOOL_TO_GIHEUNG:
+                            responseText = PrintFastestShuttle(userContent, databaseSnapshot["SchoolToGiheung"])
+                            break;
+                        case SCHOOL_TO_KANGNAM_UNIV_STATION:
+                            responseText = PrintFastestShuttle(userContent, databaseSnapshot["SchoolToKangnamUniv"])
+                            break;
+                        default:
+                            responseText = "selection: " + userContent
+                            break;
+                    }
+                    responseMessage["text"] = responseText
                 }
                 break;
             default:
                 break;
         }
 
-        responseMessage = {"message": {"text": responseText, "message_button": labelButton},
+        responseMessage = {"message": responseMessage,
             "keyboard": {"type" : "buttons", "buttons" : responseButton}}
 
         response.setHeader('Content-Type', 'application/json');
         response.status(200).send(JSON.stringify(responseMessage))
     })
 });
+
+function PrintFastestShuttle(selection, database) {
+    return "This is fastest shuttle"
+}
+
+function PrintAllShuttle(selection, database) {
+    return "This is all shuttle schedule"
+}
 
 exports.friend = functions.https.onRequest((request, response) => {
     switch(request.method) {
