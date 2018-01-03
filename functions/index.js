@@ -1,4 +1,6 @@
 const functions = require('firebase-functions');
+const admin = require('firebase-admin');
+admin.initializeApp(functions.config().firebase);
 
 var LEAVE_AS_SOON_AS_SHUTTLE = "곧 떠날 달구지"
 var ALL_SHUTTLE_TIME = "전체 달구지 시간표"
@@ -32,25 +34,50 @@ exports.keyboard = functions.https.onRequest((request, response) => {
 exports.message = functions.https.onRequest((request, response) => {
     userContent = ""
     responseButton = []
-    switch(request.method) {
-        case 'POST':
-            requestMessage = request.body
-            userContent = requestMessage["content"]
-            if(userContent == LEAVE_AS_SOON_AS_SHUTTLE) {
-                responseButton = SHUTTLE_START_POINT_BUTTONS
-            }
-            else {
-                responseButton = MAIN_BUTTONS
-            }
-            break;
-        default:
-            break;
-    }
+    databaseSnapshot = {}
+    responseText = ""
+    labelButton = ""
 
-    responseMessage = {"message": {"text": "selection: " + userContent}, "keyboard": {"type" : "buttons", "buttons" : responseButton}}
+    admin.database().ref('/').once('value', (snapshot) => {
+        databaseSnapshot = snapshot.val()
+        // console.log("db: " + JSON.stringify(databaseSnapshot))
 
-    response.setHeader('Content-Type', 'application/json');
-    response.status(200).send(JSON.stringify(responseMessage))
+        switch(request.method) {
+            case 'POST':
+                requestMessage = request.body
+                userContent = requestMessage["content"]
+                // console.log("content: " + userContent)
+                if(userContent == LEAVE_AS_SOON_AS_SHUTTLE || userContent == ALL_SHUTTLE_TIME) {
+                    // console.log("selection: leave soon, all")
+                    responseButton = SHUTTLE_START_POINT_BUTTONS
+                    responseText = "selection: " + userContent
+                }
+                else if(userContent == SERVICE_INFO) {
+                    // console.log("selection: service info")
+                    responseButton = MAIN_BUTTONS
+                    // system
+                    systemData = databaseSnapshot["System"]
+                    responseText = "버전: " + systemData["ver"] + "\n최종 수정일: " + systemData["lastEdit"] +
+                        "\n개발자: " + systemData["developer"] + "\n메일: " + systemData["email"]
+
+                    labelButton = {"label": "공유하기", "url": "https://firebasestorage.googleapis.com/v0/b/kangnamshuttle.appspot.com/o/poster.png?alt=media&token=fb60f794-50a2-40c8-be0c-f2400eabaad4"}
+                }
+                else {
+                    // console.log("selection: else")
+                    responseButton = MAIN_BUTTONS
+                    responseText = "selection: " + userContent
+                }
+                break;
+            default:
+                break;
+        }
+
+        responseMessage = {"message": {"text": responseText, "message_button": labelButton},
+            "keyboard": {"type" : "buttons", "buttons" : responseButton}}
+
+        response.setHeader('Content-Type', 'application/json');
+        response.status(200).send(JSON.stringify(responseMessage))
+    })
 });
 
 exports.friend = functions.https.onRequest((request, response) => {
