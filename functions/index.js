@@ -107,11 +107,60 @@ exports.message = functions.https.onRequest((request, response) => {
 });
 
 function PrintFastestShuttle(selection, database) {
-    return "This is fastest shuttle"
+    var currentDate = new Date();
+    var hour = (currentDate.getHours() + 9) % 24
+    var min = currentDate.getMinutes()
+    var sec = currentDate.getSeconds()
+    var resultText = "If you see this, plz report it. Your selection is: " + selection +
+        " current time: " + hour + ":" + min + ":" + sec
+    var bakShuttleSec = 0
+    // console.log("" + hour + ":" + min + ":" + sec)
+    console.log("database: " + database)
+    currentSec = TimeToSec(hour, min, sec)
+    for(indexOfTime in database) {
+
+        indexOfTime = indexOfTime * 1
+
+        shuttleTime = database[indexOfTime].split(":")
+        shuttleSec = TimeToSec(shuttleTime[0], shuttleTime[1], shuttleTime[2])
+        shuttleTime = database[indexOfTime]
+
+        console.log("#" + indexOfTime + "current sec: " + currentSec + " current time: " + hour + ":" + min + ":" + sec + " shuttle sec: " + shuttleSec + " time: " + shuttleTime)
+
+        if(indexOfTime == 0) {
+            if(currentSec < shuttleSec) {
+                resultText = "First bus: " + shuttleTime + "\nNext bus: " + database[indexOfTime + 1]
+                break
+            }
+        }
+        else if(indexOfTime == database.length - 1){
+            if(currentSec < shuttleSec) {
+                resultText = "Last bus: " + shuttleTime
+                break
+            }
+            else if(currentSec >= shuttleSec) {
+                resultText = "No bus exist"
+                break
+            }
+        }
+        else {
+            if(bakShuttleSec < currentSec && currentSec < shuttleSec) {
+                resultText = "Bus: " + shuttleTime + "\nNext bus: " + database[indexOfTime + 1]
+                break
+            }
+        }
+
+        bakShuttleSec = shuttleSec
+    }
+    return resultText
 }
 
 function PrintAllShuttle(selection, database) {
     return "This is all shuttle schedule"
+}
+
+function TimeToSec(hour, min, sec) {
+    return hour * 3600 + min * 60 + sec * 1
 }
 
 exports.friend = functions.https.onRequest((request, response) => {
