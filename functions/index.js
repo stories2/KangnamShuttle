@@ -2,13 +2,13 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 admin.initializeApp(functions.config().firebase);
 
-var LEAVE_AS_SOON_AS_SHUTTLE = "곧 떠날 달구지"
-var ALL_SHUTTLE_TIME = "전체 달구지 시간표"
+var LEAVE_AS_SOON_AS_SHUTTLE = "곧 떠날 달구지를 알려줘"
+var ALL_SHUTTLE_TIME = "전체 달구지 시간표를 알려줘"
 var SERVICE_INFO = "서비스 정보"
-var GIHEUNG_TO_SCHOOL = "기흥역 -> 강남대 이공관"
-var KANGNAM_UNIV_STATION_TO_SCHOOL = "강남대역 -> 강남대 이공관"
-var SCHOOL_TO_GIHEUNG = "강남대 이공관 -> 기흥역"
-var SCHOOL_TO_KANGNAM_UNIV_STATION = "강남대 이공관 -> 강남대역"
+var GIHEUNG_TO_SCHOOL = "기흥역에서 이공관으로 갈꺼야"
+var KANGNAM_UNIV_STATION_TO_SCHOOL = "강남대역에서 이공관으로 갈꺼야"
+var SCHOOL_TO_GIHEUNG = "이공관에서 기흥역으로 갈꺼야"
+var SCHOOL_TO_KANGNAM_UNIV_STATION = "이공관에서 강남대역으로 갈꺼야"
 var MAIN_BUTTONS = [LEAVE_AS_SOON_AS_SHUTTLE, ALL_SHUTTLE_TIME, SERVICE_INFO]
 var SHUTTLE_START_POINT_BUTTONS = [
     GIHEUNG_TO_SCHOOL,
@@ -51,7 +51,7 @@ exports.message = functions.https.onRequest((request, response) => {
                 if(userContent == LEAVE_AS_SOON_AS_SHUTTLE) {
                     // console.log("selection: leave soon, all")
                     responseButton = SHUTTLE_START_POINT_BUTTONS
-                    responseText = "selection: " + userContent
+                    responseText = "출발 지점과 도착지점을 알려주세요!"
                     responseMessage["text"] = responseText
                 }
                 else if(userContent == ALL_SHUTTLE_TIME) {
@@ -129,23 +129,23 @@ function PrintFastestShuttle(selection, database) {
 
         if(indexOfTime == 0) {
             if(currentSec < shuttleSec) {
-                resultText = "First bus: " + shuttleTime + "\nNext bus: " + database[indexOfTime + 1]
+                resultText = "첫 차가 " + shuttleTime + "에 출발해요!\n다음 버스는 " + database[indexOfTime + 1] + "에 출발합니다."
                 break
             }
         }
         else if(indexOfTime == database.length - 1){
             if(currentSec < shuttleSec) {
-                resultText = "Last bus: " + shuttleTime
+                resultText = "마지막 차가 " + shuttleTime + "에 출발해요!"
                 break
             }
             else if(currentSec >= shuttleSec) {
-                resultText = "No bus exist"
+                resultText = "풉! 차를 다 놓치셨군요."
                 break
             }
         }
         else {
             if(bakShuttleSec < currentSec && currentSec < shuttleSec) {
-                resultText = "Bus: " + shuttleTime + "\nNext bus: " + database[indexOfTime + 1]
+                resultText = "이번 차는 " + shuttleTime + "에 출발해요!\n다음 버스는 " + database[indexOfTime + 1] + "에 출발합니다"
                 break
             }
         }
@@ -156,7 +156,28 @@ function PrintFastestShuttle(selection, database) {
 }
 
 function PrintAllShuttle(selection, database) {
-    return "This is all shuttle schedule"
+    resultText = "전체 시간표를 알려드릴께요~\n"
+
+    resultText = resultText + "====기흥역 -> 이공관====\n"
+    for(indexOfTime in database["GiheungToSchool"]) {
+        resultText = resultText + database["GiheungToSchool"][indexOfTime] + "\n"
+    }
+
+    resultText = resultText + "====강남대역 -> 이공관====\n"
+    for(indexOfTime in database["KangnamUnivToSchool"]) {
+        resultText = resultText + database["KangnamUnivToSchool"][indexOfTime] + "\n"
+    }
+
+    resultText = resultText + "====이공관 -> 기흥역====\n"
+    for(indexOfTime in database["SchoolToGiheung"]) {
+        resultText = resultText + database["SchoolToGiheung"][indexOfTime] + "\n"
+    }
+
+    resultText = resultText + "====이공관 -> 강남대역====\n"
+    for(indexOfTime in database["SchoolToKangnamUniv"]) {
+        resultText = resultText + database["SchoolToKangnamUniv"][indexOfTime] + "\n"
+    }
+    return resultText
 }
 
 function TimeToSec(hour, min, sec) {
