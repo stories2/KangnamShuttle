@@ -54,7 +54,7 @@ exports.message = functions.https.onRequest((request, response) => {
                     responseText = "버전: " + systemData["ver"] + "\n최종 수정일: " + systemData["lastEdit"] +
                         "\n개발자: " + systemData["developer"] + "\n메일: " + systemData["email"]
 
-                    labelButton = {"label": "공유하기", "url": global.defineManager.STORAGE_SHARE_CARD_URL}
+                    labelButton = {"label": "공유하기", "url": global.defineManager.KAKAO_PLUS_SHARE_URL}
                     responseMessage["message_button"] = labelButton
                     responseMessage["text"] = responseText
                 }
