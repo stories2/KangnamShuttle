@@ -1,3 +1,6 @@
+global.defineManager = require('./Settings/DefineManager');
+global.logManager = require('./Utils/LogManager');
+
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 admin.initializeApp(functions.config().firebase);
