@@ -8,13 +8,6 @@ const busTimeManager = require('./Core/BusTimeManager');
 
 admin.initializeApp(functions.config().firebase);
 
-// // Create and Deploy Your First Cloud Functions
-// // https://firebase.google.com/docs/functions/write-firebase-functions
-//
-exports.helloWorld = functions.https.onRequest((request, response) => {
- response.send("Hello from Firebase!");
-});
-
 exports.keyboard = functions.https.onRequest((request, response) => {
 
     responseMessage = {"type" : "buttons", "buttons" : global.defineManager.MAIN_BUTTONS}
@@ -38,6 +31,12 @@ exports.message = functions.https.onRequest((request, response) => {
             case 'POST':
                 requestMessage = request.body
                 userContent = requestMessage["content"]
+
+                global.logManager.PrintLogMessage("index", "message",
+                    "request info user_key: " + requestMessage["user_key"] +
+                    " content: " + requestMessage["content"] + " type: " + requestMessage["type"],
+                    global.defineManager.LOG_LEVEL_INFO)
+
                 if(userContent == global.defineManager.LEAVE_AS_SOON_AS_SHUTTLE) {
                     responseButton = global.defineManager.SHUTTLE_START_POINT_BUTTONS
                     responseText = global.defineManager.PLZ_INPUT_DEPART_AND_ARRIVE_POINT
@@ -82,8 +81,15 @@ exports.message = functions.https.onRequest((request, response) => {
                 }
                 break;
             default:
+                global.logManager.PrintLogMessage("index", "message",
+                    "wrong access accepted",
+                    global.defineManager.LOG_LEVEL_WARN)
                 break;
         }
+
+        global.logManager.PrintLogMessage("index", "message",
+            "result message: " + responseMessage["text"],
+            global.defineManager.LOG_LEVEL_INFO)
 
         responseMessage = {"message": responseMessage,
             "keyboard": {"type" : "buttons", "buttons" : responseButton}}
