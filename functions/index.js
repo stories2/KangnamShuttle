@@ -3,6 +3,9 @@ global.logManager = require('./Utils/LogManager');
 
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
+
+const busTimeManager = require('./Core/BusTimeManager');
+
 admin.initializeApp(functions.config().firebase);
 
 // // Create and Deploy Your First Cloud Functions
@@ -45,7 +48,7 @@ exports.message = functions.https.onRequest((request, response) => {
                 }
                 else if(userContent == global.defineManager.ALL_SHUTTLE_TIME) {
                     responseButton = global.defineManager.MAIN_BUTTONS
-                    responseText = PrintAllShuttle(userContent, databaseSnapshot)
+                    responseText = busTimeManager.PrintAllShuttle(userContent, databaseSnapshot)
                     responseMessage["text"] = responseText
                 }
                 else if(userContent == global.defineManager.SERVICE_INFO) {
@@ -65,16 +68,16 @@ exports.message = functions.https.onRequest((request, response) => {
                     responseButton = global.defineManager.MAIN_BUTTONS
                     switch (userContent){
                         case global.defineManager.GIHEUNG_TO_SCHOOL:
-                            responseText = PrintFastestShuttle(userContent, databaseSnapshot[global.defineManager.DATABASE_GIHEUNG_TO_SCHOOL])
+                            responseText = busTimeManager.PrintFastestShuttle(userContent, databaseSnapshot[global.defineManager.DATABASE_GIHEUNG_TO_SCHOOL])
                             break;
                         case global.defineManager.KANGNAM_UNIV_STATION_TO_SCHOOL:
-                            responseText = PrintFastestShuttle(userContent, databaseSnapshot[global.defineManager.DATABASE_KANGNAM_UNIV_TO_SCHOOL])
+                            responseText = busTimeManager.PrintFastestShuttle(userContent, databaseSnapshot[global.defineManager.DATABASE_KANGNAM_UNIV_TO_SCHOOL])
                             break;
                         case global.defineManager.SCHOOL_TO_GIHEUNG:
-                            responseText = PrintFastestShuttle(userContent, databaseSnapshot[global.defineManager.DATABASE_SCHOOL_TO_GIHEUNG])
+                            responseText = busTimeManager.PrintFastestShuttle(userContent, databaseSnapshot[global.defineManager.DATABASE_SCHOOL_TO_GIHEUNG])
                             break;
                         case global.defineManager.SCHOOL_TO_KANGNAM_UNIV_STATION:
-                            responseText = PrintFastestShuttle(userContent, databaseSnapshot[global.defineManager.DATABASE_SCHOOL_TO_KANGNAM_UNIV])
+                            responseText = busTimeManager.PrintFastestShuttle(userContent, databaseSnapshot[global.defineManager.DATABASE_SCHOOL_TO_KANGNAM_UNIV])
                             break;
                         default:
                             responseText = "selection: " + userContent
@@ -94,84 +97,6 @@ exports.message = functions.https.onRequest((request, response) => {
         response.status(200).send(JSON.stringify(responseMessage))
     })
 });
-
-function PrintFastestShuttle(selection, database) {
-    var currentDate = new Date();
-    var hour = (currentDate.getHours() + 9) % 24
-    var min = currentDate.getMinutes()
-    var sec = currentDate.getSeconds()
-    var resultText = "If you see this, plz report it. Your selection is: " + selection +
-        " current time: " + hour + ":" + min + ":" + sec
-    var bakShuttleSec = 0
-    // console.log("" + hour + ":" + min + ":" + sec)
-    console.log("database: " + database)
-    currentSec = TimeToSec(hour, min, sec)
-    for(indexOfTime in database) {
-
-        indexOfTime = indexOfTime * 1
-
-        shuttleTime = database[indexOfTime].split(":")
-        shuttleSec = TimeToSec(shuttleTime[0], shuttleTime[1], shuttleTime[2])
-        shuttleTime = database[indexOfTime]
-
-        console.log("#" + indexOfTime + "current sec: " + currentSec + " current time: " + hour + ":" + min + ":" + sec + " shuttle sec: " + shuttleSec + " time: " + shuttleTime)
-
-        if(indexOfTime == 0) {
-            if(currentSec < shuttleSec) {
-                resultText = "첫 차가 " + shuttleTime + "에 출발해요!\n다음 버스는 " + database[indexOfTime + 1] + "에 출발합니다."
-                break
-            }
-        }
-        else if(indexOfTime == database.length - 1){
-            if(currentSec < shuttleSec) {
-                resultText = "마지막 차가 " + shuttleTime + "에 출발해요!"
-                break
-            }
-            else if(currentSec >= shuttleSec) {
-                resultText = "풉! 차를 다 놓치셨군요."
-                break
-            }
-        }
-        else {
-            if(bakShuttleSec < currentSec && currentSec < shuttleSec) {
-                resultText = "이번 차는 " + shuttleTime + "에 출발해요!\n다음 버스는 " + database[indexOfTime + 1] + "에 출발합니다"
-                break
-            }
-        }
-
-        bakShuttleSec = shuttleSec
-    }
-    return resultText
-}
-
-function PrintAllShuttle(selection, database) {
-    resultText = "전체 시간표를 알려드릴께요~\n"
-
-    resultText = resultText + "====기흥역 -> 이공관====\n"
-    for(indexOfTime in database["GiheungToSchool"]) {
-        resultText = resultText + database["GiheungToSchool"][indexOfTime] + "\n"
-    }
-
-    resultText = resultText + "====강남대역 -> 이공관====\n"
-    for(indexOfTime in database["KangnamUnivToSchool"]) {
-        resultText = resultText + database["KangnamUnivToSchool"][indexOfTime] + "\n"
-    }
-
-    resultText = resultText + "====이공관 -> 기흥역====\n"
-    for(indexOfTime in database["SchoolToGiheung"]) {
-        resultText = resultText + database["SchoolToGiheung"][indexOfTime] + "\n"
-    }
-
-    resultText = resultText + "====이공관 -> 강남대역====\n"
-    for(indexOfTime in database["SchoolToKangnamUniv"]) {
-        resultText = resultText + database["SchoolToKangnamUniv"][indexOfTime] + "\n"
-    }
-    return resultText
-}
-
-function TimeToSec(hour, min, sec) {
-    return hour * 3600 + min * 60 + sec * 1
-}
 
 exports.friend = functions.https.onRequest((request, response) => {
     switch(request.method) {
