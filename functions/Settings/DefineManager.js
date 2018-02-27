@@ -17,9 +17,17 @@ exports.DATABASE_SCHOOL_TO_GIHEUNG = "SchoolToGiheung"
 exports.DATABASE_SCHOOL_TO_KANGNAM_UNIV = "SchoolToKangnamUniv"
 exports.STORAGE_SHARE_CARD_URL = "https://firebasestorage.googleapis.com/v0/b/kangnamshuttle.appspot.com/o/poster.png?alt=media&token=fb60f794-50a2-40c8-be0c-f2400eabaad4"
 exports.PLZ_INPUT_DEPART_AND_ARRIVE_POINT = "출발 지점과 도착지점을 알려주세요!"
+exports.LET_ME_SHOW_ALL_OF_BUS_TIME = "전체 시간표를 알려드릴께요~\n"
+exports.TEXT_GIHEUNG_TO_SCHOOL = "====기흥역 -> 이공관====\n"
+exports.TEXT_KANGNAM_UNIV_TO_SCHOOL = "====강남대역 -> 이공관====\n"
+exports.TEXT_SCHOOL_TO_GIHEUNG = "====이공관 -> 기흥역====\n"
+exports.TEXT_SCHOOL_TO_KANGNAM_UNIV = "====이공관 -> 강남대역====\n"
 
 exports.LOG_LEVEL_VERBOSE = 0
 exports.LOG_LEVEL_INFO = 1
 exports.LOG_LEVEL_DEBUG = 2
 exports.LOG_LEVEL_WARN = 3
 exports.LOG_LEVEL_ERROR = 4
+
+exports.DAY_TO_HOUR = 24
+exports.GMT_KOREA_TIME = 9
