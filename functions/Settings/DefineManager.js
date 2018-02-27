@@ -17,3 +17,9 @@ exports.DATABASE_SCHOOL_TO_GIHEUNG = "SchoolToGiheung"
 exports.DATABASE_SCHOOL_TO_KANGNAM_UNIV = "SchoolToKangnamUniv"
 exports.STORAGE_SHARE_CARD_URL = "https://firebasestorage.googleapis.com/v0/b/kangnamshuttle.appspot.com/o/poster.png?alt=media&token=fb60f794-50a2-40c8-be0c-f2400eabaad4"
 exports.PLZ_INPUT_DEPART_AND_ARRIVE_POINT = "출발 지점과 도착지점을 알려주세요!"
+
+exports.LOG_LEVEL_VERBOSE = 0
+exports.LOG_LEVEL_INFO = 1
+exports.LOG_LEVEL_DEBUG = 2
+exports.LOG_LEVEL_WARN = 3
+exports.LOG_LEVEL_ERROR = 4
