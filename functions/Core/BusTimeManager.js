@@ -6,7 +6,6 @@ exports.PrintFastestShuttle = function(selection, database) {
     var resultText = "If you see this, plz report it. Your selection is: " + selection +
         " current time: " + hour + ":" + min + ":" + sec
     var bakShuttleSec = 0
-    // console.log("" + hour + ":" + min + ":" + sec)
     console.log("database: " + database)
     currentSec = this.TimeToSec(hour, min, sec)
     for(indexOfTime in database) {

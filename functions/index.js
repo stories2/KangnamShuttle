@@ -33,15 +33,12 @@ exports.message = functions.https.onRequest((request, response) => {
 
     admin.database().ref('/').once('value', (snapshot) => {
         databaseSnapshot = snapshot.val()
-        // console.log("db: " + JSON.stringify(databaseSnapshot))
 
         switch(request.method) {
             case 'POST':
                 requestMessage = request.body
                 userContent = requestMessage["content"]
-                // console.log("content: " + userContent)
                 if(userContent == global.defineManager.LEAVE_AS_SOON_AS_SHUTTLE) {
-                    // console.log("selection: leave soon, all")
                     responseButton = global.defineManager.SHUTTLE_START_POINT_BUTTONS
                     responseText = global.defineManager.PLZ_INPUT_DEPART_AND_ARRIVE_POINT
                     responseMessage["text"] = responseText
@@ -52,7 +49,6 @@ exports.message = functions.https.onRequest((request, response) => {
                     responseMessage["text"] = responseText
                 }
                 else if(userContent == global.defineManager.SERVICE_INFO) {
-                    // console.log("selection: service info")
                     responseButton = global.defineManager.MAIN_BUTTONS
                     // system
                     systemData = databaseSnapshot["System"]
@@ -64,7 +60,6 @@ exports.message = functions.https.onRequest((request, response) => {
                     responseMessage["text"] = responseText
                 }
                 else {
-                    // console.log("selection: else")
                     responseButton = global.defineManager.MAIN_BUTTONS
                     switch (userContent){
                         case global.defineManager.GIHEUNG_TO_SCHOOL:
