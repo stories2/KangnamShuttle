@@ -1,5 +1,6 @@
 global.defineManager = require('./Settings/DefineManager');
 global.logManager = require('./Utils/LogManager');
+global.util = require('util')
 
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
@@ -51,8 +52,7 @@ exports.message = functions.https.onRequest((request, response) => {
                     responseButton = global.defineManager.MAIN_BUTTONS
                     // system
                     systemData = databaseSnapshot["System"]
-                    responseText = "버전: " + systemData["ver"] + "\n최종 수정일: " + systemData["lastEdit"] +
-                        "\n개발자: " + systemData["developer"] + "\n메일: " + systemData["email"]
+                    responseText = global.util.format(global.defineManager.SYSTEM_INFO_STR, systemData["ver"], systemData["lastEdit"], systemData["developer"], systemData["email"])
 
                     labelButton = {"label": "공유하기", "url": global.defineManager.KAKAO_PLUS_SHARE_URL}
                     responseMessage["message_button"] = labelButton

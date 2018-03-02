@@ -32,3 +32,10 @@ exports.LOG_LEVEL_ERROR = 4
 
 exports.DAY_TO_HOUR = 24
 exports.GMT_KOREA_TIME = 9
+
+exports.SYSTEM_INFO_STR = "버전: %s\n최종 수정일: %s\n개발자: %s\n메일: %s"
+
+exports.BUS_FIRST_TIME_STR = "첫 차가 %s에 있어요!\n다음 버스는 %s에 있습니다."
+exports.BUS_LAST_TIME_STR = "마지막 차가 %s에 있어요!"
+exports.BUS_END_STR = "풉! 차를 다 놓치셨군요."
+exports.BUS_NORMAL_TIME_STR = "이번 차는 %s에 있어요!\n다음 버스는 %s에 있습니다"

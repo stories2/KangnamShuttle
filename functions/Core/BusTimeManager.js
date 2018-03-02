@@ -24,7 +24,7 @@ exports.PrintFastestShuttle = function(selection, database) {
             if(currentSec < shuttleSec) {
                 global.logManager.PrintLogMessage("BusTimeManager", "PrintFastestShuttle",
                     "#" + indexOfTime + " shuttle time: " + shuttleTime + " -> sec: " + shuttleSec, global.defineManager.LOG_LEVEL_INFO)
-                resultText = "첫 차가 " + shuttleTime + "에 출발해요!\n다음 버스는 " + database[indexOfTime + 1] + "에 출발합니다."
+                resultText = global.util.format(global.defineManager.BUS_FIRST_TIME_STR, shuttleTime, database[indexOfTime + 1])
                 break
             }
         }
@@ -32,13 +32,13 @@ exports.PrintFastestShuttle = function(selection, database) {
             if(currentSec < shuttleSec) {
                 global.logManager.PrintLogMessage("BusTimeManager", "PrintFastestShuttle",
                     "#" + indexOfTime + " shuttle time: " + shuttleTime + " -> sec: " + shuttleSec, global.defineManager.LOG_LEVEL_INFO)
-                resultText = "마지막 차가 " + shuttleTime + "에 출발해요!"
+                resultText = global.util.format(global.defineManager.BUS_LAST_TIME_STR, shuttleTime)
                 break
             }
             else if(currentSec >= shuttleSec) {
                 global.logManager.PrintLogMessage("BusTimeManager", "PrintFastestShuttle",
                     "#" + indexOfTime + " shuttle time: " + shuttleTime + " -> sec: " + shuttleSec, global.defineManager.LOG_LEVEL_INFO)
-                resultText = "풉! 차를 다 놓치셨군요."
+                resultText = global.defineManager.BUS_END_STR
                 break
             }
         }
@@ -46,7 +46,7 @@ exports.PrintFastestShuttle = function(selection, database) {
             if(bakShuttleSec < currentSec && currentSec < shuttleSec) {
                 global.logManager.PrintLogMessage("BusTimeManager", "PrintFastestShuttle",
                     "#" + indexOfTime + " shuttle time: " + shuttleTime + " -> sec: " + shuttleSec, global.defineManager.LOG_LEVEL_INFO)
-                resultText = "이번 차는 " + shuttleTime + "에 출발해요!\n다음 버스는 " + database[indexOfTime + 1] + "에 출발합니다"
+                resultText = global.util.format(global.defineManager.BUS_NORMAL_TIME_STR, shuttleTime, database[indexOfTime + 1])
                 break
             }
         }
