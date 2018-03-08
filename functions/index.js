@@ -45,7 +45,14 @@ exports.message = functions.https.onRequest((request, response) => {
                 }
                 else if(userContent == global.defineManager.ALL_SHUTTLE_TIME) {
                     responseButton = global.defineManager.MAIN_BUTTONS
-                    responseText = busTimeManager.PrintAllShuttle(userContent, databaseSnapshot)
+                    // responseText = busTimeManager.PrintAllShuttle(userContent, databaseSnapshot)
+                    responseText = global.defineManager.LET_ME_SHOW_ALL_OF_BUS_TIME
+                    photoResponse = {
+                        "url": "gs://kangnamshuttle.appspot.com/KakaoTalk_Photo_2018-02-28-17-02-56.jpeg",
+                        "width": 640,
+                        "height": 480
+                    }
+                    responseMessage["photo"] = photoResponse
                     responseMessage["text"] = responseText
                 }
                 else if(userContent == global.defineManager.SHUTTLE_STATION) {

@@ -20,7 +20,7 @@ exports.STORAGE_SHARE_CARD_URL = "https://firebasestorage.googleapis.com/v0/b/ka
 exports.KAKAO_PLUS_SHARE_URL = "https://pf.kakao.com/_wkxjxoxl"
 exports.GO_TO_HOMEPAGE = "https://kangnamshuttle.firebaseapp.com/"
 exports.PLZ_INPUT_DEPART_AND_ARRIVE_POINT = "출발 지점과 도착지점을 알려주세요!"
-exports.LET_ME_SHOW_ALL_OF_BUS_TIME = "전체 시간표를 알려드릴께요~\n"
+exports.LET_ME_SHOW_ALL_OF_BUS_TIME = "전체 시간표를 알려드릴께요~"
 exports.TEXT_GIHEUNG_TO_SCHOOL = "====기흥역 -> 이공관====\n"
 exports.TEXT_KANGNAM_UNIV_TO_SCHOOL = "====강남대역 -> 이공관====\n"
 exports.TEXT_SCHOOL_TO_GIHEUNG = "====이공관 -> 기흥역====\n"
