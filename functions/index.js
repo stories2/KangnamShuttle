@@ -48,10 +48,12 @@ exports.message = functions.https.onRequest((request, response) => {
                     // responseText = busTimeManager.PrintAllShuttle(userContent, databaseSnapshot)
                     responseText = global.defineManager.LET_ME_SHOW_ALL_OF_BUS_TIME
                     photoResponse = {
-                        "url": "gs://kangnamshuttle.appspot.com/KakaoTalk_Photo_2018-02-28-17-02-56.jpeg",
-                        "width": 640,
-                        "height": 480
+                        "url": global.defineManager.SHUTTLE_SCHEDULE_PHOTO,
+                        "width": 679,
+                        "height": 960
                     }
+                    labelButton = {"label": "자세히", "url": global.defineManager.SHUTTLE_SCHEDULE_PHOTO}
+                    responseMessage["message_button"] = labelButton
                     responseMessage["photo"] = photoResponse
                     responseMessage["text"] = responseText
                 }
