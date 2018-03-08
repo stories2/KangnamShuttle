@@ -48,6 +48,11 @@ exports.message = functions.https.onRequest((request, response) => {
                     responseText = busTimeManager.PrintAllShuttle(userContent, databaseSnapshot)
                     responseMessage["text"] = responseText
                 }
+                else if(userContent == global.defineManager.SHUTTLE_STATION) {
+                    responseButton = global.defineManager.MAIN_BUTTONS
+                    responseText = busTimeManager.PrintShuttleRoute()
+                    responseMessage["text"] = responseText
+                }
                 else if(userContent == global.defineManager.SERVICE_INFO) {
                     responseButton = global.defineManager.MAIN_BUTTONS
                     // system

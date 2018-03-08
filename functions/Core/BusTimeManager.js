@@ -38,7 +38,7 @@ exports.PrintFastestShuttle = function(selection, database) {
             else if(currentSec >= shuttleSec) {
                 global.logManager.PrintLogMessage("BusTimeManager", "PrintFastestShuttle",
                     "#" + indexOfTime + " shuttle time: " + shuttleTime + " -> sec: " + shuttleSec, global.defineManager.LOG_LEVEL_INFO)
-                resultText = global.defineManager.BUS_END_STR
+                resultText = global.util.format(global.defineManager.BUS_END_STR, database[global.defineManager.ZERO])
                 break
             }
         }
@@ -79,6 +79,10 @@ exports.PrintAllShuttle = function(selection, database) {
         resultText = resultText + database[global.defineManager.DATABASE_SCHOOL_TO_KANGNAM_UNIV][indexOfTime] + "\n"
     }
     return resultText
+}
+
+exports.PrintShuttleRoute = function () {
+    return global.defineManager.SHUTTLE_STATION_ROUTE
 }
 
 exports.TimeToSec = function(hour, min, sec) {
