@@ -59,7 +59,7 @@ exports.message = functions.https.onRequest((request, response) => {
                     systemData = databaseSnapshot["System"]
                     responseText = global.util.format(global.defineManager.SYSTEM_INFO_STR, systemData["ver"], systemData["lastEdit"], systemData["developer"], systemData["email"])
 
-                    labelButton = {"label": "공유하기", "url": global.defineManager.KAKAO_PLUS_SHARE_URL}
+                    labelButton = {"label": "홈페이지", "url": global.defineManager.GO_TO_HOMEPAGE}
                     responseMessage["message_button"] = labelButton
                     responseMessage["text"] = responseText
                 }
