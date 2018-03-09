@@ -6,6 +6,7 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 
 const busTimeManager = require('./Core/BusTimeManager');
+const advertiseManager = require('./Core/AdvertiseManager');
 
 admin.initializeApp(functions.config().firebase);
 
@@ -75,7 +76,7 @@ exports.message = functions.https.onRequest((request, response) => {
                 else {
                     responseButton = global.defineManager.MAIN_BUTTONS
                     responseText = busTimeManager.SearchFastestShuttleBasedOnStartPoint(userContent)
-                    responseMessage["text"] = responseText
+                    responseMessage = advertiseManager.GetTimeAdvertise(databaseSnapshot, responseText)
                 }
                 break;
             default:
