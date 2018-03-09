@@ -17,10 +17,15 @@ exports.GetTimeAdvertise = function (database, baseStr) {
         currentTimezoneDate - advertiseDeadline < global.defineManager.ZERO) {
         if(advertiseHourInfo["enable"] == global.defineManager.ENABLE) {
             global.logManager.PrintLogMessage("AdvertiseManager", "GetTimeAdvertise",
-                "This advertisement still on going", global.defineManager.LOG_LEVEL_INFO)
+                "This advertisement still on going photo: " + advertiseHourInfo["photoEnable"] +
+                " btn: " + advertiseHourInfo["messageButtonEnable"], global.defineManager.LOG_LEVEL_INFO)
             responseMessage["text"] = baseStr + "\n\n" + advertiseHourInfo["text"]
-            responseMessage["photo"] = advertiseHourInfo["photo"]
-            responseMessage["message_button"] = advertiseHourInfo["message_button"]
+            if(advertiseHourInfo["photoEnable"] == global.defineManager.ENABLE) {
+                responseMessage["photo"] = advertiseHourInfo["photo"]
+            }
+            if(advertiseHourInfo["messageButtonEnable"] == global.defineManager.ENABLE) {
+                responseMessage["message_button"] = advertiseHourInfo["message_button"]
+            }
         }
         else {
             global.logManager.PrintLogMessage("AdvertiseManager", "GetTimeAdvertise",
