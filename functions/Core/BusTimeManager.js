@@ -81,6 +81,27 @@ exports.PrintAllShuttle = function(selection, database) {
     return resultText
 }
 
+exports.SearchFastestShuttleBasedOnStartPoint = function(userContent) {
+    switch (userContent){
+        case global.defineManager.GIHEUNG_TO_SCHOOL:
+            responseText = this.PrintFastestShuttle(userContent, databaseSnapshot[global.defineManager.DATABASE_GIHEUNG_TO_SCHOOL])
+            break;
+        case global.defineManager.KANGNAM_UNIV_STATION_TO_SCHOOL:
+            responseText = this.PrintFastestShuttle(userContent, databaseSnapshot[global.defineManager.DATABASE_KANGNAM_UNIV_TO_SCHOOL])
+            break;
+        case global.defineManager.SCHOOL_TO_GIHEUNG:
+            responseText = this.PrintFastestShuttle(userContent, databaseSnapshot[global.defineManager.DATABASE_SCHOOL_TO_GIHEUNG])
+            break;
+        case global.defineManager.SCHOOL_TO_KANGNAM_UNIV_STATION:
+            responseText = this.PrintFastestShuttle(userContent, databaseSnapshot[global.defineManager.DATABASE_SCHOOL_TO_KANGNAM_UNIV])
+            break;
+        default:
+            responseText = "selection: " + userContent
+            break;
+    }
+    return responseText
+}
+
 exports.PrintShuttleRoute = function () {
     return global.defineManager.SHUTTLE_STATION_ROUTE
 }

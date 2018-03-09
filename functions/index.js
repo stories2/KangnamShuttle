@@ -74,23 +74,7 @@ exports.message = functions.https.onRequest((request, response) => {
                 }
                 else {
                     responseButton = global.defineManager.MAIN_BUTTONS
-                    switch (userContent){
-                        case global.defineManager.GIHEUNG_TO_SCHOOL:
-                            responseText = busTimeManager.PrintFastestShuttle(userContent, databaseSnapshot[global.defineManager.DATABASE_GIHEUNG_TO_SCHOOL])
-                            break;
-                        case global.defineManager.KANGNAM_UNIV_STATION_TO_SCHOOL:
-                            responseText = busTimeManager.PrintFastestShuttle(userContent, databaseSnapshot[global.defineManager.DATABASE_KANGNAM_UNIV_TO_SCHOOL])
-                            break;
-                        case global.defineManager.SCHOOL_TO_GIHEUNG:
-                            responseText = busTimeManager.PrintFastestShuttle(userContent, databaseSnapshot[global.defineManager.DATABASE_SCHOOL_TO_GIHEUNG])
-                            break;
-                        case global.defineManager.SCHOOL_TO_KANGNAM_UNIV_STATION:
-                            responseText = busTimeManager.PrintFastestShuttle(userContent, databaseSnapshot[global.defineManager.DATABASE_SCHOOL_TO_KANGNAM_UNIV])
-                            break;
-                        default:
-                            responseText = "selection: " + userContent
-                            break;
-                    }
+                    responseText = busTimeManager.SearchFastestShuttleBasedOnStartPoint(userContent)
                     responseMessage["text"] = responseText
                 }
                 break;

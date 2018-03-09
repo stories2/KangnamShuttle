@@ -4,5 +4,5 @@ exports.GetTimeAdvertise = function (database) {
     currentTimezoneDate = new Date(currentDate.valueOf() + 540 * 60000)
     global.logManager.PrintLogMessage("AdvertiseManager", "GetTimeAdvertise",
         "current timezone time: " + currentTimezoneDate, global.defineManager.LOG_LEVEL_INFO)
-    
+
 }
