@@ -6,7 +6,13 @@ exports.GIHEUNG_TO_SCHOOL = "기흥역에서 이공관으로 갈꺼야"
 exports.KANGNAM_UNIV_STATION_TO_SCHOOL = "강남대역에서 이공관으로 갈꺼야"
 exports.SCHOOL_TO_GIHEUNG = "이공관에서 기흥역으로 갈꺼야"
 exports.SCHOOL_TO_KANGNAM_UNIV_STATION = "이공관에서 강남대역으로 갈꺼야"
-exports.MAIN_BUTTONS = [exports.LEAVE_AS_SOON_AS_SHUTTLE, exports.ALL_SHUTTLE_TIME, exports.SHUTTLE_STATION, exports.SERVICE_INFO]
+exports.DICE_NUMBER_START = "주사위 굴리기 가즈아~!!"
+exports.MAIN_BUTTONS = [
+    exports.LEAVE_AS_SOON_AS_SHUTTLE,
+    exports.ALL_SHUTTLE_TIME,
+    exports.SHUTTLE_STATION,
+    exports.DICE_NUMBER_START,
+    exports.SERVICE_INFO]
 exports.SHUTTLE_START_POINT_BUTTONS = [
     exports.GIHEUNG_TO_SCHOOL,
     exports.KANGNAM_UNIV_STATION_TO_SCHOOL,
@@ -45,6 +51,8 @@ exports.BUS_FIRST_TIME_STR = "첫 차가 %s에 있어요!\n다음 버스는 %s�
 exports.BUS_LAST_TIME_STR = "마지막 차가 %s에 있어요!"
 exports.BUS_END_STR = "풉! 차를 다 놓치셨군요!\n첫 차는 %s에 있어요."
 exports.BUS_NORMAL_TIME_STR = "이번 차는 %s에 있어요!\n다음 버스는 %s에 있어요."
+
+exports.DICE_NUMBER_RESULT_STR = "%s 가즈아~!!"
 
 exports.ZERO = 0
 

@@ -7,6 +7,7 @@ const admin = require('firebase-admin');
 
 const busTimeManager = require('./Core/BusTimeManager');
 const advertiseManager = require('./Core/AdvertiseManager');
+const contentsManager = require('./Core/ContentsManager');
 
 admin.initializeApp(functions.config().firebase);
 
@@ -61,6 +62,11 @@ exports.message = functions.https.onRequest((request, response) => {
                 else if(userContent == global.defineManager.SHUTTLE_STATION) {
                     responseButton = global.defineManager.MAIN_BUTTONS
                     responseText = busTimeManager.PrintShuttleRoute()
+                    responseMessage["text"] = responseText
+                }
+                else if(userContent == global.defineManager.DICE_NUMBER_START) {
+                    responseButton = global.defineManager.MAIN_BUTTONS
+                    responseText = contentsManager.RollingDice()
                     responseMessage["text"] = responseText
                 }
                 else if(userContent == global.defineManager.SERVICE_INFO) {
