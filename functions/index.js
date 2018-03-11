@@ -8,6 +8,7 @@ const admin = require('firebase-admin');
 const busTimeManager = require('./Core/BusTimeManager');
 const advertiseManager = require('./Core/AdvertiseManager');
 const contentsManager = require('./Core/ContentsManager');
+const responseManager = require('./Utils/ResponseManager');
 
 admin.initializeApp(functions.config().firebase);
 
@@ -27,49 +28,58 @@ exports.message = functions.https.onRequest((request, response) => {
     labelButton = ""
     responseMessage = {}
 
-    admin.database().ref('/').once('value', (snapshot) => {
-        databaseSnapshot = snapshot.val()
+    requestMessage = request.body
+    userContent = requestMessage["content"]
 
-        switch(request.method) {
-            case 'POST':
-                requestMessage = request.body
-                userContent = requestMessage["content"]
+    global.logManager.PrintLogMessage("index", "message",
+        "request info user_key: " + requestMessage["user_key"] +
+        " content: " + requestMessage["content"] + " type: " + requestMessage["type"],
+        global.defineManager.LOG_LEVEL_INFO)
 
-                global.logManager.PrintLogMessage("index", "message",
-                    "request info user_key: " + requestMessage["user_key"] +
-                    " content: " + requestMessage["content"] + " type: " + requestMessage["type"],
-                    global.defineManager.LOG_LEVEL_INFO)
+    switch(request.method) {
+        case 'POST':
+            if(userContent == global.defineManager.LEAVE_AS_SOON_AS_SHUTTLE) {
+                responseButton = global.defineManager.SHUTTLE_START_POINT_BUTTONS
+                responseText = global.defineManager.PLZ_INPUT_DEPART_AND_ARRIVE_POINT
+                responseMessage["text"] = responseText
 
-                if(userContent == global.defineManager.LEAVE_AS_SOON_AS_SHUTTLE) {
-                    responseButton = global.defineManager.SHUTTLE_START_POINT_BUTTONS
-                    responseText = global.defineManager.PLZ_INPUT_DEPART_AND_ARRIVE_POINT
-                    responseMessage["text"] = responseText
+                responseManager.TemplateResponse(response, responseMessage, responseButton)
+            }
+            else if(userContent == global.defineManager.ALL_SHUTTLE_TIME) {
+                responseButton = global.defineManager.MAIN_BUTTONS
+                // responseText = busTimeManager.PrintAllShuttle(userContent, databaseSnapshot)
+                responseText = global.defineManager.LET_ME_SHOW_ALL_OF_BUS_TIME
+                photoResponse = {
+                    "url": global.defineManager.SHUTTLE_SCHEDULE_PHOTO,
+                    "width": 679,
+                    "height": 960
                 }
-                else if(userContent == global.defineManager.ALL_SHUTTLE_TIME) {
-                    responseButton = global.defineManager.MAIN_BUTTONS
-                    // responseText = busTimeManager.PrintAllShuttle(userContent, databaseSnapshot)
-                    responseText = global.defineManager.LET_ME_SHOW_ALL_OF_BUS_TIME
-                    photoResponse = {
-                        "url": global.defineManager.SHUTTLE_SCHEDULE_PHOTO,
-                        "width": 679,
-                        "height": 960
-                    }
-                    labelButton = {"label": "자세히", "url": global.defineManager.SHUTTLE_SCHEDULE_PHOTO}
-                    responseMessage["message_button"] = labelButton
-                    responseMessage["photo"] = photoResponse
-                    responseMessage["text"] = responseText
-                }
-                else if(userContent == global.defineManager.SHUTTLE_STATION) {
-                    responseButton = global.defineManager.MAIN_BUTTONS
-                    responseText = busTimeManager.PrintShuttleRoute()
-                    responseMessage["text"] = responseText
-                }
-                else if(userContent == global.defineManager.DICE_NUMBER_START) {
-                    responseButton = global.defineManager.MAIN_BUTTONS
-                    responseText = contentsManager.RollingDice()
-                    responseMessage["text"] = responseText
-                }
-                else if(userContent == global.defineManager.SERVICE_INFO) {
+                labelButton = {"label": "자세히", "url": global.defineManager.SHUTTLE_SCHEDULE_PHOTO}
+                responseMessage["message_button"] = labelButton
+                responseMessage["photo"] = photoResponse
+                responseMessage["text"] = responseText
+
+                responseManager.TemplateResponse(response, responseMessage, responseButton)
+            }
+            else if(userContent == global.defineManager.SHUTTLE_STATION) {
+                responseButton = global.defineManager.MAIN_BUTTONS
+                responseText = busTimeManager.PrintShuttleRoute()
+                responseMessage["text"] = responseText
+
+                responseManager.TemplateResponse(response, responseMessage, responseButton)
+            }
+            else if(userContent == global.defineManager.DICE_NUMBER_START) {
+                responseButton = global.defineManager.MAIN_BUTTONS
+                responseText = contentsManager.RollingDice()
+                responseMessage["text"] = responseText
+
+                responseManager.TemplateResponse(response, responseMessage, responseButton)
+            }
+            else if(userContent == global.defineManager.SERVICE_INFO) {
+
+                admin.database().ref('/').once('value', (snapshot) => {
+                    databaseSnapshot = snapshot.val()
+
                     responseButton = global.defineManager.MAIN_BUTTONS
                     // system
                     systemData = databaseSnapshot["System"]
@@ -78,30 +88,36 @@ exports.message = functions.https.onRequest((request, response) => {
                     labelButton = {"label": "홈페이지", "url": global.defineManager.GO_TO_HOMEPAGE}
                     responseMessage["message_button"] = labelButton
                     responseMessage["text"] = responseText
-                }
-                else {
+
+                    responseManager.TemplateResponse(response, responseMessage, responseButton)
+                })
+            }
+            else if(userContent == global.defineManager.GIHEUNG_TO_SCHOOL ||
+                        userContent == global.defineManager.KANGNAM_UNIV_STATION_TO_SCHOOL ||
+                        userContent == global.defineManager.SCHOOL_TO_GIHEUNG ||
+                        userContent == global.defineManager.SCHOOL_TO_KANGNAM_UNIV_STATION){
+                admin.database().ref('/').once('value', (snapshot) => {
+                    databaseSnapshot = snapshot.val()
+
                     responseButton = global.defineManager.MAIN_BUTTONS
                     responseText = busTimeManager.SearchFastestShuttleBasedOnStartPoint(userContent)
                     responseMessage = advertiseManager.GetTimeAdvertise(databaseSnapshot, responseText)
-                }
-                break;
-            default:
-                global.logManager.PrintLogMessage("index", "message",
-                    "wrong access accepted",
-                    global.defineManager.LOG_LEVEL_WARN)
-                break;
-        }
 
-        global.logManager.PrintLogMessage("index", "message",
-            "result message: " + responseMessage["text"],
-            global.defineManager.LOG_LEVEL_INFO)
-
-        responseMessage = {"message": responseMessage,
-            "keyboard": {"type" : "buttons", "buttons" : responseButton}}
-
-        response.setHeader('Content-Type', 'application/json');
-        response.status(200).send(JSON.stringify(responseMessage))
-    })
+                    responseManager.TemplateResponse(response, responseMessage, responseButton)
+                })
+            }
+            else {
+                responseButton = global.defineManager.MAIN_BUTTONS
+                responseMessage["text"] = global.defineManager.SAY_AGAIN
+                responseManager.TemplateResponse(response, responseMessage, responseButton)
+            }
+            break;
+        default:
+            global.logManager.PrintLogMessage("index", "message",
+                "wrong access accepted",
+                global.defineManager.LOG_LEVEL_WARN)
+            break;
+    }
 });
 
 exports.friend = functions.https.onRequest((request, response) => {

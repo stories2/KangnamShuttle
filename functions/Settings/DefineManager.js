@@ -54,6 +54,8 @@ exports.BUS_NORMAL_TIME_STR = "이번 차는 %s에 있어요!\n다음 버스는 
 
 exports.DICE_NUMBER_RESULT_STR = "%s 가즈아~!!"
 
+exports.SAY_AGAIN = "다시 말해주세요!"
+
 exports.ZERO = 0
 
 exports.ENABLE = 1
