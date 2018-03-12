@@ -81,7 +81,7 @@ exports.PrintAllShuttle = function(selection, database) {
     return resultText
 }
 
-exports.SearchFastestShuttleBasedOnStartPoint = function(userContent) {
+exports.SearchFastestShuttleBasedOnStartPoint = function(userContent, databaseSnapshot) {
     switch (userContent){
         case global.defineManager.GIHEUNG_TO_SCHOOL:
             responseText = this.PrintFastestShuttle(userContent, databaseSnapshot[global.defineManager.DATABASE_GIHEUNG_TO_SCHOOL])

@@ -102,7 +102,7 @@ exports.message = functions.https.onRequest((request, response) => {
                     databaseSnapshot = snapshot.val()
 
                     responseButton = global.defineManager.MAIN_BUTTONS
-                    responseText = busTimeManager.SearchFastestShuttleBasedOnStartPoint(userContent)
+                    responseText = busTimeManager.SearchFastestShuttleBasedOnStartPoint(userContent, databaseSnapshot)
                     responseMessage = advertiseManager.GetTimeAdvertise(databaseSnapshot, responseText)
 
                     responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
