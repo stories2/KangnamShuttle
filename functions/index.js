@@ -45,7 +45,7 @@ exports.message = functions.https.onRequest((request, response) => {
                 responseText = global.defineManager.PLZ_INPUT_DEPART_AND_ARRIVE_POINT
                 responseMessage["text"] = responseText
 
-                responseManager.TemplateResponse(response, responseMessage, responseButton)
+                responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
             }
             else if(userContent == global.defineManager.ALL_SHUTTLE_TIME) {
                 responseButton = global.defineManager.MAIN_BUTTONS
@@ -61,21 +61,21 @@ exports.message = functions.https.onRequest((request, response) => {
                 responseMessage["photo"] = photoResponse
                 responseMessage["text"] = responseText
 
-                responseManager.TemplateResponse(response, responseMessage, responseButton)
+                responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
             }
             else if(userContent == global.defineManager.SHUTTLE_STATION) {
                 responseButton = global.defineManager.MAIN_BUTTONS
                 responseText = busTimeManager.PrintShuttleRoute()
                 responseMessage["text"] = responseText
 
-                responseManager.TemplateResponse(response, responseMessage, responseButton)
+                responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
             }
             else if(userContent == global.defineManager.DICE_NUMBER_START) {
                 responseButton = global.defineManager.MAIN_BUTTONS
                 responseText = contentsManager.RollingDice()
                 responseMessage["text"] = responseText
 
-                responseManager.TemplateResponse(response, responseMessage, responseButton)
+                responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
             }
             else if(userContent == global.defineManager.SERVICE_INFO) {
 
@@ -91,7 +91,7 @@ exports.message = functions.https.onRequest((request, response) => {
                     responseMessage["message_button"] = labelButton
                     responseMessage["text"] = responseText
 
-                    responseManager.TemplateResponse(response, responseMessage, responseButton)
+                    responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
                 })
             }
             else if(userContent == global.defineManager.GIHEUNG_TO_SCHOOL ||
@@ -105,16 +105,14 @@ exports.message = functions.https.onRequest((request, response) => {
                     responseText = busTimeManager.SearchFastestShuttleBasedOnStartPoint(userContent)
                     responseMessage = advertiseManager.GetTimeAdvertise(databaseSnapshot, responseText)
 
-                    responseManager.TemplateResponse(response, responseMessage, responseButton)
+                    responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
                 })
             }
             else {
                 responseButton = global.defineManager.MAIN_BUTTONS
                 responseMessage["text"] = global.defineManager.SAY_AGAIN
-                responseManager.TemplateResponse(response, responseMessage, responseButton)
+                responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
             }
-            orderId = convertManager.ConvertOrderToNumber(userContent)
-            logManager.SaveLog(admin, generateManager, orderId, requestMessage["user_key"], responseMessage["text"])
             break;
         default:
             global.logManager.PrintLogMessage("index", "message",
