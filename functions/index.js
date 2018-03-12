@@ -114,6 +114,7 @@ exports.message = functions.https.onRequest((request, response) => {
                 responseManager.TemplateResponse(response, responseMessage, responseButton)
             }
             orderId = convertManager.ConvertOrderToNumber(userContent)
+            logManager.SaveLog(admin, generateManager, orderId, requestMessage["user_key"], responseMessage["text"])
             break;
         default:
             global.logManager.PrintLogMessage("index", "message",

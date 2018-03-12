@@ -58,3 +58,29 @@ exports.GetCurrentTime = function () {
 
     return year + "-" + month + "-" + day + " " + hour + ":" + min + ":" + sec;
 }
+
+exports.SaveLog = function (admin, generateManager, inputOrderCode, userKey, resultMsg) {
+    dateStr = new Date().toISOString()
+    this.PrintLogMessage("LogManager", "SaveLog", "save log data: " + dateStr + ", " + inputOrderCode + ", " + userKey + ", " + resultMsg,
+        global.defineManager.LOG_LEVEL_INFO)
+
+    logDataDic = {
+        "inputOrder": inputOrderCode,
+        "outputResult": resultMsg,
+        "time": dateStr,
+        "userKey": userKey
+    }
+
+    lid = generateManager.CreateHash(userKey + dateStr)
+
+    if(global.defineManager.DEBUG_MOD == global.defineManager.DISABLE) {
+        status = admin.database().ref("/Log/" + lid + "/").set(logDataDic);
+
+        this.PrintLogMessage("LogManager", "SaveLog", "save log data process done lid: " + lid,
+            global.defineManager.LOG_LEVEL_INFO)
+    }
+    else {
+        this.PrintLogMessage("LogManager", "SaveLog", "save log data process not working, because debugging mod is enabled lid: " + lid,
+            global.defineManager.LOG_LEVEL_WARN)
+    }
+}

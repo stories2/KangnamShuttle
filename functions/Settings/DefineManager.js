@@ -74,3 +74,5 @@ exports.ZERO = 0
 
 exports.ENABLE = 1
 exports.DISABLE = 0
+
+exports.DEBUG_MOD = 0
