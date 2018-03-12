@@ -113,6 +113,7 @@ exports.message = functions.https.onRequest((request, response) => {
                 responseMessage["text"] = global.defineManager.SAY_AGAIN
                 responseManager.TemplateResponse(response, responseMessage, responseButton)
             }
+            orderId = convertManager.ConvertOrderToNumber(userContent)
             break;
         default:
             global.logManager.PrintLogMessage("index", "message",
