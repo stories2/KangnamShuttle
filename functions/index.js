@@ -79,12 +79,12 @@ exports.message = functions.https.onRequest((request, response) => {
             }
             else if(userContent == global.defineManager.SERVICE_INFO) {
 
-                admin.database().ref('/').once('value', (snapshot) => {
+                admin.database().ref('/System/').once('value', (snapshot) => {
                     databaseSnapshot = snapshot.val()
 
                     responseButton = global.defineManager.MAIN_BUTTONS
                     // system
-                    systemData = databaseSnapshot["System"]
+                    systemData = databaseSnapshot
                     responseText = global.util.format(global.defineManager.SYSTEM_INFO_STR, systemData["ver"], systemData["lastEdit"], systemData["developer"], systemData["email"])
 
                     labelButton = {"label": "홈페이지", "url": global.defineManager.GO_TO_HOMEPAGE}
@@ -94,18 +94,64 @@ exports.message = functions.https.onRequest((request, response) => {
                     responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
                 })
             }
-            else if(userContent == global.defineManager.GIHEUNG_TO_SCHOOL ||
-                        userContent == global.defineManager.KANGNAM_UNIV_STATION_TO_SCHOOL ||
-                        userContent == global.defineManager.SCHOOL_TO_GIHEUNG ||
-                        userContent == global.defineManager.SCHOOL_TO_KANGNAM_UNIV_STATION){
-                admin.database().ref('/').once('value', (snapshot) => {
+            else if(userContent == global.defineManager.GIHEUNG_TO_SCHOOL) {
+                admin.database().ref('/' + global.defineManager.DATABASE_GIHEUNG_TO_SCHOOL + '/').once('value', (snapshot) => {
                     databaseSnapshot = snapshot.val()
 
                     responseButton = global.defineManager.MAIN_BUTTONS
                     responseText = busTimeManager.SearchFastestShuttleBasedOnStartPoint(userContent, databaseSnapshot)
-                    responseMessage = advertiseManager.GetTimeAdvertise(databaseSnapshot, responseText)
 
-                    responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
+                    admin.database().ref('/' + global.defineManager.DATABASE_ADVERTISE + '/').once('value', (snapshot) => {
+                        databaseSnapshot = snapshot.val()
+                        responseMessage = advertiseManager.GetTimeAdvertise(databaseSnapshot, responseText)
+
+                        responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
+                    })
+                })
+            }
+            else if(userContent == global.defineManager.KANGNAM_UNIV_STATION_TO_SCHOOL) {
+                admin.database().ref('/' + global.defineManager.DATABASE_KANGNAM_UNIV_TO_SCHOOL + '/').once('value', (snapshot) => {
+                    databaseSnapshot = snapshot.val()
+
+                    responseButton = global.defineManager.MAIN_BUTTONS
+                    responseText = busTimeManager.SearchFastestShuttleBasedOnStartPoint(userContent, databaseSnapshot)
+
+                    admin.database().ref('/' + global.defineManager.DATABASE_ADVERTISE + '/').once('value', (snapshot) => {
+                        databaseSnapshot = snapshot.val()
+                        responseMessage = advertiseManager.GetTimeAdvertise(databaseSnapshot, responseText)
+
+                        responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
+                    })
+                })
+            }
+            else if(userContent == global.defineManager.SCHOOL_TO_GIHEUNG) {
+                admin.database().ref('/' + global.defineManager.DATABASE_SCHOOL_TO_GIHEUNG + '/').once('value', (snapshot) => {
+                    databaseSnapshot = snapshot.val()
+
+                    responseButton = global.defineManager.MAIN_BUTTONS
+                    responseText = busTimeManager.SearchFastestShuttleBasedOnStartPoint(userContent, databaseSnapshot)
+
+                    admin.database().ref('/' + global.defineManager.DATABASE_ADVERTISE + '/').once('value', (snapshot) => {
+                        databaseSnapshot = snapshot.val()
+                        responseMessage = advertiseManager.GetTimeAdvertise(databaseSnapshot, responseText)
+
+                        responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
+                    })
+                })
+            }
+            else if(userContent == global.defineManager.SCHOOL_TO_KANGNAM_UNIV_STATION) {
+                admin.database().ref('/' + global.defineManager.DATABASE_SCHOOL_TO_KANGNAM_UNIV + '/').once('value', (snapshot) => {
+                    databaseSnapshot = snapshot.val()
+
+                    responseButton = global.defineManager.MAIN_BUTTONS
+                    responseText = busTimeManager.SearchFastestShuttleBasedOnStartPoint(userContent, databaseSnapshot)
+
+                    admin.database().ref('/' + global.defineManager.DATABASE_ADVERTISE + '/').once('value', (snapshot) => {
+                        databaseSnapshot = snapshot.val()
+                        responseMessage = advertiseManager.GetTimeAdvertise(databaseSnapshot, responseText)
+
+                        responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
+                    })
                 })
             }
             else {

@@ -9,7 +9,7 @@ exports.GetTimeAdvertise = function (database, baseStr) {
     global.logManager.PrintLogMessage("AdvertiseManager", "GetTimeAdvertise",
         "current timezone time: " + currentTimezoneDate + " current hour: " + currentHour, global.defineManager.LOG_LEVEL_INFO)
 
-    advertiseHourInfo = database["Advertise"][currentHour]
+    advertiseHourInfo = database[currentHour]
     advertiseDeadline = new Date(advertiseHourInfo["deadline"])
     advertiseStartDate = new Date(advertiseHourInfo["startDate"])
 
