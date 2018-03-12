@@ -9,6 +9,8 @@ const busTimeManager = require('./Core/BusTimeManager');
 const advertiseManager = require('./Core/AdvertiseManager');
 const contentsManager = require('./Core/ContentsManager');
 const responseManager = require('./Utils/ResponseManager');
+const generateManager = require('./Utils/GenerateManager');
+const convertManager = require('./Utils/ConvertManager');
 
 admin.initializeApp(functions.config().firebase);
 

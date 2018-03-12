@@ -56,6 +56,20 @@ exports.DICE_NUMBER_RESULT_STR = "%s 가즈아~!!"
 
 exports.SAY_AGAIN = "다시 말해주세요!"
 
+exports.ORDER_TO_ID = {}
+exports.ORDER_TO_ID[exports.SAY_AGAIN] = 0
+exports.ORDER_TO_ID[exports.LEAVE_AS_SOON_AS_SHUTTLE] = 1
+exports.ORDER_TO_ID[exports.ALL_SHUTTLE_TIME] = 2
+exports.ORDER_TO_ID[exports.SHUTTLE_STATION] = 3
+exports.ORDER_TO_ID[exports.SERVICE_INFO] = 4
+exports.ORDER_TO_ID[exports.GIHEUNG_TO_SCHOOL] = 5
+exports.ORDER_TO_ID[exports.KANGNAM_UNIV_STATION_TO_SCHOOL] = 6
+exports.ORDER_TO_ID[exports.SCHOOL_TO_GIHEUNG] = 7
+exports.ORDER_TO_ID[exports.SCHOOL_TO_KANGNAM_UNIV_STATION] = 8
+exports.ORDER_TO_ID[exports.DICE_NUMBER_START] = 9
+
+exports.NOT_AVAILABLE = -1
+
 exports.ZERO = 0
 
 exports.ENABLE = 1
