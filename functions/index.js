@@ -141,3 +141,18 @@ exports.chat_room = functions.https.onRequest((request, response) => {
             break;
     }
 });
+
+exports.log = functions.https.onRequest((request, response) => {
+    switch(request.method) {
+        case 'GET':
+            admin.database().ref('/Log/').once('value', (snapshot) => {
+                databaseSnapshot = snapshot.val()
+
+                response.setHeader('Content-Type', 'application/json');
+                response.status(200).send(JSON.stringify(databaseSnapshot))
+            });
+            break;
+        default:
+            break;
+    }
+});
