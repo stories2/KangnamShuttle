@@ -12,10 +12,13 @@ exports.GetTimeAdvertise = function (database, baseStr) {
     advertiseHourInfo = database[currentHour]
     advertiseDeadline = new Date(advertiseHourInfo["deadline"])
     advertiseStartDate = new Date(advertiseHourInfo["startDate"])
+    dayOfWeek = advertiseHourInfo["dayOfWeek"]
+    currentDay = currentTimezoneDate.getDay()
 
     if(currentTimezoneDate - advertiseStartDate >= global.defineManager.ZERO &&
         currentTimezoneDate - advertiseDeadline < global.defineManager.ZERO) {
-        if(advertiseHourInfo["enable"] == global.defineManager.ENABLE) {
+        if(advertiseHourInfo["enable"] == global.defineManager.ENABLE &&
+            dayOfWeek[currentDay] == global.defineManager.ENABLE) {
             global.logManager.PrintLogMessage("AdvertiseManager", "GetTimeAdvertise",
                 "This advertisement still on going photo: " + advertiseHourInfo["photoEnable"] +
                 " btn: " + advertiseHourInfo["messageButtonEnable"], global.defineManager.LOG_LEVEL_INFO)
