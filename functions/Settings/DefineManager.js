@@ -66,6 +66,8 @@ exports.GMT_KOREA_TIME = 9
 exports.GMT_KOREA_TIME_MIN = 540
 exports.HOUR_TO_MILE = 60000
 
+exports.DATABASE_SCHOOL_SCHEDULE = "/Schedule/"
+
 exports.SYSTEM_INFO_STR = "버전: %s\n최종 수정일: %s\n개발자: %s\n메일: %s"
 
 exports.BUS_FIRST_TIME_STR = "첫 차가 %s에 있어요!\n다음 버스는 %s에 있어요."
