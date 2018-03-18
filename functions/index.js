@@ -161,7 +161,12 @@ exports.message = functions.https.onRequest((request, response) => {
                 // responseMessage["text"] = global.defineManager.ASK_SEARCH_TARGET_MONTH
                 //
                 // responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
-                schoolManager.GetAcademicScheduleThisMonth(selectedMonth, admin, convertManager, generateManager, response, requestMessage, responseManager)
+                var currentDate = new Date();
+                currentTimezoneDate = new Date(currentDate.valueOf() + global.defineManager.GMT_KOREA_TIME_MIN * global.defineManager.HOUR_TO_MILE)
+                currentMonth = currentTimezoneDate.getMonth()
+                global.logManager.PrintLogMessage("index", "message", "searching current month: " + currentMonth + " schedule",
+                    global.defineManager.LOG_LEVEL_INFO)
+                schoolManager.GetAcademicScheduleThisMonth(currentMonth, admin, convertManager, generateManager, response, requestMessage, responseManager)
             }
             else if(userContent == global.defineManager.YEAR_SCHEDULE[0] ||
                     userContent == global.defineManager.YEAR_SCHEDULE[1] ||
