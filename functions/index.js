@@ -156,10 +156,28 @@ exports.message = functions.https.onRequest((request, response) => {
                 })
             }
             else if(userContent == global.defineManager.ACADEMIC_CALENDAR) {
-                responseButton = global.defineManager.MAIN_BUTTONS
+                responseButton = global.defineManager.YEAR_SCHEDULE
                 schoolManager.GetAcademicScheduleThisMonth()
-                responseMessage["text"] = "testing"
+                responseMessage["text"] = global.defineManager.ASK_SEARCH_TARGET_MONTH
 
+                responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
+            }
+            else if(userContent == global.defineManager.YEAR_SCHEDULE[0] ||
+                    userContent == global.defineManager.YEAR_SCHEDULE[1] ||
+                    userContent == global.defineManager.YEAR_SCHEDULE[2] ||
+                    userContent == global.defineManager.YEAR_SCHEDULE[3] ||
+                    userContent == global.defineManager.YEAR_SCHEDULE[4] ||
+                    userContent == global.defineManager.YEAR_SCHEDULE[5] ||
+                    userContent == global.defineManager.YEAR_SCHEDULE[6] ||
+                    userContent == global.defineManager.YEAR_SCHEDULE[7] ||
+                    userContent == global.defineManager.YEAR_SCHEDULE[8] ||
+                    userContent == global.defineManager.YEAR_SCHEDULE[9] ||
+                    userContent == global.defineManager.YEAR_SCHEDULE[10] ||
+                    userContent == global.defineManager.YEAR_SCHEDULE[11]) {
+                selectedMonth = userContent.split(global.defineManager.MONTH_STR)[0] - 1
+                console.log("month: " + selectedMonth)
+                responseButton = global.defineManager.MAIN_BUTTONS
+                responseMessage["text"] = global.defineManager.SAY_AGAIN
                 responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
             }
             else {

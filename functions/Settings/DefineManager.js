@@ -15,6 +15,23 @@ exports.MAIN_BUTTONS = [
     exports.ACADEMIC_CALENDAR,
     exports.DICE_NUMBER_START,
     exports.SERVICE_INFO]
+
+exports.ASK_SEARCH_TARGET_MONTH = "조회하려는 달을 선택해주세요!"
+exports.MONTH_STR = "월"
+exports.YEAR_SCHEDULE = [
+    "1" + exports.MONTH_STR,
+    "2" + exports.MONTH_STR,
+    "3" + exports.MONTH_STR,
+    "4" + exports.MONTH_STR,
+    "5" + exports.MONTH_STR,
+    "6" + exports.MONTH_STR,
+    "7" + exports.MONTH_STR,
+    "8" + exports.MONTH_STR,
+    "9" + exports.MONTH_STR,
+    "10" + exports.MONTH_STR,
+    "11" + exports.MONTH_STR,
+    "12" + exports.MONTH_STR
+]
 exports.SHUTTLE_START_POINT_BUTTONS = [
     exports.GIHEUNG_TO_SCHOOL,
     exports.KANGNAM_UNIV_STATION_TO_SCHOOL,
