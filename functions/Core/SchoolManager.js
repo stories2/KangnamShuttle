@@ -1,4 +1,4 @@
-exports.GetAcademicScheduleThisMonth = function () {
+exports.GetAcademicScheduleThisMonth = function (month, admin, convertManager, generateManager, responseApp, requestMessage, responseManager) {
     var requestManager = require("request")
     var cheerioManager = require("cheerio")
     var httpManager = require("http")
@@ -24,19 +24,23 @@ exports.GetAcademicScheduleThisMonth = function () {
     }
 
     httpManager.get(httpHeadersOptions, function(res) {
-        console.log('statusCode:', res.statusCode);
-        console.log('headers:', res.headers);
-        console.log('headers:', res.headers["set-cookie"]);
+        // console.log('statusCode:', res.statusCode);
+        // console.log('headers:', res.headers);
+        // console.log('headers:', res.headers["set-cookie"]);
+
+        global.logManager.PrintLogMessage("SchoolManager", "GetAcademicScheduleThisMonth",
+            "index.do getting http statusCode: " + res.statusCode + " headers: " + res.headers, global.defineManager.LOG_LEVEL_DEBUG)
 
         sessionId = res.headers["set-cookie"][0].split(";")[0]
-        console.log('headers:', sessionId);
+        // console.log('headers:', sessionId);
 
         res.on('data', function (chunk) {
             // console.log("http data: " + chunk)
         })
 
         res.on('end', function () {
-            console.log("http end")
+            global.logManager.PrintLogMessage("SchoolManager", "GetAcademicScheduleThisMonth",
+                "index.do getting http session ok: " + sessionId, global.defineManager.LOG_LEVEL_INFO)
 
             cookie = requestManager.cookie(sessionId)
             httpHeadersOptions = {
@@ -56,10 +60,13 @@ exports.GetAcademicScheduleThisMonth = function () {
                     "Cookie": sessionId
                 }
             }
-            console.log("http rerequest: ", httpHeadersOptions)
+            // console.log("http rerequest: ", httpHeadersOptions)
             httpManager.get(httpHeadersOptions, function (response) {
-                console.log('statusCode:', response.statusCode);
-                console.log('headers:', response.headers);
+                // console.log('statusCode:', response.statusCode);
+                // console.log('headers:', response.headers);
+
+                global.logManager.PrintLogMessage("SchoolManager", "GetAcademicScheduleThisMonth",
+                    "schedule.do getting http statusCode: " + response.statusCode + " headers: " + response.headers, global.defineManager.LOG_LEVEL_DEBUG)
                 var serverData = ''
                 response.on('data', function (chunk) {
                     serverData += chunk
@@ -83,16 +90,28 @@ exports.GetAcademicScheduleThisMonth = function () {
                         })
                         yearSchedule.push(indexOfMonth)
                     })
-                    console.log("year schedule: ", yearSchedule)
+                    // console.log("year schedule: ", yearSchedule)
+                    scheduleStr = global.util.format(global.defineManager.SCHEDULE_RESULT_STR, (month + 1))
+                    scheduleStr = scheduleStr + yearSchedule[month].join("\n")
+                    responseButton = global.defineManager.MAIN_BUTTONS
+                    responseMessage["text"] = scheduleStr
+                    responseManager.TemplateResponse(admin, convertManager, generateManager, responseApp, requestMessage, responseMessage, responseButton)
                 })
                 response.on('error', function (except) {
                     global.logManager.PrintLogMessage("SchoolManager", "GetAcademicScheduleThisMonth",
-                        "http error while request target url: " + url + "\nerr: " + except, global.defineManager.LOG_LEVEL_ERROR)
+                        "http error while request target url: schedule.do\nerr: " + except, global.defineManager.LOG_LEVEL_ERROR)
+                    responseButton = global.defineManager.MAIN_BUTTONS
+                    responseMessage["text"] = global.defineManager.ERROR_MSG
+                    responseManager.TemplateResponse(admin, convertManager, generateManager, responseApp, requestMessage, responseMessage, responseButton)
                 })
             })
         })
 
     }).on('error', function(exception) {
-        console.error("http: " + exception);
+        global.logManager.PrintLogMessage("SchoolManager", "GetAcademicScheduleThisMonth",
+            "http error while request target url: index.do\nerr: " + except, global.defineManager.LOG_LEVEL_ERROR)
+        responseButton = global.defineManager.MAIN_BUTTONS
+        responseMessage["text"] = global.defineManager.ERROR_MSG
+        responseManager.TemplateResponse(admin, convertManager, generateManager, responseApp, requestMessage, responseMessage, responseButton)
     });
 }

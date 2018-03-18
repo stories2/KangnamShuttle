@@ -176,9 +176,7 @@ exports.message = functions.https.onRequest((request, response) => {
                     userContent == global.defineManager.YEAR_SCHEDULE[11]) {
                 selectedMonth = userContent.split(global.defineManager.MONTH_STR)[0] - 1
                 console.log("month: " + selectedMonth)
-                responseButton = global.defineManager.MAIN_BUTTONS
-                responseMessage["text"] = global.defineManager.SAY_AGAIN
-                responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
+                schoolManager.GetAcademicScheduleThisMonth(selectedMonth, admin, convertManager, generateManager, response, requestMessage, responseManager)
             }
             else {
                 responseButton = global.defineManager.MAIN_BUTTONS

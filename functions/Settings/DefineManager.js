@@ -15,6 +15,7 @@ exports.MAIN_BUTTONS = [
     exports.ACADEMIC_CALENDAR,
     exports.DICE_NUMBER_START,
     exports.SERVICE_INFO]
+exports.ERROR_MSG = "오 이런! 어딘가 문제가 발생한것 같군요!"
 
 exports.ASK_SEARCH_TARGET_MONTH = "조회하려는 달을 선택해주세요!"
 exports.MONTH_STR = "월"
@@ -74,6 +75,8 @@ exports.BUS_NORMAL_TIME_STR = "이번 차는 %s에 있어요!\n다음 버스는 
 
 exports.DICE_NUMBER_RESULT_STR = "%s 가즈아~!!"
 
+exports.SCHEDULE_RESULT_STR = "%s월달의 일정을 알려줄께요!\n"
+
 exports.SAY_AGAIN = "다시 말해주세요!"
 
 exports.ORDER_TO_ID = {}
@@ -87,6 +90,20 @@ exports.ORDER_TO_ID[exports.KANGNAM_UNIV_STATION_TO_SCHOOL] = 6
 exports.ORDER_TO_ID[exports.SCHOOL_TO_GIHEUNG] = 7
 exports.ORDER_TO_ID[exports.SCHOOL_TO_KANGNAM_UNIV_STATION] = 8
 exports.ORDER_TO_ID[exports.DICE_NUMBER_START] = 9
+exports.ORDER_TO_ID[exports.ACADEMIC_CALENDAR] = 10
+exports.ORDER_TO_ID[exports.ASK_SEARCH_TARGET_MONTH] = 10
+exports.ORDER_TO_ID[exports.YEAR_SCHEDULE[0]] = 11
+exports.ORDER_TO_ID[exports.YEAR_SCHEDULE[1]] = 12
+exports.ORDER_TO_ID[exports.YEAR_SCHEDULE[2]] = 13
+exports.ORDER_TO_ID[exports.YEAR_SCHEDULE[3]] = 14
+exports.ORDER_TO_ID[exports.YEAR_SCHEDULE[4]] = 15
+exports.ORDER_TO_ID[exports.YEAR_SCHEDULE[5]] = 16
+exports.ORDER_TO_ID[exports.YEAR_SCHEDULE[6]] = 17
+exports.ORDER_TO_ID[exports.YEAR_SCHEDULE[7]] = 18
+exports.ORDER_TO_ID[exports.YEAR_SCHEDULE[8]] = 19
+exports.ORDER_TO_ID[exports.YEAR_SCHEDULE[9]] = 20
+exports.ORDER_TO_ID[exports.YEAR_SCHEDULE[10]] = 21
+exports.ORDER_TO_ID[exports.YEAR_SCHEDULE[11]] = 22
 
 exports.NOT_AVAILABLE = -1
 
