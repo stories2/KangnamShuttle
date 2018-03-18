@@ -31,46 +31,46 @@ exports.GetAcademicScheduleThisMonth = function () {
         Accept: '/'
     }
 
-    requestPromise(headersOption)
-        .then(function (htmlString) {
-            // Process html...
-            var $ = cheerioManager.load(htmlString)
-            global.logManager.PrintLogMessage("SchoolManager", "GetAcademicScheduleThisMonth",
-                "target url requested ok body\n" + htmlString, global.defineManager.LOG_LEVEL_INFO)
-        })
-        .catch(function (err) {
-            // Crawling failed...
-            global.logManager.PrintLogMessage("SchoolManager", "GetAcademicScheduleThisMonth",
-                            "error while request target url: " + url + "\nerr: " + err, global.defineManager.LOG_LEVEL_ERROR)
-        });
-
-    requestManager(headersOption,
-        function(error, response, body) {
-            if (error) {
-                global.logManager.PrintLogMessage("SchoolManager", "GetAcademicScheduleThisMonth",
-                    "error while request target url: " + url + "\nerr: " + error, global.defineManager.LOG_LEVEL_ERROR)
-            }
-            else {
-                var $ = cheerioManager.load(body)
-                global.logManager.PrintLogMessage("SchoolManager", "GetAcademicScheduleThisMonth",
-                    "target url requested ok body\n" + body, global.defineManager.LOG_LEVEL_INFO)
-            }
-        }).setMaxListeners(0);
-    
-    function HandleHttpsRequest(response) {
-        var serverData = ''
-        response.on('data', function (chunk) {
-            serverData += chunk
-        })
-        response.on('end', function () {
-            global.logManager.PrintLogMessage("SchoolManager", "GetAcademicScheduleThisMonth",
-                "https target url requested ok body\n" + serverData, global.defineManager.LOG_LEVEL_INFO)
-        })
-        response.on('error', function (except) {
-            global.logManager.PrintLogMessage("SchoolManager", "GetAcademicScheduleThisMonth",
-                "error while request target url: " + url + "\nerr: " + except, global.defineManager.LOG_LEVEL_ERROR)
-        })
-    }
+    // requestPromise(headersOption)
+    //     .then(function (htmlString) {
+    //         // Process html...
+    //         var $ = cheerioManager.load(htmlString)
+    //         global.logManager.PrintLogMessage("SchoolManager", "GetAcademicScheduleThisMonth",
+    //             "target url requested ok body\n" + htmlString, global.defineManager.LOG_LEVEL_INFO)
+    //     })
+    //     .catch(function (err) {
+    //         // Crawling failed...
+    //         global.logManager.PrintLogMessage("SchoolManager", "GetAcademicScheduleThisMonth",
+    //                         "error while request target url: " + url + "\nerr: " + err, global.defineManager.LOG_LEVEL_ERROR)
+    //     });
+    //
+    // requestManager(headersOption,
+    //     function(error, response, body) {
+    //         if (error) {
+    //             global.logManager.PrintLogMessage("SchoolManager", "GetAcademicScheduleThisMonth",
+    //                 "error while request target url: " + url + "\nerr: " + error, global.defineManager.LOG_LEVEL_ERROR)
+    //         }
+    //         else {
+    //             var $ = cheerioManager.load(body)
+    //             global.logManager.PrintLogMessage("SchoolManager", "GetAcademicScheduleThisMonth",
+    //                 "target url requested ok body\n" + body, global.defineManager.LOG_LEVEL_INFO)
+    //         }
+    //     }).setMaxListeners(0);
+    //
+    // function HandleHttpsRequest(response) {
+    //     var serverData = ''
+    //     response.on('data', function (chunk) {
+    //         serverData += chunk
+    //     })
+    //     response.on('end', function () {
+    //         global.logManager.PrintLogMessage("SchoolManager", "GetAcademicScheduleThisMonth",
+    //             "https target url requested ok body\n" + serverData, global.defineManager.LOG_LEVEL_INFO)
+    //     })
+    //     response.on('error', function (except) {
+    //         global.logManager.PrintLogMessage("SchoolManager", "GetAcademicScheduleThisMonth",
+    //             "error while request target url: " + url + "\nerr: " + except, global.defineManager.LOG_LEVEL_ERROR)
+    //     })
+    // }
 
     httpsHeadersOptions = {
         hostname: "web.kangnam.ac.kr",
@@ -86,16 +86,91 @@ exports.GetAcademicScheduleThisMonth = function () {
     // httpsManager.request(httpsHeadersOptions, function (response) {
     //     HandleHttpsRequest(response)
     // }).end()
+    httpHeadersOptions = {
+        hostname: "web.kangnam.ac.kr",
+        path: "/menu/02be162adc07170ec7ee034097d627e9.do",
+        method: "GET",
+        headers: {
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.162 Safari/537.36",
+            'Content-Type': 'text/html',
+            "Connection": "keep-alive",
+            "Pragma": "no-cache",
+            "Cache-Control": "no-cache",
+            "Upgrade-Insecure-Requests": "1",
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
+            "Referer": "http://web.kangnam.ac.kr/",
+            "Accept-Language": "en-US,en;q=0.9,ko;q=0.8"
+        }
+    }
 
-    httpManager.get(url, (res) => {
+    httpManager.get(httpHeadersOptions, function(res) {
         console.log('statusCode:', res.statusCode);
         console.log('headers:', res.headers);
+        console.log('headers:', res.headers["set-cookie"]);
 
-        res.on('data', (d) => {
-            process.stdout.write(d);
-        });
+        sessionId = res.headers["set-cookie"][0].split(";")[0]
+        console.log('headers:', sessionId);
 
-    }).on('error', (e) => {
-        console.error(e);
+        res.on('data', function (chunk) {
+            // console.log("http data: " + chunk)
+        })
+
+        res.on('end', function () {
+            console.log("http end")
+
+            cookie = requestManager.cookie(sessionId)
+            httpHeadersOptions = {
+                hostname: "web.kangnam.ac.kr",
+                path: "/menu/02be162adc07170ec7ee034097d627e9.do",
+                method: "GET",
+                headers: {
+                    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.162 Safari/537.36",
+                    'Content-Type': 'text/html',
+                    "Connection": "keep-alive",
+                    "Pragma": "no-cache",
+                    "Cache-Control": "no-cache",
+                    "Upgrade-Insecure-Requests": "1",
+                    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
+                    "Referer": "http://web.kangnam.ac.kr/",
+                    "Accept-Language": "en-US,en;q=0.9,ko;q=0.8",
+                    "Cookie": sessionId
+                }
+            }
+            console.log("http rerequest: ", httpHeadersOptions)
+            httpManager.get(httpHeadersOptions, function (response) {
+                console.log('statusCode:', response.statusCode);
+                console.log('headers:', response.headers);
+                var serverData = ''
+                response.on('data', function (chunk) {
+                    serverData += chunk
+                })
+                response.on('end', function () {
+                    global.logManager.PrintLogMessage("SchoolManager", "GetAcademicScheduleThisMonth",
+                        "http target url requested ok body\n" + serverData, global.defineManager.LOG_LEVEL_INFO)
+                })
+                response.on('error', function (except) {
+                    global.logManager.PrintLogMessage("SchoolManager", "GetAcademicScheduleThisMonth",
+                        "http error while request target url: " + url + "\nerr: " + except, global.defineManager.LOG_LEVEL_ERROR)
+                })
+            })
+        })
+
+    }).on('error', function(exception) {
+        console.error("http: " + exception);
     });
+    
+    // httpManager.request(httpsHeadersOptions, function (response) {
+    //     var serverData = ''
+    //     response.on('data', function (chunk) {
+    //         serverData += chunk
+    //     })
+    //     response.on('end', function () {
+    //         global.logManager.PrintLogMessage("SchoolManager", "GetAcademicScheduleThisMonth",
+    //             "http target url requested ok body\n" + serverData, global.defineManager.LOG_LEVEL_INFO)
+    //     })
+    //     response.on('error', function (except) {
+    //         global.logManager.PrintLogMessage("SchoolManager", "GetAcademicScheduleThisMonth",
+    //             "http error while request target url: " + url + "\nerr: " + except, global.defineManager.LOG_LEVEL_ERROR)
+    //     })
+    // })
 }
