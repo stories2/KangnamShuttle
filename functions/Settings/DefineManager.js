@@ -6,11 +6,13 @@ exports.GIHEUNG_TO_SCHOOL = "기흥역에서 이공관으로 갈꺼야"
 exports.KANGNAM_UNIV_STATION_TO_SCHOOL = "강남대역에서 이공관으로 갈꺼야"
 exports.SCHOOL_TO_GIHEUNG = "이공관에서 기흥역으로 갈꺼야"
 exports.SCHOOL_TO_KANGNAM_UNIV_STATION = "이공관에서 강남대역으로 갈꺼야"
+exports.ACADEMIC_CALENDAR = "이번달 학사 일정을 알려줘"
 exports.DICE_NUMBER_START = "주사위 굴리기 가즈아~!!"
 exports.MAIN_BUTTONS = [
     exports.LEAVE_AS_SOON_AS_SHUTTLE,
     exports.ALL_SHUTTLE_TIME,
     exports.SHUTTLE_STATION,
+    exports.ACADEMIC_CALENDAR,
     exports.DICE_NUMBER_START,
     exports.SERVICE_INFO]
 exports.SHUTTLE_START_POINT_BUTTONS = [

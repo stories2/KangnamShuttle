@@ -11,6 +11,7 @@ const contentsManager = require('./Core/ContentsManager');
 const responseManager = require('./Utils/ResponseManager');
 const generateManager = require('./Utils/GenerateManager');
 const convertManager = require('./Utils/ConvertManager');
+const schoolManager = require('./Core/SchoolManager');
 
 admin.initializeApp(functions.config().firebase);
 
@@ -154,6 +155,13 @@ exports.message = functions.https.onRequest((request, response) => {
                     })
                 })
             }
+            else if(userContent == global.defineManager.ACADEMIC_CALENDAR) {
+                responseButton = global.defineManager.MAIN_BUTTONS
+                schoolManager.GetAcademicScheduleThisMonth()
+                responseMessage["text"] = "testing"
+
+                responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
+            }
             else {
                 responseButton = global.defineManager.MAIN_BUTTONS
                 responseMessage["text"] = global.defineManager.SAY_AGAIN
@@ -197,6 +205,16 @@ exports.log = functions.https.onRequest((request, response) => {
                 response.setHeader('Content-Type', 'application/json');
                 response.status(200).send(JSON.stringify(databaseSnapshot))
             });
+            break;
+        default:
+            break;
+    }
+});
+
+exports.beta = functions.https.onRequest((request, response) => {
+    switch(request.method) {
+        case 'POST':
+            schoolManager.GetAcademicScheduleThisMonth()
             break;
         default:
             break;
