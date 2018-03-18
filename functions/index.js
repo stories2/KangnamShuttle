@@ -215,6 +215,12 @@ exports.beta = functions.https.onRequest((request, response) => {
     switch(request.method) {
         case 'POST':
             schoolManager.GetAcademicScheduleThisMonth()
+
+            responseData = {
+                "msg": "This is testing feature"
+            }
+            response.setHeader('Content-Type', 'application/json');
+            response.status(200).send(JSON.stringify(responseData))
             break;
         default:
             break;
