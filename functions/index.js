@@ -156,11 +156,12 @@ exports.message = functions.https.onRequest((request, response) => {
                 })
             }
             else if(userContent == global.defineManager.ACADEMIC_CALENDAR) {
-                responseButton = global.defineManager.YEAR_SCHEDULE
-                schoolManager.GetAcademicScheduleThisMonth()
-                responseMessage["text"] = global.defineManager.ASK_SEARCH_TARGET_MONTH
-
-                responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
+                // responseButton = global.defineManager.YEAR_SCHEDULE
+                // schoolManager.GetAcademicScheduleThisMonth()
+                // responseMessage["text"] = global.defineManager.ASK_SEARCH_TARGET_MONTH
+                //
+                // responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
+                schoolManager.GetAcademicScheduleThisMonth(selectedMonth, admin, convertManager, generateManager, response, requestMessage, responseManager)
             }
             else if(userContent == global.defineManager.YEAR_SCHEDULE[0] ||
                     userContent == global.defineManager.YEAR_SCHEDULE[1] ||
@@ -175,7 +176,7 @@ exports.message = functions.https.onRequest((request, response) => {
                     userContent == global.defineManager.YEAR_SCHEDULE[10] ||
                     userContent == global.defineManager.YEAR_SCHEDULE[11]) {
                 selectedMonth = userContent.split(global.defineManager.MONTH_STR)[0] - 1
-                console.log("month: " + selectedMonth)
+                // console.log("month: " + selectedMonth)
                 schoolManager.GetAcademicScheduleThisMonth(selectedMonth, admin, convertManager, generateManager, response, requestMessage, responseManager)
             }
             else {
