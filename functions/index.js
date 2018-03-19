@@ -48,6 +48,8 @@ exports.message = functions.https.onRequest(function(request, response){
                 responseMessage["text"] = responseText
 
                 responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
+
+                weatherManager.GetCurrentWeather(admin, "Gyeonggi-do,kr", "kr")
             }
             else if(userContent == global.defineManager.ALL_SHUTTLE_TIME) {
                 responseButton = global.defineManager.MAIN_BUTTONS
@@ -107,7 +109,11 @@ exports.message = functions.https.onRequest(function(request, response){
                         databaseSnapshot = snapshot.val()
                         responseMessage = advertiseManager.GetTimeAdvertise(databaseSnapshot, responseText)
 
-                        responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
+                        admin.database().ref('/' + global.defineManager.DATABASE_WEATHER + '/').once('value', function (snapshot) {
+                            databaseSnapshot = snapshot.val()
+
+                            responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
+                        })
                     })
                 })
             }

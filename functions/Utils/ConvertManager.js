@@ -7,3 +7,7 @@ exports.ConvertOrderToNumber = function (order) {
         global.defineManager.LOG_LEVEL_INFO)
     return convertedID
 }
+
+exports.ConvertKelvinToCelsius = function (kelvin) {
+    return kelvin - 273.15
+}
