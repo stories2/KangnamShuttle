@@ -238,7 +238,7 @@ exports.beta = functions.https.onRequest(function(request, response){
     switch(request.method) {
         case 'POST':
             // schoolManager.GetAcademicScheduleThisMonth()
-            weatherManager.GetCurrentWeather()
+            weatherManager.GetCurrentWeather(admin, "Gyeonggi-do,kr", "kr")
 
             responseData = {
                 "msg": "This is testing feature"
