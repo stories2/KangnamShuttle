@@ -12,6 +12,7 @@ const responseManager = require('./Utils/ResponseManager');
 const generateManager = require('./Utils/GenerateManager');
 const convertManager = require('./Utils/ConvertManager');
 const schoolManager = require('./Core/SchoolManager');
+const weatherManager = require('./Core/WeatherManager');
 
 admin.initializeApp(functions.config().firebase);
 
@@ -236,7 +237,8 @@ exports.log = functions.https.onRequest((request, response) => {
 exports.beta = functions.https.onRequest((request, response) => {
     switch(request.method) {
         case 'POST':
-            schoolManager.GetAcademicScheduleThisMonth()
+            // schoolManager.GetAcademicScheduleThisMonth()
+            weatherManager.GetCurrentWeather()
 
             responseData = {
                 "msg": "This is testing feature"
