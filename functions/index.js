@@ -16,7 +16,7 @@ const weatherManager = require('./Core/WeatherManager');
 
 admin.initializeApp(functions.config().firebase);
 
-exports.keyboard = functions.https.onRequest((request, response) => {
+exports.keyboard = functions.https.onRequest(function(request, response){
 
     responseMessage = {"type" : "buttons", "buttons" : global.defineManager.MAIN_BUTTONS}
 
@@ -24,7 +24,7 @@ exports.keyboard = functions.https.onRequest((request, response) => {
  response.status(200).send(JSON.stringify(responseMessage))
 });
 
-exports.message = functions.https.onRequest((request, response) => {
+exports.message = functions.https.onRequest(function(request, response){
     userContent = ""
     responseButton = []
     databaseSnapshot = {}
@@ -81,7 +81,7 @@ exports.message = functions.https.onRequest((request, response) => {
             }
             else if(userContent == global.defineManager.SERVICE_INFO) {
 
-                admin.database().ref('/System/').once('value', (snapshot) => {
+                admin.database().ref('/System/').once('value', function(snapshot){
                     databaseSnapshot = snapshot.val()
 
                     responseButton = global.defineManager.MAIN_BUTTONS
@@ -97,13 +97,13 @@ exports.message = functions.https.onRequest((request, response) => {
                 })
             }
             else if(userContent == global.defineManager.GIHEUNG_TO_SCHOOL) {
-                admin.database().ref('/' + global.defineManager.DATABASE_GIHEUNG_TO_SCHOOL + '/').once('value', (snapshot) => {
+                admin.database().ref('/' + global.defineManager.DATABASE_GIHEUNG_TO_SCHOOL + '/').once('value', function(snapshot){
                     databaseSnapshot = snapshot.val()
 
                     responseButton = global.defineManager.MAIN_BUTTONS
                     responseText = busTimeManager.SearchFastestShuttleBasedOnStartPoint(userContent, databaseSnapshot)
 
-                    admin.database().ref('/' + global.defineManager.DATABASE_ADVERTISE + '/').once('value', (snapshot) => {
+                    admin.database().ref('/' + global.defineManager.DATABASE_ADVERTISE + '/').once('value', function(snapshot){
                         databaseSnapshot = snapshot.val()
                         responseMessage = advertiseManager.GetTimeAdvertise(databaseSnapshot, responseText)
 
@@ -112,13 +112,13 @@ exports.message = functions.https.onRequest((request, response) => {
                 })
             }
             else if(userContent == global.defineManager.KANGNAM_UNIV_STATION_TO_SCHOOL) {
-                admin.database().ref('/' + global.defineManager.DATABASE_KANGNAM_UNIV_TO_SCHOOL + '/').once('value', (snapshot) => {
+                admin.database().ref('/' + global.defineManager.DATABASE_KANGNAM_UNIV_TO_SCHOOL + '/').once('value', function(snapshot){
                     databaseSnapshot = snapshot.val()
 
                     responseButton = global.defineManager.MAIN_BUTTONS
                     responseText = busTimeManager.SearchFastestShuttleBasedOnStartPoint(userContent, databaseSnapshot)
 
-                    admin.database().ref('/' + global.defineManager.DATABASE_ADVERTISE + '/').once('value', (snapshot) => {
+                    admin.database().ref('/' + global.defineManager.DATABASE_ADVERTISE + '/').once('value', function(snapshot){
                         databaseSnapshot = snapshot.val()
                         responseMessage = advertiseManager.GetTimeAdvertise(databaseSnapshot, responseText)
 
@@ -127,13 +127,13 @@ exports.message = functions.https.onRequest((request, response) => {
                 })
             }
             else if(userContent == global.defineManager.SCHOOL_TO_GIHEUNG) {
-                admin.database().ref('/' + global.defineManager.DATABASE_SCHOOL_TO_GIHEUNG + '/').once('value', (snapshot) => {
+                admin.database().ref('/' + global.defineManager.DATABASE_SCHOOL_TO_GIHEUNG + '/').once('value', function(snapshot){
                     databaseSnapshot = snapshot.val()
 
                     responseButton = global.defineManager.MAIN_BUTTONS
                     responseText = busTimeManager.SearchFastestShuttleBasedOnStartPoint(userContent, databaseSnapshot)
 
-                    admin.database().ref('/' + global.defineManager.DATABASE_ADVERTISE + '/').once('value', (snapshot) => {
+                    admin.database().ref('/' + global.defineManager.DATABASE_ADVERTISE + '/').once('value', function(snapshot){
                         databaseSnapshot = snapshot.val()
                         responseMessage = advertiseManager.GetTimeAdvertise(databaseSnapshot, responseText)
 
@@ -142,13 +142,13 @@ exports.message = functions.https.onRequest((request, response) => {
                 })
             }
             else if(userContent == global.defineManager.SCHOOL_TO_KANGNAM_UNIV_STATION) {
-                admin.database().ref('/' + global.defineManager.DATABASE_SCHOOL_TO_KANGNAM_UNIV + '/').once('value', (snapshot) => {
+                admin.database().ref('/' + global.defineManager.DATABASE_SCHOOL_TO_KANGNAM_UNIV + '/').once('value', function(snapshot){
                     databaseSnapshot = snapshot.val()
 
                     responseButton = global.defineManager.MAIN_BUTTONS
                     responseText = busTimeManager.SearchFastestShuttleBasedOnStartPoint(userContent, databaseSnapshot)
 
-                    admin.database().ref('/' + global.defineManager.DATABASE_ADVERTISE + '/').once('value', (snapshot) => {
+                    admin.database().ref('/' + global.defineManager.DATABASE_ADVERTISE + '/').once('value', function(snapshot){
                         databaseSnapshot = snapshot.val()
                         responseMessage = advertiseManager.GetTimeAdvertise(databaseSnapshot, responseText)
 
@@ -199,7 +199,7 @@ exports.message = functions.https.onRequest((request, response) => {
     }
 });
 
-exports.friend = functions.https.onRequest((request, response) => {
+exports.friend = functions.https.onRequest(function(request, response){
     switch(request.method) {
         case 'POST':
             break;
@@ -210,7 +210,7 @@ exports.friend = functions.https.onRequest((request, response) => {
     }
 });
 
-exports.chat_room = functions.https.onRequest((request, response) => {
+exports.chat_room = functions.https.onRequest(function(request, response){
     switch(request.method) {
         case 'DELETE':
             break;
@@ -219,10 +219,10 @@ exports.chat_room = functions.https.onRequest((request, response) => {
     }
 });
 
-exports.log = functions.https.onRequest((request, response) => {
+exports.log = functions.https.onRequest(function(request, response){
     switch(request.method) {
         case 'GET':
-            admin.database().ref('/Log/').once('value', (snapshot) => {
+            admin.database().ref('/Log/').once('value', function(snapshot){
                 databaseSnapshot = snapshot.val()
 
                 response.setHeader('Content-Type', 'application/json');
@@ -234,7 +234,7 @@ exports.log = functions.https.onRequest((request, response) => {
     }
 });
 
-exports.beta = functions.https.onRequest((request, response) => {
+exports.beta = functions.https.onRequest(function(request, response){
     switch(request.method) {
         case 'POST':
             // schoolManager.GetAcademicScheduleThisMonth()
