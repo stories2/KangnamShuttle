@@ -1,5 +1,4 @@
 exports.GetCurrentWeather = function (admin, country, lang) {
-    var cheerioManager = require("cheerio")
     var httpManager = require("http")
     global.logManager.PrintLogMessage("WeatherManager", "GetCurrentWeather", "target country: " + country + " lang: " + lang,
         global.defineManager.LOG_LEVEL_INFO)
@@ -38,8 +37,10 @@ exports.GetCurrentWeather = function (admin, country, lang) {
                 serverData += chunk
             })
             response.on('end', function () {
+                weatherData = JSON.parse(serverData)
                 global.logManager.PrintLogMessage("WeatherManager", "GetCurrentWeather",
-                    "data accepted successfully: " + serverData, global.defineManager.LOG_LEVEL_INFO)
+                    "weather data accepted successfully: " + serverData, global.defineManager.LOG_LEVEL_INFO)
+                admin.database().ref("/Weather/").set(weatherData);
             })
             response.on('error', function (except) {
                 global.logManager.PrintLogMessage("WeatherManager", "GetCurrentWeather",
