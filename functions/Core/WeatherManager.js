@@ -39,7 +39,7 @@ exports.GetCurrentWeather = function (admin, country, lang) {
             response.on('end', function () {
                 weatherData = JSON.parse(serverData)
                 global.logManager.PrintLogMessage("WeatherManager", "GetCurrentWeather",
-                    "weather data accepted successfully: " + serverData, global.defineManager.LOG_LEVEL_INFO)
+                    "weather data accepted successfully", global.defineManager.LOG_LEVEL_INFO)
                 admin.database().ref("/Weather/").set(weatherData);
             })
             response.on('error', function (except) {
@@ -48,4 +48,16 @@ exports.GetCurrentWeather = function (admin, country, lang) {
             })
         })
     })
+}
+
+exports.WeatherCast = function (weatherData, convertManager) {
+    currentTemp = Math.floor(convertManager.ConvertKelvinToCelsius(weatherData["main"]["temp"]))
+    currentWeather = weatherData["weather"][0]["description"]
+    currentWeatherCode = weatherData["weather"][0]["id"]
+    weatherCastStr = global.util.format(global.defineManager.WEATHER_CAST_STR, currentWeather, currentTemp)
+
+    global.logManager.PrintLogMessage("WeatherManager", "WeatherCast", "current weather cast: " + weatherCastStr,
+        global.defineManager.LOG_LEVEL_INFO)
+
+    return weatherCastStr
 }

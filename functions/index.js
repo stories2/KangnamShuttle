@@ -104,13 +104,20 @@ exports.message = functions.https.onRequest(function(request, response){
 
                     responseButton = global.defineManager.MAIN_BUTTONS
                     responseText = busTimeManager.SearchFastestShuttleBasedOnStartPoint(userContent, databaseSnapshot)
-
-                    admin.database().ref('/' + global.defineManager.DATABASE_ADVERTISE + '/').once('value', function(snapshot){
+                    admin.database().ref('/' + global.defineManager.DATABASE_WEATHER + '/').once('value', function (snapshot) {
                         databaseSnapshot = snapshot.val()
-                        responseMessage = advertiseManager.GetTimeAdvertise(databaseSnapshot, responseText)
+                        if(databaseSnapshot != null) {
+                            weatherCastStr = weatherManager.WeatherCast(databaseSnapshot, convertManager)
+                            responseText = responseText + "\n" + weatherCastStr
+                        }
+                        else {
+                            global.logManager.PrintLogMessage("index", "message", "weather data seems not rdy",
+                                global.defineManager.LOG_LEVEL_WARN)
+                        }
 
-                        admin.database().ref('/' + global.defineManager.DATABASE_WEATHER + '/').once('value', function (snapshot) {
+                        admin.database().ref('/' + global.defineManager.DATABASE_ADVERTISE + '/').once('value', function(snapshot){
                             databaseSnapshot = snapshot.val()
+                            responseMessage = advertiseManager.GetTimeAdvertise(databaseSnapshot, responseText)
 
                             responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
                         })
@@ -124,11 +131,23 @@ exports.message = functions.https.onRequest(function(request, response){
                     responseButton = global.defineManager.MAIN_BUTTONS
                     responseText = busTimeManager.SearchFastestShuttleBasedOnStartPoint(userContent, databaseSnapshot)
 
-                    admin.database().ref('/' + global.defineManager.DATABASE_ADVERTISE + '/').once('value', function(snapshot){
+                    admin.database().ref('/' + global.defineManager.DATABASE_WEATHER + '/').once('value', function (snapshot) {
                         databaseSnapshot = snapshot.val()
-                        responseMessage = advertiseManager.GetTimeAdvertise(databaseSnapshot, responseText)
+                        if(databaseSnapshot != null) {
+                            weatherCastStr = weatherManager.WeatherCast(databaseSnapshot, convertManager)
+                            responseText = responseText + "\n" + weatherCastStr
+                        }
+                        else {
+                            global.logManager.PrintLogMessage("index", "message", "weather data seems not rdy",
+                                global.defineManager.LOG_LEVEL_WARN)
+                        }
 
-                        responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
+                        admin.database().ref('/' + global.defineManager.DATABASE_ADVERTISE + '/').once('value', function(snapshot){
+                            databaseSnapshot = snapshot.val()
+                            responseMessage = advertiseManager.GetTimeAdvertise(databaseSnapshot, responseText)
+
+                            responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
+                        })
                     })
                 })
             }
@@ -139,11 +158,23 @@ exports.message = functions.https.onRequest(function(request, response){
                     responseButton = global.defineManager.MAIN_BUTTONS
                     responseText = busTimeManager.SearchFastestShuttleBasedOnStartPoint(userContent, databaseSnapshot)
 
-                    admin.database().ref('/' + global.defineManager.DATABASE_ADVERTISE + '/').once('value', function(snapshot){
+                    admin.database().ref('/' + global.defineManager.DATABASE_WEATHER + '/').once('value', function (snapshot) {
                         databaseSnapshot = snapshot.val()
-                        responseMessage = advertiseManager.GetTimeAdvertise(databaseSnapshot, responseText)
+                        if(databaseSnapshot != null) {
+                            weatherCastStr = weatherManager.WeatherCast(databaseSnapshot, convertManager)
+                            responseText = responseText + "\n" + weatherCastStr
+                        }
+                        else {
+                            global.logManager.PrintLogMessage("index", "message", "weather data seems not rdy",
+                                global.defineManager.LOG_LEVEL_WARN)
+                        }
 
-                        responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
+                        admin.database().ref('/' + global.defineManager.DATABASE_ADVERTISE + '/').once('value', function(snapshot){
+                            databaseSnapshot = snapshot.val()
+                            responseMessage = advertiseManager.GetTimeAdvertise(databaseSnapshot, responseText)
+
+                            responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
+                        })
                     })
                 })
             }
@@ -154,11 +185,23 @@ exports.message = functions.https.onRequest(function(request, response){
                     responseButton = global.defineManager.MAIN_BUTTONS
                     responseText = busTimeManager.SearchFastestShuttleBasedOnStartPoint(userContent, databaseSnapshot)
 
-                    admin.database().ref('/' + global.defineManager.DATABASE_ADVERTISE + '/').once('value', function(snapshot){
+                    admin.database().ref('/' + global.defineManager.DATABASE_WEATHER + '/').once('value', function (snapshot) {
                         databaseSnapshot = snapshot.val()
-                        responseMessage = advertiseManager.GetTimeAdvertise(databaseSnapshot, responseText)
+                        if(databaseSnapshot != null) {
+                            weatherCastStr = weatherManager.WeatherCast(databaseSnapshot, convertManager)
+                            responseText = responseText + "\n" + weatherCastStr
+                        }
+                        else {
+                            global.logManager.PrintLogMessage("index", "message", "weather data seems not rdy",
+                                global.defineManager.LOG_LEVEL_WARN)
+                        }
 
-                        responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
+                        admin.database().ref('/' + global.defineManager.DATABASE_ADVERTISE + '/').once('value', function(snapshot){
+                            databaseSnapshot = snapshot.val()
+                            responseMessage = advertiseManager.GetTimeAdvertise(databaseSnapshot, responseText)
+
+                            responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
+                        })
                     })
                 })
             }
