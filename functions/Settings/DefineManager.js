@@ -80,7 +80,7 @@ exports.DICE_NUMBER_RESULT_STR = "%s 가즈아~!!"
 
 exports.SCHEDULE_RESULT_STR = "%s월달의 일정을 알려줄께요!\n"
 
-exports.WEATHER_CAST_STR = "현제 경기도의 날씨는 %s 이며 온도는 섭씨 %s도 이군요"
+exports.WEATHER_CAST_STR = "현재 경기도의 날씨는 %s 이며 기온은 섭씨 %s도 이군요!"
 
 exports.SAY_AGAIN = "다시 말해주세요!"
 
@@ -118,3 +118,5 @@ exports.ENABLE = 1
 exports.DISABLE = 0
 
 exports.DEBUG_MOD = 0
+
+exports.HTTP_REQUEST_SUCCESS = 200

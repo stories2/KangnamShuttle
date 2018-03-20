@@ -107,8 +107,15 @@ exports.message = functions.https.onRequest(function(request, response){
                     admin.database().ref('/' + global.defineManager.DATABASE_WEATHER + '/').once('value', function (snapshot) {
                         databaseSnapshot = snapshot.val()
                         if(databaseSnapshot != null) {
-                            weatherCastStr = weatherManager.WeatherCast(databaseSnapshot, convertManager)
-                            responseText = responseText + "\n" + weatherCastStr
+                            processResultCode = databaseSnapshot["cod"]
+                            if(processResultCode == global.defineManager.HTTP_REQUEST_SUCCESS) {
+                                weatherCastStr = weatherManager.WeatherCast(databaseSnapshot, convertManager)
+                                responseText = responseText + "\n" + weatherCastStr
+                            }
+                            else {
+                                global.logManager.PrintLogMessage("index", "message", "weather api has problem code: " + processResultCode,
+                                    global.defineManager.LOG_LEVEL_WARN)
+                            }
                         }
                         else {
                             global.logManager.PrintLogMessage("index", "message", "weather data seems not rdy",
@@ -134,8 +141,15 @@ exports.message = functions.https.onRequest(function(request, response){
                     admin.database().ref('/' + global.defineManager.DATABASE_WEATHER + '/').once('value', function (snapshot) {
                         databaseSnapshot = snapshot.val()
                         if(databaseSnapshot != null) {
-                            weatherCastStr = weatherManager.WeatherCast(databaseSnapshot, convertManager)
-                            responseText = responseText + "\n" + weatherCastStr
+                            processResultCode = databaseSnapshot["cod"]
+                            if(processResultCode == global.defineManager.HTTP_REQUEST_SUCCESS) {
+                                weatherCastStr = weatherManager.WeatherCast(databaseSnapshot, convertManager)
+                                responseText = responseText + "\n" + weatherCastStr
+                            }
+                            else {
+                                global.logManager.PrintLogMessage("index", "message", "weather api has problem code: " + processResultCode,
+                                    global.defineManager.LOG_LEVEL_WARN)
+                            }
                         }
                         else {
                             global.logManager.PrintLogMessage("index", "message", "weather data seems not rdy",
@@ -161,8 +175,15 @@ exports.message = functions.https.onRequest(function(request, response){
                     admin.database().ref('/' + global.defineManager.DATABASE_WEATHER + '/').once('value', function (snapshot) {
                         databaseSnapshot = snapshot.val()
                         if(databaseSnapshot != null) {
-                            weatherCastStr = weatherManager.WeatherCast(databaseSnapshot, convertManager)
-                            responseText = responseText + "\n" + weatherCastStr
+                            processResultCode = databaseSnapshot["cod"]
+                            if(processResultCode == global.defineManager.HTTP_REQUEST_SUCCESS) {
+                                weatherCastStr = weatherManager.WeatherCast(databaseSnapshot, convertManager)
+                                responseText = responseText + "\n" + weatherCastStr
+                            }
+                            else {
+                                global.logManager.PrintLogMessage("index", "message", "weather api has problem code: " + processResultCode,
+                                    global.defineManager.LOG_LEVEL_WARN)
+                            }
                         }
                         else {
                             global.logManager.PrintLogMessage("index", "message", "weather data seems not rdy",
@@ -188,8 +209,15 @@ exports.message = functions.https.onRequest(function(request, response){
                     admin.database().ref('/' + global.defineManager.DATABASE_WEATHER + '/').once('value', function (snapshot) {
                         databaseSnapshot = snapshot.val()
                         if(databaseSnapshot != null) {
-                            weatherCastStr = weatherManager.WeatherCast(databaseSnapshot, convertManager)
-                            responseText = responseText + "\n" + weatherCastStr
+                            processResultCode = databaseSnapshot["cod"]
+                            if(processResultCode == global.defineManager.HTTP_REQUEST_SUCCESS) {
+                                weatherCastStr = weatherManager.WeatherCast(databaseSnapshot, convertManager)
+                                responseText = responseText + "\n" + weatherCastStr
+                            }
+                            else {
+                                global.logManager.PrintLogMessage("index", "message", "weather api has problem code: " + processResultCode,
+                                    global.defineManager.LOG_LEVEL_WARN)
+                            }
                         }
                         else {
                             global.logManager.PrintLogMessage("index", "message", "weather data seems not rdy",
