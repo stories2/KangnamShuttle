@@ -8,6 +8,7 @@ exports.PrintFastestShuttle = function(selection, database) {
     var bakShuttleSec = 0
 
     currentSec = this.TimeToSec(hour, min, sec)
+    gapPastBusTimeSec = 0
 
     global.logManager.PrintLogMessage("BusTimeManager", "PrintFastestShuttle",
         "current time: " + currentDate + " -> sec: " + currentSec, global.defineManager.LOG_LEVEL_INFO)
@@ -20,7 +21,7 @@ exports.PrintFastestShuttle = function(selection, database) {
         shuttleSec = this.TimeToSec(shuttleTime[0], shuttleTime[1], shuttleTime[2])
         shuttleTime = database[indexOfTime]
 
-        if(indexOfTime == 0) {
+        if(indexOfTime == 0) { // 첫차 시간
             if(currentSec < shuttleSec) {
                 global.logManager.PrintLogMessage("BusTimeManager", "PrintFastestShuttle",
                     "#" + indexOfTime + " shuttle time: " + shuttleTime + " -> sec: " + shuttleSec, global.defineManager.LOG_LEVEL_INFO)
@@ -29,24 +30,38 @@ exports.PrintFastestShuttle = function(selection, database) {
             }
         }
         else if(indexOfTime == database.length - 1){
-            if(currentSec < shuttleSec) {
+            gapPastBusTimeSec =  currentSec - bakShuttleSec
+            if(currentSec < shuttleSec) { // 마지막차 시간
                 global.logManager.PrintLogMessage("BusTimeManager", "PrintFastestShuttle",
                     "#" + indexOfTime + " shuttle time: " + shuttleTime + " -> sec: " + shuttleSec, global.defineManager.LOG_LEVEL_INFO)
                 resultText = global.util.format(global.defineManager.BUS_LAST_TIME_STR, shuttleTime)
+
+                if(gapPastBusTimeSec < 120) {
+                    resultText = resultText + global.util.format(global.defineManager.PASSED_BUS, gapPastBusTimeSec)
+                }
                 break
             }
-            else if(currentSec >= shuttleSec) {
+            else if(currentSec >= shuttleSec) { // 마지막차 놓침
                 global.logManager.PrintLogMessage("BusTimeManager", "PrintFastestShuttle",
                     "#" + indexOfTime + " shuttle time: " + shuttleTime + " -> sec: " + shuttleSec, global.defineManager.LOG_LEVEL_INFO)
                 resultText = global.util.format(global.defineManager.BUS_END_STR, database[global.defineManager.ZERO])
+
+                if(gapPastBusTimeSec < 120) {
+                    resultText = resultText + global.util.format(global.defineManager.PASSED_BUS, gapPastBusTimeSec)
+                }
                 break
             }
         }
         else {
-            if(bakShuttleSec < currentSec && currentSec < shuttleSec) {
+            gapPastBusTimeSec =  currentSec - bakShuttleSec
+            if(bakShuttleSec < currentSec && currentSec < shuttleSec) { // 보통차 시간
                 global.logManager.PrintLogMessage("BusTimeManager", "PrintFastestShuttle",
                     "#" + indexOfTime + " shuttle time: " + shuttleTime + " -> sec: " + shuttleSec, global.defineManager.LOG_LEVEL_INFO)
                 resultText = global.util.format(global.defineManager.BUS_NORMAL_TIME_STR, shuttleTime, database[indexOfTime + 1])
+
+                if(gapPastBusTimeSec < 120) {
+                    resultText = resultText + global.util.format(global.defineManager.PASSED_BUS, gapPastBusTimeSec)
+                }
                 break
             }
         }

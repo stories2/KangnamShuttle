@@ -87,6 +87,8 @@ exports.SAY_AGAIN = "다시 말해주세요!"
 exports.TODAY_IS_MONDAY = "월요일이에요! >.<"
 exports.CALCULATED_MONDAY_PERCENT_STR = "월요일까지 %s% 지나왔어요!"
 
+exports.PASSED_BUS = "\n버스가 %s초 전에 출발해버렸네요 풉ㅋ풉ㅋ"
+
 exports.ORDER_TO_ID = {}
 exports.ORDER_TO_ID[exports.SAY_AGAIN] = 0
 exports.ORDER_TO_ID[exports.LEAVE_AS_SOON_AS_SHUTTLE] = 1
