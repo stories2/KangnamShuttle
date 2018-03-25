@@ -85,7 +85,7 @@ exports.WEATHER_CAST_STR = "현재 경기도의 날씨는 %s 이며 기온은 �
 exports.SAY_AGAIN = "다시 말해주세요!"
 
 exports.TODAY_IS_MONDAY = "월요일이에요! >.<"
-exports.CALCULATED_MONDAY_PERCENT_STR = "월요일까지 %s% 남았어요!"
+exports.CALCULATED_MONDAY_PERCENT_STR = "월요일까지 %s% 지나왔어요!"
 
 exports.ORDER_TO_ID = {}
 exports.ORDER_TO_ID[exports.SAY_AGAIN] = 0
