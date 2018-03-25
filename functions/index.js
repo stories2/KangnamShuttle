@@ -121,6 +121,7 @@ exports.message = functions.https.onRequest(function(request, response){
                             global.logManager.PrintLogMessage("index", "message", "weather data seems not rdy",
                                 global.defineManager.LOG_LEVEL_WARN)
                         }
+                        responseText = responseText + "\n" + contentsManager.NoticeMonday()
 
                         admin.database().ref('/' + global.defineManager.DATABASE_ADVERTISE + '/').once('value', function(snapshot){
                             databaseSnapshot = snapshot.val()
@@ -155,6 +156,7 @@ exports.message = functions.https.onRequest(function(request, response){
                             global.logManager.PrintLogMessage("index", "message", "weather data seems not rdy",
                                 global.defineManager.LOG_LEVEL_WARN)
                         }
+                        responseText = responseText + "\n" + contentsManager.NoticeMonday()
 
                         admin.database().ref('/' + global.defineManager.DATABASE_ADVERTISE + '/').once('value', function(snapshot){
                             databaseSnapshot = snapshot.val()
@@ -189,6 +191,7 @@ exports.message = functions.https.onRequest(function(request, response){
                             global.logManager.PrintLogMessage("index", "message", "weather data seems not rdy",
                                 global.defineManager.LOG_LEVEL_WARN)
                         }
+                        responseText = responseText + "\n" + contentsManager.NoticeMonday()
 
                         admin.database().ref('/' + global.defineManager.DATABASE_ADVERTISE + '/').once('value', function(snapshot){
                             databaseSnapshot = snapshot.val()
@@ -223,6 +226,7 @@ exports.message = functions.https.onRequest(function(request, response){
                             global.logManager.PrintLogMessage("index", "message", "weather data seems not rdy",
                                 global.defineManager.LOG_LEVEL_WARN)
                         }
+                        responseText = responseText + "\n" + contentsManager.NoticeMonday()
 
                         admin.database().ref('/' + global.defineManager.DATABASE_ADVERTISE + '/').once('value', function(snapshot){
                             databaseSnapshot = snapshot.val()
