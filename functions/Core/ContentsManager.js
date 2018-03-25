@@ -22,7 +22,7 @@ exports.NoticeMonday = function () {
     resultStr = ""
 
     if(todayDay == 0) { // Monday
-        resultStr = "월요일이에요! >.<"
+        resultStr = global.defineManager.TODAY_IS_MONDAY
     }
     else {
         hour = currentTimezoneDate.getHours()
@@ -32,7 +32,7 @@ exports.NoticeMonday = function () {
         pastSec = totalSec - ((todayDay - 1) * 24 * 60 * 60 + hour * 60 * 60 + min * 60 + sec)
         leftPercent = Math.floor((totalSec - pastSec) / totalSec * 100)
 
-        resultStr = global.util.format("월요일까지 %s% 남았어요!", leftPercent)
+        resultStr = global.util.format(global.defineManager.CALCULATED_MONDAY_PERCENT_STR, leftPercent)
     }
 
     global.logManager.PrintLogMessage("ContentsManager", "NoticeMonday", "moday calculate result: " + resultStr,
