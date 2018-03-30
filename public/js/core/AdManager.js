@@ -1,12 +1,16 @@
 function AdManager() {
     PrintLogMessage("AdManager", "AdManager", "init", LOG_LEVEL_INFO)
     dataTransferManager = new DataTransferManager()
+
+    this.tableRowList = []
+}
+
+AdManager.prototype.RequestGetListOfAd = function () {
+    PrintLogMessage("AdManager", "RequestGetListOfAd", "getting list of ad", LOG_LEVEL_INFO)
     dataTransferManager.GetRequest(
         DOMAIN + "getListOfAdvertise",
         "",
         this)
-
-    this.tableRowList = []
 }
 
 AdManager.prototype.RequestSuccess = function (data) {
@@ -38,4 +42,6 @@ AdManager.prototype.RequestFail = function (responseText, status) {
     PrintLogMessage("AdManager", "RequestSuccess", "response text: " + responseText, LOG_LEVEL_WARN)
 }
 
-adManager = new AdManager()
+AdManager.prototype.RequestReservateAd = function (formData) {
+    PrintLogMessage("AdManager", "RequestReservateAd", "request new reservate accepted", LOG_LEVEL_INFO)
+}
