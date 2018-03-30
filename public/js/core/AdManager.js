@@ -58,6 +58,7 @@ AdManager.prototype.ReservateRequestSuccess = function (data) {
         dataLen += 1
     }
     PrintLogMessage("AdManager", "ReservateRequestSuccess", "data received successfully len: " + dataLen, LOG_LEVEL_INFO)
+    alert(jsonParsedData["msg"])
 }
 
 AdManager.prototype.ReservateRequestFail = function (responseText, status) {
