@@ -41,3 +41,35 @@ exports.GetTimeAdvertise = function (database, baseStr) {
     }
     return responseMessage
 }
+
+exports.GetListOfAdvertise = function (database) {
+    global.logManager.PrintLogMessage("AdvertiseManager", "GetListOfAdvertise",
+        "listing advertise table", global.defineManager.LOG_LEVEL_INFO)
+    listOfAdvertise = []
+    for(advertiseIndexNumber in database) {
+        indexOfAdvertise = database[advertiseIndexNumber]
+
+        filteredAdvertise = {}
+        filteredAdvertise["enable"] = indexOfAdvertise["enable"]
+        filteredAdvertise["time"] = global.util.format("%d:00:00 ~ %d:59:59",
+            advertiseIndexNumber, advertiseIndexNumber)
+        if(filteredAdvertise["enable"] == global.defineManager.ENABLE) {
+            filteredAdvertise["text"] = indexOfAdvertise["text"]
+            filteredAdvertise["duration"] = global.util.format("%s ~ %s",
+                indexOfAdvertise["startDate"], indexOfAdvertise["deadline"])
+            global.logManager.PrintLogMessage("AdvertiseManager", "GetListOfAdvertise",
+                "#" + advertiseIndexNumber + " this ad is enabled", global.defineManager.LOG_LEVEL_INFO)
+        }
+        else{
+            filteredAdvertise["text"] = "N/A"
+            filteredAdvertise["duration"] = global.util.format("%s ~ %s",
+                "Empty", "Empty")
+            global.logManager.PrintLogMessage("AdvertiseManager", "GetListOfAdvertise",
+                "#" + advertiseIndexNumber + " this ad is not enabled", global.defineManager.LOG_LEVEL_WARN)
+        }
+
+        listOfAdvertise.push(filteredAdvertise)
+    }
+
+    return listOfAdvertise
+}

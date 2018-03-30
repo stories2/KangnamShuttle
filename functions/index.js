@@ -332,3 +332,27 @@ exports.beta = functions.https.onRequest(function(request, response){
             break;
     }
 });
+
+exports.getListOfAdvertise = functions.https.onRequest(function(request, response){
+    switch(request.method) {
+        case 'GET':
+
+            admin.database().ref('/' + global.defineManager.DATABASE_ADVERTISE + '/').once('value', function(snapshot) {
+                databaseSnapshot = snapshot.val()
+
+                responseData = {}
+                responseData = advertiseManager.GetListOfAdvertise(databaseSnapshot)
+                response.setHeader('Content-Type', 'application/json');
+                response.status(200).send(JSON.stringify(responseData))
+            })
+            break;
+        default:
+            responseData = {
+                "msg": "Unavailable income."
+            }
+            response.setHeader('Content-Type', 'application/json');
+            response.status(405).send(JSON.stringify(responseData))
+            break;
+    }
+});
+
