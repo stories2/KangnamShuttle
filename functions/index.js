@@ -360,3 +360,23 @@ exports.getListOfAdvertise = functions.https.onRequest(function(request, respons
     }
 });
 
+exports.reservateAdvertise = functions.https.onRequest(function(request, response){
+    switch(request.method) {
+        case 'POST':
+            responseData = request.body
+            response.setHeader('Content-Type', 'application/json');
+            response.setHeader("Access-Control-Allow-Origin", "*")
+            response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
+            response.status(200).send(JSON.stringify(responseData))
+            break;
+        default:
+            responseData = {
+                "msg": "Unavailable income."
+            }
+            response.setHeader('Content-Type', 'application/json');
+            response.setHeader("Access-Control-Allow-Origin", "*")
+            response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
+            response.status(405).send(JSON.stringify(responseData))
+            break;
+    }
+});
