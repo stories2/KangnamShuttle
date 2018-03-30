@@ -10,4 +10,4 @@ DISABLE = 0
 ACTIVE_STR = "Active"
 DEACTIVE_STR = "Deactivate"
 
-DOMAIN = "http://localhost:5000/kangnamshuttle/us-central1/"
+DOMAIN = "https://us-central1-kangnamshuttle.cloudfunctions.net/"
