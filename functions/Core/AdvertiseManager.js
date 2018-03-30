@@ -73,3 +73,54 @@ exports.GetListOfAdvertise = function (database) {
 
     return listOfAdvertise
 }
+
+exports.ReservateAdvertise = function (admin, response, requestBody) {
+    global.logManager.PrintLogMessage("AdvertiseManager", "ReservateAdvertise", "reservate time: " + requestBody["adTime"],
+        global.defineManager.LOG_LEVEL_INFO)
+    admin.database().ref('/' + global.defineManager.DATABASE_ADVERTISE + '/' + requestBody["adTime"] + '/').once('value', function(snapshot) {
+        databaseSnapshot = snapshot.val()
+
+        indexOfAd = databaseSnapshot
+        responseData = {}
+        if(indexOfAd["enable"] == global.defineManager.ENABLE) {
+            responseData["msg"] = global.defineManager.MSG_ALREADY_RESERVATED
+        }
+        else if(indexOfAd["enable"] == global.defineManager.DISABLE){
+            savePointUrl = '/' + global.defineManager.DATABASE_ADVERTISE + '/' + requestBody["adTime"] + "/"
+
+            dayOfWeek = [0, 0, 0, 0, 0, 0, 0]
+            for(indexOfDay in requestBody["week"]) {
+                dayOfWeek[requestBody["week"][indexOfDay]] = 1
+            }
+            indexOfAd["dayOfWeek"] = dayOfWeek
+
+            startDate = new Date()
+            startDate.setFullYear(requestBody["adStartYear"],
+                requestBody["adStartMonth"] - 1,
+                requestBody["adStartDay"])
+            startDate.setUTCHours(0, 0, 0, 0)
+            startDateStr = startDate.toISOString()
+            indexOfAd["startDate"] = startDateStr
+
+            endDate = new Date()
+            endDate.setFullYear(requestBody["adEndYear"],
+                requestBody["adEndMonth"] - 1,
+                requestBody["adEndDay"])
+            endDate.setUTCHours(0, 0, 0, 0)
+            endDateStr = endDate.toISOString()
+            indexOfAd["deadline"] = endDateStr
+
+            indexOfAd["text"] = requestBody["textAd"]
+
+            global.logManager.PrintLogMessage("AdvertiseManager", "ReservateAdvertise", "try to save reservate: " +
+                savePointUrl + " start: " + startDateStr + " end: " + endDateStr,
+                global.defineManager.LOG_LEVEL_INFO)
+            status = admin.database().ref(savePointUrl).set(indexOfAd);
+            responseData["msg"] = global.defineManager.MSG_SUCCESSFULLY_RESERVATED
+        }
+        response.setHeader('Content-Type', 'application/json');
+        response.setHeader("Access-Control-Allow-Origin", "*")
+        response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
+        response.status(200).send(JSON.stringify(responseData))
+    })
+}
