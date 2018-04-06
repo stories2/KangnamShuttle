@@ -1,5 +1,5 @@
 <h2>Sign in</h2>
-<form>
+<form id="form-signIn">
     <div class="row uniform">
         <div class="12u$ 12u$(xsmall)">
             <input type="email" name="email" id="email" value="" placeholder="Email" />
@@ -9,9 +9,16 @@
         </div>
         <div class="12u$">
             <ul class="actions">
-                <li><input type="submit" value="Sign in" class="special" /></li>
+                <li><input id="submit" type="submit" value="Sign in" class="special" /></li>
                 <li><input type="reset" value="Reset" /></li>
             </ul>
         </div>
     </div>
 </form>
+<script src="js/view/AuthViewManager.js"></script>
+<script>
+    authManager = new AuthManager()
+    authManager.CheckCurrentUser(SetSubmitButton("Sign out"), SetSubmitButton("Sign in"))
+
+    ListenFormSubmitEvent(authManager)
+</script>
