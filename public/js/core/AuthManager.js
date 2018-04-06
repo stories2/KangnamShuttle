@@ -32,6 +32,7 @@ AuthManager.prototype.CheckCurrentUser = function (signedInFunc, signedOutFunc) 
             if(typeof signedInFunc != 'undefined') {
                 signedInFunc()
             }
+            authManager.GenerateToken()
         } else {
             // No user is signed in.
             PrintLogMessage("AuthManager", "CheckCurrentUser", "no one has signed in", LOG_LEVEL_WARN)
@@ -48,7 +49,7 @@ AuthManager.prototype.GenerateToken = function () {
         .then(function(idToken) {
             // Send token to your backend via HTTPS
             // ...
-            PrintLogMessage("AuthManager", "GenerateToken", "this is my token: " + idToken, LOG_LEVEL_INFO)
+            PrintLogMessage("AuthManager", "GenerateToken", "this is my token: " + idToken, LOG_LEVEL_DEBUG)
             // SetTokenVal(idToken)
         })
         .catch(function(error) {

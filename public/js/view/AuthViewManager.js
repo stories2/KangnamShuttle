@@ -28,8 +28,22 @@ function SetSubmitButton(text) {
 
 function SignInBtn() {
     SetSubmitButton("Sign In")
+    VisibleSignInForm()
 }
 
 function SignOutBtn() {
     SetSubmitButton("Sign Out")
+    InvisibleSignInForm()
+}
+
+function VisibleSignInForm() {
+    $("#email").toggle()
+    $("#password").toggle()
+    $("#reset").toggle()
+}
+
+function InvisibleSignInForm() {
+    $("#email").hide()
+    $("#password").hide()
+    $("#reset").hide()
 }
