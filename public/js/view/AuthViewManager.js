@@ -25,3 +25,11 @@ function ListenFormSubmitEvent(authManager) {
 function SetSubmitButton(text) {
     $("#submit").val(text)
 }
+
+function SignInBtn() {
+    SetSubmitButton("Sign In")
+}
+
+function SignOutBtn() {
+    SetSubmitButton("Sign Out")
+}

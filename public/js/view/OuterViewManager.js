@@ -17,7 +17,3 @@ OuterViewManager.prototype.MoveToAnotherView = function (link, title) {
     $("#contentHeader").text(title)
     $("#contentBody").load(link);
 }
-
-outerViewManager = new OuterViewManager()
-outerViewManager.ListenSubLinkClick()
-outerViewManager.MoveToAnotherView("auth.html", "Sign in")

@@ -69,15 +69,21 @@
 <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase.js"></script>
 <script>
     // Initialize Firebase
-    var config = {
-        apiKey: "AIzaSyBv58DW58VFaQjKTJvRmX2izLcRqrbsbVI",
-        authDomain: "kangnamshuttle.firebaseapp.com",
-        databaseURL: "https://kangnamshuttle.firebaseio.com",
-        projectId: "kangnamshuttle",
-        storageBucket: "kangnamshuttle.appspot.com",
-        messagingSenderId: "356849424734"
-    };
-    firebase.initializeApp(config);
+    $(document).ready(function () {
+        var config = {
+            apiKey: "AIzaSyBv58DW58VFaQjKTJvRmX2izLcRqrbsbVI",
+            authDomain: "kangnamshuttle.firebaseapp.com",
+            databaseURL: "https://kangnamshuttle.firebaseio.com",
+            projectId: "kangnamshuttle",
+            storageBucket: "kangnamshuttle.appspot.com",
+            messagingSenderId: "356849424734"
+        };
+        firebase.initializeApp(config);
+
+        outerViewManager = new OuterViewManager()
+        outerViewManager.ListenSubLinkClick()
+        outerViewManager.MoveToAnotherView("auth.html", "Sign in")
+    })
 </script>
 </body>
 </html>

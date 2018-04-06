@@ -18,7 +18,7 @@
 <script src="js/view/AuthViewManager.js"></script>
 <script>
     authManager = new AuthManager()
-    authManager.CheckCurrentUser(SetSubmitButton("Sign out"), SetSubmitButton("Sign in"))
+    authManager.CheckCurrentUser(SignOutBtn, SignInBtn)
 
     ListenFormSubmitEvent(authManager)
 </script>
