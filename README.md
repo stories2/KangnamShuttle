@@ -19,6 +19,11 @@ cd /to/your/project/functions
 firebase serve --only functions
 ```
 
+- Undefined env variable
+```
+firebase functions:config:get > .runtimeconfig.json
+``` 
+
 ## Deployment
 
 After coded if you want deploy to cloud server, please type it in terminal.

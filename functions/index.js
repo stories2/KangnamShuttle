@@ -18,7 +18,9 @@ admin.initializeApp(functions.config().firebase);
 
 const express = require('express');
 const cors = require('cors')({origin: true});
+const lineSdk = require('@line/bot-sdk');
 const app = express();
+const lineApp = express();
 
 const verifyAuthToken = function (request, response, next) {
     try {
@@ -364,21 +366,52 @@ app.get('/getBusSchedule/:busStopNumber', function (request, response) {
 
 exports.admin = functions.https.onRequest(app);
 
-exports.lineCallback = functions.https.onRequest(function(request, response){
-    switch(request.method) {
-        case 'POST':
-            reqStr = JSON.stringify(request.body)
-            global.logManager.PrintLogMessage("index", "lineCallback", "req: " + reqStr, global.defineManager.LOG_LEVEL_INFO)
-            response.status(200).send()
-            break;
-        default:
-            responseData = {
-                "msg": "Unavailable income."
-            }
-            response.setHeader('Content-Type', 'application/json');
-            response.setHeader("Access-Control-Allow-Origin", "*")
-            response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
-            response.status(405).send(JSON.stringify(responseData))
-            break;
+// Line api
+
+const lineConfig = {
+    channelAccessToken: functions.config().line.channel_access_token,
+    channelSecret: functions.config().line.channel_secret,
+}
+
+const lineClient = new lineSdk.Client(lineConfig)
+
+lineApp.post('/lineCallback', lineSdk.middleware(lineConfig), function (request, response) {
+    Promise
+        .all(req.body.events.map(handleEvent))
+        .then(function (result) {response.json(result)})
+        .catch(function(err) {
+            console.error(err);
+            response.status(500).end();
+        });
+    // reqStr = JSON.stringify(request.body)
+    // global.logManager.PrintLogMessage("index", "lineCallback", "req: " + reqStr, global.defineManager.LOG_LEVEL_DEBUG)
+    //
+    // tempMsg = {
+    //     type: 'text',
+    //     text: "temp"
+    // }
+    //
+    // msgEvents = request.body.events;
+    //
+    // for(indexNumber in msgEvents) {
+    //     indexOfMsg = msgEvents[indexNumber]
+    //     global.logManager.PrintLogMessage("index", "lineCallback", "try to replying token: " + indexOfMsg["replyToken"], global.defineManager.LOG_LEVEL_DEBUG)
+    //     lineClient.replyMessage(indexOfMsg["replyToken"], tempMsg)
+    // }
+    response.status(200).send()
+})
+
+function handleEvent(event) {
+    if (event.type !== 'message' || event.message.type !== 'text') {
+        // ignore non-text-message event
+        return Promise.resolve(null);
     }
-});
+
+    // create a echoing text message
+    const echo = { type: 'text', text: event.message.text };
+
+    // use reply API
+    return lineClient.replyMessage(event.replyToken, echo);
+}
+
+exports.line = functions.https.onRequest(lineApp);
