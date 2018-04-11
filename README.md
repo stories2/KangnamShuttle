@@ -1,5 +1,17 @@
 # KangnamShuttle
 
+## Set/Get env var
+
+### Set
+```
+firebase functions:config:set someservice.key="THE API KEY"
+```
+
+### Get
+```
+firebase functions:config:get
+```
+
 ## Trouble shooting 
 - Cannot start emulate firebase functions
 [reference](https://github.com/firebase/firebase-tools/issues/442)

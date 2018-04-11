@@ -18,7 +18,7 @@ admin.initializeApp(functions.config().firebase);
 
 const express = require('express');
 const cors = require('cors')({origin: true});
-const lineSdk = require('@line/bot-sdk');
+const lineBot = require('linebot');
 const app = express();
 const lineApp = express();
 
@@ -371,47 +371,22 @@ exports.admin = functions.https.onRequest(app);
 const lineConfig = {
     channelAccessToken: functions.config().line.channel_access_token,
     channelSecret: functions.config().line.channel_secret,
+    channelId: functions.config().line.channel_id
 }
 
-const lineClient = new lineSdk.Client(lineConfig)
+const lineBotManager = lineBot(lineConfig)
+const lineBotParser = lineBotManager.parser();
 
-lineApp.post('/lineCallback', lineSdk.middleware(lineConfig), function (request, response) {
-    Promise
-        .all(req.body.events.map(handleEvent))
-        .then(function (result) {response.json(result)})
-        .catch(function(err) {
-            console.error(err);
-            response.status(500).end();
-        });
-    // reqStr = JSON.stringify(request.body)
-    // global.logManager.PrintLogMessage("index", "lineCallback", "req: " + reqStr, global.defineManager.LOG_LEVEL_DEBUG)
-    //
-    // tempMsg = {
-    //     type: 'text',
-    //     text: "temp"
-    // }
-    //
-    // msgEvents = request.body.events;
-    //
-    // for(indexNumber in msgEvents) {
-    //     indexOfMsg = msgEvents[indexNumber]
-    //     global.logManager.PrintLogMessage("index", "lineCallback", "try to replying token: " + indexOfMsg["replyToken"], global.defineManager.LOG_LEVEL_DEBUG)
-    //     lineClient.replyMessage(indexOfMsg["replyToken"], tempMsg)
-    // }
-    response.status(200).send()
+lineApp.post('/lineWebhook', lineBotParser)
+
+lineBotManager.on('message', function (event) {
+    event.reply(event.message.text).then(function (data) {
+        // console.log('Success', data);
+        global.logManager.PrintLogMessage("index", "message", "success: " + data, global.defineManager.LOG_LEVEL_INFO)
+    }).catch(function (error) {
+        // console.log('Error', error);
+        global.logManager.PrintLogMessage("index", "message", "error: " + error, global.defineManager.LOG_LEVEL_ERROR)
+    });
 })
-
-function handleEvent(event) {
-    if (event.type !== 'message' || event.message.type !== 'text') {
-        // ignore non-text-message event
-        return Promise.resolve(null);
-    }
-
-    // create a echoing text message
-    const echo = { type: 'text', text: event.message.text };
-
-    // use reply API
-    return lineClient.replyMessage(event.replyToken, echo);
-}
 
 exports.line = functions.https.onRequest(lineApp);
