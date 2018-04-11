@@ -16,6 +16,37 @@ const weatherManager = require('./Core/WeatherManager');
 
 admin.initializeApp(functions.config().firebase);
 
+const express = require('express');
+const cors = require('cors')({origin: true});
+const app = express();
+
+const verifyAuthToken = function (request, response, next) {
+    try {
+        token = request.get('Authorization')
+        admin.auth().verifyIdToken(token)
+            .then(function (decodedToken) {
+                global.logManager.PrintLogMessage("index", "verifyAuthToken", "token verified uid: " + decodedToken.uid, global.defineManager.LOG_LEVEL_INFO)
+                request.user = decodedToken
+                return next();
+            })
+            .catch(function (error) {
+                global.logManager.PrintLogMessage("index", "verifyAuthToken", "cannot verify token", global.defineManager.LOG_LEVEL_ERROR)
+                tempResponse = {'msg': global.defineManager.MESSAGE_FAILED}
+
+                responseManager.TemplateOfResponse(tempResponse, global.defineManager.HTTP_UNAUTHORIZED, response)
+            })
+    }
+    catch (exception) {
+        global.logManager.PrintLogMessage("index", "verifyAuthToken", "server crashed", global.defineManager.LOG_LEVEL_ERROR)
+        tempResponse = {'msg': global.defineManager.MESSAGE_FAILED}
+
+        responseManager.TemplateOfResponse(tempResponse, global.defineManager.HTTP_SERVER_ERROR, response)
+    }
+}
+
+app.use(cors)
+app.use(verifyAuthToken)
+
 exports.keyboard = functions.https.onRequest(function(request, response){
 
     responseMessage = {"type" : "buttons", "buttons" : global.defineManager.MAIN_BUTTONS}
@@ -268,3 +299,31 @@ exports.reservateAdvertise = functions.https.onRequest(function(request, respons
             break;
     }
 });
+
+app.post('/updateBusStop', function (request, response) {
+
+    responseManager.TemplateOfResponse({}, global.defineManager.HTTP_SUCCESS, response)
+})
+
+app.post('/updateSchedule/:busStopNumber', function (request, response) {
+    var busStopNumber = request.params.busStopNumber;
+    global.logManager.PrintLogMessage("index", "updateSchedule", "update target stop schedule number: " + busStopNumber,
+        global.defineManager.LOG_LEVEL_DEBUG)
+
+    responseManager.TemplateOfResponse({}, global.defineManager.HTTP_SUCCESS, response)
+})
+
+app.get('/getBusStopList', function(request, response){
+
+    responseManager.TemplateOfResponse({}, global.defineManager.HTTP_SUCCESS, response)
+})
+
+app.get('/getBusSchedule/:busStopNumber', function (request, response) {
+    var busStopNumber = request.params.busStopNumber;
+    global.logManager.PrintLogMessage("index", "updateSchedule", "get target stop schedule number: " + busStopNumber,
+        global.defineManager.LOG_LEVEL_DEBUG)
+
+    responseManager.TemplateOfResponse({}, global.defineManager.HTTP_SUCCESS, response)
+})
+
+exports.admin = functions.https.onRequest(app);

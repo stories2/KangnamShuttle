@@ -128,3 +128,9 @@ exports.HTTP_REQUEST_SUCCESS = 200
 
 exports.MSG_ALREADY_RESERVATED = "이미 광고가 존재합니다."
 exports.MSG_SUCCESSFULLY_RESERVATED = "성공적으로 예약이 완료되었습니다. 관리자가 확인 후 승인을 할 예정입니다."
+
+exports.MESSAGE_FAILED = "failed"
+
+exports.HTTP_SUCCESS = 200
+exports.HTTP_UNAUTHORIZED = 401
+exports.HTTP_SERVER_ERROR = 500
