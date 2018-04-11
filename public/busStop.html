@@ -1,7 +1,14 @@
 <form>
     <div class="row uniform">
-        <div class="12u$ 12u$(xsmall)">
-            <input type="text" name="data" id="demo-name" value="" placeholder="진행방향 포함된 정류소 명" />
+        <div class="row uniform 12u$" id="templateOfBusStopRow" hidden="hidden">
+            <div class="8u 12u$(xsmall)">
+                <input type="text" name="data" id="data" value="" placeholder="진행방향 포함된 정류소 명" />
+            </div>
+            <div class="4u$ 12u$(xsmall)">
+                <ul class="actions">
+                    <li><a id="dataUrl" href="#" class="button">스케쥴 수정하기</a></li>
+                </ul>
+            </div>
         </div>
         <div class="12u$">
             <ul class="actions">
