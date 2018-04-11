@@ -42,235 +42,127 @@ exports.message = functions.https.onRequest(function(request, response){
 
     switch(request.method) {
         case 'POST':
-            if(userContent == global.defineManager.LEAVE_AS_SOON_AS_SHUTTLE) {
-                responseButton = global.defineManager.SHUTTLE_START_POINT_BUTTONS
-                responseText = global.defineManager.PLZ_INPUT_DEPART_AND_ARRIVE_POINT
-                responseMessage["text"] = responseText
+            admin.database().ref('/BusStopSchedule/').once('value', function (snapshot) {
+                busStopScheduleDatabase = snapshot.val()
+                if(userContent == global.defineManager.LEAVE_AS_SOON_AS_SHUTTLE) {
 
-                responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
-
-                weatherManager.GetCurrentWeather(admin, "Gyeonggi-do,kr", "kr")
-            }
-            else if(userContent == global.defineManager.ALL_SHUTTLE_TIME) {
-                responseButton = global.defineManager.MAIN_BUTTONS
-                // responseText = busTimeManager.PrintAllShuttle(userContent, databaseSnapshot)
-                responseText = global.defineManager.LET_ME_SHOW_ALL_OF_BUS_TIME
-                photoResponse = {
-                    "url": global.defineManager.SHUTTLE_SCHEDULE_PHOTO,
-                    "width": 679,
-                    "height": 960
-                }
-                labelButton = {"label": "자세히", "url": global.defineManager.SHUTTLE_SCHEDULE_PHOTO}
-                responseMessage["message_button"] = labelButton
-                responseMessage["photo"] = photoResponse
-                responseMessage["text"] = responseText
-
-                responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
-            }
-            else if(userContent == global.defineManager.SHUTTLE_STATION) {
-                responseButton = global.defineManager.MAIN_BUTTONS
-                responseText = busTimeManager.PrintShuttleRoute()
-                responseMessage["text"] = responseText
-
-                responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
-            }
-            else if(userContent == global.defineManager.DICE_NUMBER_START) {
-                responseButton = global.defineManager.MAIN_BUTTONS
-                responseText = contentsManager.RollingDice()
-                responseMessage["text"] = responseText
-
-                responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
-            }
-            else if(userContent == global.defineManager.SERVICE_INFO) {
-
-                admin.database().ref('/System/').once('value', function(snapshot){
-                    databaseSnapshot = snapshot.val()
-
-                    responseButton = global.defineManager.MAIN_BUTTONS
-                    // system
-                    systemData = databaseSnapshot
-                    responseText = global.util.format(global.defineManager.SYSTEM_INFO_STR, systemData["ver"], systemData["lastEdit"], systemData["developer"], systemData["email"])
-
-                    labelButton = {"label": "홈페이지", "url": global.defineManager.GO_TO_HOMEPAGE}
-                    responseMessage["message_button"] = labelButton
+                    responseButton = busStopScheduleDatabase["busStop"]
+                    responseText = global.defineManager.PLZ_INPUT_DEPART_AND_ARRIVE_POINT
                     responseMessage["text"] = responseText
 
                     responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
-                })
-            }
-            else if(userContent == global.defineManager.GIHEUNG_TO_SCHOOL) {
-                admin.database().ref('/' + global.defineManager.DATABASE_GIHEUNG_TO_SCHOOL + '/').once('value', function(snapshot){
-                    databaseSnapshot = snapshot.val()
 
+                    weatherManager.GetCurrentWeather(admin, "Gyeonggi-do,kr", "kr")
+                }
+                else if(userContent == global.defineManager.ALL_SHUTTLE_TIME) {
                     responseButton = global.defineManager.MAIN_BUTTONS
-                    responseText = busTimeManager.SearchFastestShuttleBasedOnStartPoint(userContent, databaseSnapshot)
-                    admin.database().ref('/' + global.defineManager.DATABASE_WEATHER + '/').once('value', function (snapshot) {
-                        databaseSnapshot = snapshot.val()
-                        if(databaseSnapshot != null) {
-                            processResultCode = databaseSnapshot["cod"]
-                            if(processResultCode == global.defineManager.HTTP_REQUEST_SUCCESS) {
-                                weatherCastStr = weatherManager.WeatherCast(databaseSnapshot, convertManager)
-                                responseText = responseText + "\n" + weatherCastStr
-                            }
-                            else {
-                                global.logManager.PrintLogMessage("index", "message", "weather api has problem code: " + processResultCode,
-                                    global.defineManager.LOG_LEVEL_WARN)
-                            }
-                        }
-                        else {
-                            global.logManager.PrintLogMessage("index", "message", "weather data seems not rdy",
-                                global.defineManager.LOG_LEVEL_WARN)
-                        }
-                        responseText = responseText + "\n" + contentsManager.NoticeMonday()
+                    // responseText = busTimeManager.PrintAllShuttle(userContent, databaseSnapshot)
+                    responseText = global.defineManager.LET_ME_SHOW_ALL_OF_BUS_TIME
+                    photoResponse = {
+                        "url": global.defineManager.SHUTTLE_SCHEDULE_PHOTO,
+                        "width": 679,
+                        "height": 960
+                    }
+                    labelButton = {"label": "자세히", "url": global.defineManager.SHUTTLE_SCHEDULE_PHOTO}
+                    responseMessage["message_button"] = labelButton
+                    responseMessage["photo"] = photoResponse
+                    responseMessage["text"] = responseText
 
-                        admin.database().ref('/' + global.defineManager.DATABASE_ADVERTISE + '/').once('value', function(snapshot){
-                            databaseSnapshot = snapshot.val()
-                            responseMessage = advertiseManager.GetTimeAdvertise(databaseSnapshot, responseText)
-
-                            responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
-                        })
-                    })
-                })
-            }
-            else if(userContent == global.defineManager.KANGNAM_UNIV_STATION_TO_SCHOOL) {
-                admin.database().ref('/' + global.defineManager.DATABASE_KANGNAM_UNIV_TO_SCHOOL + '/').once('value', function(snapshot){
-                    databaseSnapshot = snapshot.val()
-
+                    responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
+                }
+                else if(userContent == global.defineManager.SHUTTLE_STATION) {
                     responseButton = global.defineManager.MAIN_BUTTONS
-                    responseText = busTimeManager.SearchFastestShuttleBasedOnStartPoint(userContent, databaseSnapshot)
+                    responseText = busTimeManager.PrintShuttleRoute()
+                    responseMessage["text"] = responseText
 
-                    admin.database().ref('/' + global.defineManager.DATABASE_WEATHER + '/').once('value', function (snapshot) {
-                        databaseSnapshot = snapshot.val()
-                        if(databaseSnapshot != null) {
-                            processResultCode = databaseSnapshot["cod"]
-                            if(processResultCode == global.defineManager.HTTP_REQUEST_SUCCESS) {
-                                weatherCastStr = weatherManager.WeatherCast(databaseSnapshot, convertManager)
-                                responseText = responseText + "\n" + weatherCastStr
-                            }
-                            else {
-                                global.logManager.PrintLogMessage("index", "message", "weather api has problem code: " + processResultCode,
-                                    global.defineManager.LOG_LEVEL_WARN)
-                            }
-                        }
-                        else {
-                            global.logManager.PrintLogMessage("index", "message", "weather data seems not rdy",
-                                global.defineManager.LOG_LEVEL_WARN)
-                        }
-                        responseText = responseText + "\n" + contentsManager.NoticeMonday()
-
-                        admin.database().ref('/' + global.defineManager.DATABASE_ADVERTISE + '/').once('value', function(snapshot){
-                            databaseSnapshot = snapshot.val()
-                            responseMessage = advertiseManager.GetTimeAdvertise(databaseSnapshot, responseText)
-
-                            responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
-                        })
-                    })
-                })
-            }
-            else if(userContent == global.defineManager.SCHOOL_TO_GIHEUNG) {
-                admin.database().ref('/' + global.defineManager.DATABASE_SCHOOL_TO_GIHEUNG + '/').once('value', function(snapshot){
-                    databaseSnapshot = snapshot.val()
-
+                    responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
+                }
+                else if(userContent == global.defineManager.DICE_NUMBER_START) {
                     responseButton = global.defineManager.MAIN_BUTTONS
-                    responseText = busTimeManager.SearchFastestShuttleBasedOnStartPoint(userContent, databaseSnapshot)
+                    responseText = contentsManager.RollingDice()
+                    responseMessage["text"] = responseText
 
-                    admin.database().ref('/' + global.defineManager.DATABASE_WEATHER + '/').once('value', function (snapshot) {
+                    responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
+                }
+                else if(userContent == global.defineManager.SERVICE_INFO) {
+
+                    admin.database().ref('/System/').once('value', function(snapshot){
                         databaseSnapshot = snapshot.val()
-                        if(databaseSnapshot != null) {
-                            processResultCode = databaseSnapshot["cod"]
-                            if(processResultCode == global.defineManager.HTTP_REQUEST_SUCCESS) {
-                                weatherCastStr = weatherManager.WeatherCast(databaseSnapshot, convertManager)
-                                responseText = responseText + "\n" + weatherCastStr
-                            }
-                            else {
-                                global.logManager.PrintLogMessage("index", "message", "weather api has problem code: " + processResultCode,
-                                    global.defineManager.LOG_LEVEL_WARN)
-                            }
-                        }
-                        else {
-                            global.logManager.PrintLogMessage("index", "message", "weather data seems not rdy",
-                                global.defineManager.LOG_LEVEL_WARN)
-                        }
-                        responseText = responseText + "\n" + contentsManager.NoticeMonday()
 
-                        admin.database().ref('/' + global.defineManager.DATABASE_ADVERTISE + '/').once('value', function(snapshot){
-                            databaseSnapshot = snapshot.val()
-                            responseMessage = advertiseManager.GetTimeAdvertise(databaseSnapshot, responseText)
+                        responseButton = global.defineManager.MAIN_BUTTONS
+                        // system
+                        systemData = databaseSnapshot
+                        responseText = global.util.format(global.defineManager.SYSTEM_INFO_STR, systemData["ver"], systemData["lastEdit"], systemData["developer"], systemData["email"])
 
-                            responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
-                        })
+                        labelButton = {"label": "홈페이지", "url": global.defineManager.GO_TO_HOMEPAGE}
+                        responseMessage["message_button"] = labelButton
+                        responseMessage["text"] = responseText
+
+                        responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
                     })
-                })
-            }
-            else if(userContent == global.defineManager.SCHOOL_TO_KANGNAM_UNIV_STATION) {
-                admin.database().ref('/' + global.defineManager.DATABASE_SCHOOL_TO_KANGNAM_UNIV + '/').once('value', function(snapshot){
-                    databaseSnapshot = snapshot.val()
+                }
+                else if(userContent == global.defineManager.ACADEMIC_CALENDAR) {
+                    // responseButton = global.defineManager.YEAR_SCHEDULE
+                    // schoolManager.GetAcademicScheduleThisMonth()
+                    // responseMessage["text"] = global.defineManager.ASK_SEARCH_TARGET_MONTH
+                    //
+                    // responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
+                    var currentDate = new Date();
+                    currentTimezoneDate = new Date(currentDate.valueOf() + global.defineManager.GMT_KOREA_TIME_MIN * global.defineManager.HOUR_TO_MILE)
+                    currentMonth = currentTimezoneDate.getMonth()
+                    global.logManager.PrintLogMessage("index", "message", "searching current month: " + currentMonth + " schedule",
+                        global.defineManager.LOG_LEVEL_INFO)
+                    schoolManager.GetAcademicScheduleThisMonth(currentMonth, admin, convertManager, generateManager, response, requestMessage, responseManager)
+                }
+                else {
+                    messageSent = false
+                    for(indexNumber in busStopScheduleDatabase["busStop"]) {
+                        if(userContent == busStopScheduleDatabase["busStop"][indexNumber]) {
+                            global.logManager.PrintLogMessage("index", "message", "found moving path: " + userContent + " at #" + indexNumber,
+                                global.defineManager.LOG_LEVEL_INFO)
+                            messageSent = true
+                            databaseSnapshot = busStopScheduleDatabase["busSchedule"][indexNumber]
 
-                    responseButton = global.defineManager.MAIN_BUTTONS
-                    responseText = busTimeManager.SearchFastestShuttleBasedOnStartPoint(userContent, databaseSnapshot)
+                            responseButton = global.defineManager.MAIN_BUTTONS
+                            responseText = busTimeManager.SearchFastestShuttleBasedOnStartPoint(userContent, databaseSnapshot)
 
-                    admin.database().ref('/' + global.defineManager.DATABASE_WEATHER + '/').once('value', function (snapshot) {
-                        databaseSnapshot = snapshot.val()
-                        if(databaseSnapshot != null) {
-                            processResultCode = databaseSnapshot["cod"]
-                            if(processResultCode == global.defineManager.HTTP_REQUEST_SUCCESS) {
-                                weatherCastStr = weatherManager.WeatherCast(databaseSnapshot, convertManager)
-                                responseText = responseText + "\n" + weatherCastStr
-                            }
-                            else {
-                                global.logManager.PrintLogMessage("index", "message", "weather api has problem code: " + processResultCode,
-                                    global.defineManager.LOG_LEVEL_WARN)
-                            }
+                            admin.database().ref('/' + global.defineManager.DATABASE_WEATHER + '/').once('value', function (snapshot) {
+                                databaseSnapshot = snapshot.val()
+                                if(databaseSnapshot != null) {
+                                    processResultCode = databaseSnapshot["cod"]
+                                    if(processResultCode == global.defineManager.HTTP_REQUEST_SUCCESS) {
+                                        weatherCastStr = weatherManager.WeatherCast(databaseSnapshot, convertManager)
+                                        responseText = responseText + "\n" + weatherCastStr
+                                    }
+                                    else {
+                                        global.logManager.PrintLogMessage("index", "message", "weather api has problem code: " + processResultCode,
+                                            global.defineManager.LOG_LEVEL_WARN)
+                                    }
+                                }
+                                else {
+                                    global.logManager.PrintLogMessage("index", "message", "weather data seems not rdy",
+                                        global.defineManager.LOG_LEVEL_WARN)
+                                }
+                                responseText = responseText + "\n" + contentsManager.NoticeMonday()
+
+                                admin.database().ref('/' + global.defineManager.DATABASE_ADVERTISE + '/').once('value', function(snapshot){
+                                    databaseSnapshot = snapshot.val()
+                                    responseMessage = advertiseManager.GetTimeAdvertise(databaseSnapshot, responseText)
+
+                                    messageSent = true
+                                    responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
+                                })
+                            })
+                            break;
                         }
-                        else {
-                            global.logManager.PrintLogMessage("index", "message", "weather data seems not rdy",
-                                global.defineManager.LOG_LEVEL_WARN)
-                        }
-                        responseText = responseText + "\n" + contentsManager.NoticeMonday()
-
-                        admin.database().ref('/' + global.defineManager.DATABASE_ADVERTISE + '/').once('value', function(snapshot){
-                            databaseSnapshot = snapshot.val()
-                            responseMessage = advertiseManager.GetTimeAdvertise(databaseSnapshot, responseText)
-
-                            responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
-                        })
-                    })
-                })
-            }
-            else if(userContent == global.defineManager.ACADEMIC_CALENDAR) {
-                // responseButton = global.defineManager.YEAR_SCHEDULE
-                // schoolManager.GetAcademicScheduleThisMonth()
-                // responseMessage["text"] = global.defineManager.ASK_SEARCH_TARGET_MONTH
-                //
-                // responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
-                var currentDate = new Date();
-                currentTimezoneDate = new Date(currentDate.valueOf() + global.defineManager.GMT_KOREA_TIME_MIN * global.defineManager.HOUR_TO_MILE)
-                currentMonth = currentTimezoneDate.getMonth()
-                global.logManager.PrintLogMessage("index", "message", "searching current month: " + currentMonth + " schedule",
-                    global.defineManager.LOG_LEVEL_INFO)
-                schoolManager.GetAcademicScheduleThisMonth(currentMonth, admin, convertManager, generateManager, response, requestMessage, responseManager)
-            }
-            else if(userContent == global.defineManager.YEAR_SCHEDULE[0] ||
-                    userContent == global.defineManager.YEAR_SCHEDULE[1] ||
-                    userContent == global.defineManager.YEAR_SCHEDULE[2] ||
-                    userContent == global.defineManager.YEAR_SCHEDULE[3] ||
-                    userContent == global.defineManager.YEAR_SCHEDULE[4] ||
-                    userContent == global.defineManager.YEAR_SCHEDULE[5] ||
-                    userContent == global.defineManager.YEAR_SCHEDULE[6] ||
-                    userContent == global.defineManager.YEAR_SCHEDULE[7] ||
-                    userContent == global.defineManager.YEAR_SCHEDULE[8] ||
-                    userContent == global.defineManager.YEAR_SCHEDULE[9] ||
-                    userContent == global.defineManager.YEAR_SCHEDULE[10] ||
-                    userContent == global.defineManager.YEAR_SCHEDULE[11]) {
-                selectedMonth = userContent.split(global.defineManager.MONTH_STR)[0] - 1
-                // console.log("month: " + selectedMonth)
-                schoolManager.GetAcademicScheduleThisMonth(selectedMonth, admin, convertManager, generateManager, response, requestMessage, responseManager)
-            }
-            else {
-                responseButton = global.defineManager.MAIN_BUTTONS
-                responseMessage["text"] = global.defineManager.SAY_AGAIN
-                responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
-            }
+                    }
+                    if(messageSent == false) {
+                        responseButton = global.defineManager.MAIN_BUTTONS
+                        responseMessage["text"] = global.defineManager.SAY_AGAIN
+                        responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
+                    }
+                }
+            })
             break;
         default:
             global.logManager.PrintLogMessage("index", "message",
