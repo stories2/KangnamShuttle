@@ -11,3 +11,6 @@ ACTIVE_STR = "Active"
 DEACTIVE_STR = "Deactivate"
 
 DOMAIN = "https://us-central1-kangnamshuttle.cloudfunctions.net/"
+//http://localhost:5000/kangnamshuttle/us-central1/
+
+SUB_PATH = "admin/"
