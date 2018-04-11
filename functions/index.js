@@ -47,6 +47,8 @@ const verifyAuthToken = function (request, response, next) {
 app.use(cors)
 app.use(verifyAuthToken)
 
+// Kakao api
+
 exports.keyboard = functions.https.onRequest(function(request, response){
 
     responseMessage = {"type" : "buttons", "buttons" : global.defineManager.MAIN_BUTTONS}
@@ -256,6 +258,8 @@ exports.beta = functions.https.onRequest(function(request, response){
     }
 });
 
+// Web api
+
 exports.getListOfAdvertise = functions.https.onRequest(function(request, response){
     switch(request.method) {
         case 'GET':
@@ -299,6 +303,8 @@ exports.reservateAdvertise = functions.https.onRequest(function(request, respons
             break;
     }
 });
+
+// Admin api
 
 app.post('/updateBusStop', function (request, response) {
     admin.database().ref("/BusStopSchedule/busStop/").set(request.body["data"]);
@@ -357,3 +363,22 @@ app.get('/getBusSchedule/:busStopNumber', function (request, response) {
 })
 
 exports.admin = functions.https.onRequest(app);
+
+exports.lineCallback = functions.https.onRequest(function(request, response){
+    switch(request.method) {
+        case 'POST':
+            reqStr = JSON.stringify(request.body)
+            global.logManager.PrintLogMessage("index", "lineCallback", "req: " + reqStr, global.defineManager.LOG_LEVEL_INFO)
+            response.status(200).send()
+            break;
+        default:
+            responseData = {
+                "msg": "Unavailable income."
+            }
+            response.setHeader('Content-Type', 'application/json');
+            response.setHeader("Access-Control-Allow-Origin", "*")
+            response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
+            response.status(405).send(JSON.stringify(responseData))
+            break;
+    }
+});
