@@ -301,8 +301,11 @@ exports.reservateAdvertise = functions.https.onRequest(function(request, respons
 });
 
 app.post('/updateBusStop', function (request, response) {
-
-    responseManager.TemplateOfResponse({}, global.defineManager.HTTP_SUCCESS, response)
+    admin.database().ref("/BusStopSchedule/busStop/").set(request.body["data"]);
+    responseMessage = {
+        "msg": global.defineManager.MESSAGE_SUCCESS
+    }
+    responseManager.TemplateOfResponse(responseMessage, global.defineManager.HTTP_SUCCESS, response)
 })
 
 app.post('/updateSchedule/:busStopNumber', function (request, response) {
@@ -310,20 +313,47 @@ app.post('/updateSchedule/:busStopNumber', function (request, response) {
     global.logManager.PrintLogMessage("index", "updateSchedule", "update target stop schedule number: " + busStopNumber,
         global.defineManager.LOG_LEVEL_DEBUG)
 
-    responseManager.TemplateOfResponse({}, global.defineManager.HTTP_SUCCESS, response)
+    if(typeof busStopNumber != 'undefined') {
+        admin.database().ref("/BusStopSchedule/busSchedule/" + busStopNumber + "/").set(request.body["data"]);
+        responseManager.TemplateOfResponse(responseMessage, global.defineManager.HTTP_SUCCESS, response)
+    }
+    else {
+        global.logManager.PrintLogMessage("index", "updateSchedule", "non selection bus stop station",
+            global.defineManager.LOG_LEVEL_WARN)
+        responseMessage = {
+            "msg": global.defineManager.MESSAGE_FAILED
+        }
+        responseManager.TemplateOfResponse(responseMessage, global.defineManager.HTTP_SERVER_ERROR, response)
+    }
+
 })
 
 app.get('/getBusStopList', function(request, response){
-
-    responseManager.TemplateOfResponse({}, global.defineManager.HTTP_SUCCESS, response)
+    admin.database().ref('/BusStopSchedule/busStop/').once('value', function(snapshot) {
+        busStopList = snapshot.val()
+        responseManager.TemplateOfResponse(busStopList, global.defineManager.HTTP_SUCCESS, response)
+    })
 })
 
 app.get('/getBusSchedule/:busStopNumber', function (request, response) {
     var busStopNumber = request.params.busStopNumber;
-    global.logManager.PrintLogMessage("index", "updateSchedule", "get target stop schedule number: " + busStopNumber,
+    global.logManager.PrintLogMessage("index", "getBusSchedule", "get target stop schedule number: " + busStopNumber,
         global.defineManager.LOG_LEVEL_DEBUG)
 
-    responseManager.TemplateOfResponse({}, global.defineManager.HTTP_SUCCESS, response)
+    if(typeof busStopNumber != 'undefined') {
+        admin.database().ref('/BusStopSchedule/busSchedule/' + busStopNumber + '/').once('value', function(snapshot) {
+            busStopList = snapshot.val()
+            responseManager.TemplateOfResponse(busStopList, global.defineManager.HTTP_SUCCESS, response)
+        })
+    }
+    else {
+        global.logManager.PrintLogMessage("index", "getBusSchedule", "non selection bus stop station",
+            global.defineManager.LOG_LEVEL_WARN)
+        responseMessage = {
+            "msg": global.defineManager.MESSAGE_FAILED
+        }
+        responseManager.TemplateOfResponse(responseMessage, global.defineManager.HTTP_SERVER_ERROR, response)
+    }
 })
 
 exports.admin = functions.https.onRequest(app);
