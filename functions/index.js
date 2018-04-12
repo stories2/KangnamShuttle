@@ -380,13 +380,60 @@ const lineBotParser = lineBotManager.parser();
 lineApp.post('/lineWebhook', lineBotParser)
 
 lineBotManager.on('message', function (event) {
-    event.reply(event.message.text).then(function (data) {
+
+    replyData = responseManager.LineTemplateResponse(event.message.text)
+
+    event.reply(replyData).then(function (data) {
         // console.log('Success', data);
-        global.logManager.PrintLogMessage("index", "message", "success: " + data, global.defineManager.LOG_LEVEL_INFO)
+        dataStr = JSON.stringify(data)
+        messageStr = JSON.stringify(event)
+        global.logManager.PrintLogMessage("index", "message", "success-> data: " + dataStr + " msg: " + messageStr, global.defineManager.LOG_LEVEL_INFO)
     }).catch(function (error) {
         // console.log('Error', error);
         global.logManager.PrintLogMessage("index", "message", "error: " + error, global.defineManager.LOG_LEVEL_ERROR)
     });
 })
+
+lineBotManager.on('follow', function (event) {
+    eventStr = JSON.stringify(event)
+    global.logManager.PrintLogMessage("index", "follow", "event-> " + eventStr,
+        global.defineManager.LOG_LEVEL_DEBUG)
+    event.reply('follow: ' + event.source.userId);
+});
+
+lineBotManager.on('unfollow', function (event) {
+    eventStr = JSON.stringify(event)
+    global.logManager.PrintLogMessage("index", "unfollow", "event-> " + eventStr,
+        global.defineManager.LOG_LEVEL_DEBUG)
+    event.reply('unfollow: ' + event.source.userId);
+});
+
+lineBotManager.on('join', function (event) {
+    eventStr = JSON.stringify(event)
+    global.logManager.PrintLogMessage("index", "join", "event-> " + eventStr,
+        global.defineManager.LOG_LEVEL_DEBUG)
+    event.reply('join: ' + event.source.groupId);
+});
+
+lineBotManager.on('leave', function (event) {
+    eventStr = JSON.stringify(event)
+    global.logManager.PrintLogMessage("index", "leave", "event-> " + eventStr,
+        global.defineManager.LOG_LEVEL_DEBUG)
+    event.reply('leave: ' + event.source.groupId);
+});
+
+lineBotManager.on('postback', function (event) {
+    eventStr = JSON.stringify(event)
+    global.logManager.PrintLogMessage("index", "postback", "event-> " + eventStr,
+        global.defineManager.LOG_LEVEL_DEBUG)
+    event.reply('postback: ' + event.postback.data);
+});
+
+lineBotManager.on('beacon', function (event) {
+    eventStr = JSON.stringify(event)
+    global.logManager.PrintLogMessage("index", "beacon", "event-> " + eventStr,
+        global.defineManager.LOG_LEVEL_DEBUG)
+    event.reply('beacon: ' + event.beacon.hwid);
+});
 
 exports.line = functions.https.onRequest(lineApp);
