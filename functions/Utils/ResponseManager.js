@@ -189,6 +189,103 @@ exports.LineTemplateResponse = function (responseType) {
                 }
             }
             break;
+        case global.defineManager.LINE_RESPONSE_MAIN_CAROUSEL:
+            replyData = {
+                type: 'template',
+                altText: '달구지봇 메인 기능',
+                template: {
+                    type: 'carousel',
+                    columns: [{
+                        thumbnailImageUrl: 'https://example.com/bot/images/item1.jpg',
+                        title: '달구지 안내',
+                        text: '달구지를 이용하는데 필요한 정보 제공',
+                        actions: [{
+                            type: 'postback',
+                            label: '가까운 시간의 달구지를 알려줘',
+                            data: '{}'
+                        }, {
+                            type: 'postback',
+                            label: '전체 달구지 시간표를 알려줘',
+                            data: 'action=add&itemid=111'
+                        }, {
+                            type: 'postback',
+                            label: '달구지 운행노선을 알려줘',
+                            data: 'action=add&itemid=111'
+                        }]
+                    }, {
+                        thumbnailImageUrl: 'https://example.com/bot/images/item2.jpg',
+                        title: '컨텐츠',
+                        text: '재능낭비ZONE',
+                        actions: [{
+                            type: 'postback',
+                            label: '이번달 학사 일정을 알려줘',
+                            data: 'action=buy&itemid=222'
+                        }, {
+                            type: 'postback',
+                            label: '주사위 굴리기 가즈아~!!',
+                            data: 'action=add&itemid=222'
+                        }, {
+                            type: 'postback',
+                            label: '현제 날씨를 알려줘',
+                            data: 'action=buy&itemid=222'
+                        }]
+                    }, {
+                        thumbnailImageUrl: 'https://example.com/bot/images/item2.jpg',
+                        title: '서비스 안내',
+                        text: '본 서비스에 대하여',
+                        actions: [{
+                            type: 'postback',
+                            label: '서비스 정보',
+                            data: 'action=buy&itemid=222'
+                        }, {
+                            type: 'postback',
+                            label: '홈페이지',
+                            data: 'action=add&itemid=222'
+                        }, {
+                            type: 'postback',
+                            label: '도움말',
+                            data: 'action=add&itemid=222'
+                        }]
+                    }]
+                }
+            }
+            break;
+        case global.defineManager.LINE_RESPONSE_RUTE_CAROUSEL:
+            replyData = {
+                type: 'template',
+                altText: '달구지 이용 방향 설정',
+                template: {
+                    type: 'carousel',
+                    columns: [{
+                        thumbnailImageUrl: 'https://example.com/bot/images/item1.jpg',
+                        title: '달구지 목적지 설정',
+                        text: '가려는 목적지를 알려주세요',
+                        actions: [{
+                            type: 'postback',
+                            label: '기흥역에서 이공관으로 갈꺼야',
+                            data: 'action=buy&itemid=111'
+                        }, {
+                            type: 'postback',
+                            label: '강남대역에서 이공관으로 갈꺼야',
+                            data: 'action=buy&itemid=111'
+                        }]
+                    }, {
+                        thumbnailImageUrl: 'https://example.com/bot/images/item1.jpg',
+                        title: '달구지 목적지 설정',
+                        text: '가려는 목적지를 알려주세요',
+                        actions: [{
+                            type: 'postback',
+                            label: '이공관에서 기흥역으로 갈꺼야',
+                            data: 'action=buy&itemid=111'
+                        }, {
+                            type: 'postback',
+                            label: '이공관에서 강남대역으로 갈꺼야',
+                            data: 'action=buy&itemid=111'
+                        }]
+                    }]
+                }
+            }
+            break;
         default:
             break;
     }
