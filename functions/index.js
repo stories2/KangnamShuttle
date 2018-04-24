@@ -13,6 +13,7 @@ const generateManager = require('./Utils/GenerateManager');
 const convertManager = require('./Utils/ConvertManager');
 const schoolManager = require('./Core/SchoolManager');
 const weatherManager = require('./Core/WeatherManager');
+const performanceManager = require('./Core/PerformanceManager');
 
 admin.initializeApp(functions.config().firebase);
 
@@ -22,6 +23,8 @@ const lineBot = require('linebot');
 const app = express();
 const lineApp = express();
 const kakaoApp = express();
+
+performanceManager.PreventColdStart()
 
 const verifyAuthToken = function (request, response, next) {
     try {
