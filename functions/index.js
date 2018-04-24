@@ -78,6 +78,9 @@ kakaoApp.use(cors)
 kakaoApp.use(middleWareOfMessage)
 
 kakaoApp.get('/keyboard', function (request, response) {
+
+    global.logManager.PrintLogMessage("index", "keyboard", "init keyboard", global.defineManager.LOG_LEVEL_INFO)
+
     responseMessage = {"type" : "buttons", "buttons" : global.defineManager.MAIN_BUTTONS}
 
     // response.setHeader('Content-Type', 'application/json');
@@ -212,14 +215,19 @@ kakaoApp.post('/message', function (request, response) {
 })
 
 kakaoApp.post('/friend', function (request, response) {
+    global.logManager.PrintLogMessage("index", "friend", "new member accepted", global.defineManager.LOG_LEVEL_INFO)
     response.status(200).send()
 })
 
-kakaoApp.delete('/friend:user_key', function (request, response) {
+kakaoApp.delete('/friend/:user_key', function (request, response) {
+    userKey = request.params.user_key
+    global.logManager.PrintLogMessage("index", "friend", "bye bye my friend: " + userKey, global.defineManager.LOG_LEVEL_INFO)
     response.status(200).send()
 })
 
-kakaoApp.delete('/chat_room:user_key', function (request, response) {
+kakaoApp.delete('/chat_room/:user_key', function (request, response) {
+    userKey = request.params.user_key
+    global.logManager.PrintLogMessage("index", "chat_room", "delete chat room: " + userKey, global.defineManager.LOG_LEVEL_INFO)
     response.status(200).send()
 })
 
