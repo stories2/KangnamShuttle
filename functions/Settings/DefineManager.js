@@ -66,8 +66,9 @@ exports.GMT_KOREA_TIME = 9
 exports.GMT_KOREA_TIME_MIN = 540
 exports.HOUR_TO_MILE = 60000
 
-exports.DATABASE_SCHOOL_SCHEDULE = "/Schedule/"
-exports.DATABASE_WEATHER = "Weather"
+exports.DATABASE_SCHOOL_SCHEDULE = "/service/SchoolSchedule/"
+exports.DATABASE_WEATHER = "/service/Weather/"
+exports.DATABASE_SERVICE = "/service/"
 
 exports.SYSTEM_INFO_STR = "버전: %s\n최종 수정일: %s\n개발자: %s\n메일: %s"
 

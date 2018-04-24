@@ -1,4 +1,4 @@
-exports.GetCurrentWeather = function (admin, country, lang) {
+exports.GetCurrentWeather = function (admin, country, lang, weatherApiKey) {
     var httpManager = require("http")
     global.logManager.PrintLogMessage("WeatherManager", "GetCurrentWeather", "target country: " + country + " lang: " + lang,
         global.defineManager.LOG_LEVEL_INFO)
@@ -23,29 +23,25 @@ exports.GetCurrentWeather = function (admin, country, lang) {
 
     endpoint = "%s?q=%s&appid=%s&lang=%s"
 
-    admin.database().ref('/System/weatherApiKey/').once('value', function(snapshot) {
-        weatherApiKey = snapshot.val()
+    httpHeadersOptions["path"] = global.util.format(endpoint, httpHeadersOptions["path"], country, weatherApiKey, lang)
 
-        httpHeadersOptions["path"] = global.util.format(endpoint, httpHeadersOptions["path"], country, weatherApiKey, lang)
+    httpManager.get(httpHeadersOptions, function (response) {
 
-        httpManager.get(httpHeadersOptions, function (response) {
-
+        global.logManager.PrintLogMessage("WeatherManager", "GetCurrentWeather",
+            "weather getting http statusCode: " + response.statusCode + " headers: " + response.headers, global.defineManager.LOG_LEVEL_DEBUG)
+        var serverData = ''
+        response.on('data', function (chunk) {
+            serverData += chunk
+        })
+        response.on('end', function () {
+            weatherData = JSON.parse(serverData)
             global.logManager.PrintLogMessage("WeatherManager", "GetCurrentWeather",
-                "weather getting http statusCode: " + response.statusCode + " headers: " + response.headers, global.defineManager.LOG_LEVEL_DEBUG)
-            var serverData = ''
-            response.on('data', function (chunk) {
-                serverData += chunk
-            })
-            response.on('end', function () {
-                weatherData = JSON.parse(serverData)
-                global.logManager.PrintLogMessage("WeatherManager", "GetCurrentWeather",
-                    "weather data accepted successfully", global.defineManager.LOG_LEVEL_INFO)
-                admin.database().ref("/Weather/").set(weatherData);
-            })
-            response.on('error', function (except) {
-                global.logManager.PrintLogMessage("WeatherManager", "GetCurrentWeather",
-                    "there is something problem: " + except, global.defineManager.LOG_LEVEL_ERROR)
-            })
+                "weather data accepted successfully", global.defineManager.LOG_LEVEL_INFO)
+            admin.database().ref(global.defineManager.DATABASE_WEATHER).set(weatherData);
+        })
+        response.on('error', function (except) {
+            global.logManager.PrintLogMessage("WeatherManager", "GetCurrentWeather",
+                "there is something problem: " + except, global.defineManager.LOG_LEVEL_ERROR)
         })
     })
 }

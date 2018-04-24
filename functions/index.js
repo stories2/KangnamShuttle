@@ -21,6 +21,7 @@ const cors = require('cors')({origin: true});
 const lineBot = require('linebot');
 const app = express();
 const lineApp = express();
+const kakaoApp = express();
 
 const verifyAuthToken = function (request, response, next) {
     try {
@@ -51,15 +52,39 @@ app.use(verifyAuthToken)
 
 // Kakao api
 
-exports.keyboard = functions.https.onRequest(function(request, response){
+const middleWareOfMessage = function (request, response, next) {
+    try{
+        switch (request.url) {
+            case "/message":
+                admin.database().ref(global.defineManager.DATABASE_SERVICE).once('value', function (snapshot) {
+                    // console.log("url: " + request.url)
+                    global.logManager.PrintLogMessage("index", "middleWareOfMessage", "getting service database",
+                        global.defineManager.LOG_LEVEL_INFO)
+                    request.databaseSnapshot = snapshot.val()
+                    return next();
+                })
+                break;
+            default:
+                return next();
+                break;
+        }
+    }
+    catch (exception) {
+        response.status(500).send()
+    }
+}
 
+kakaoApp.use(cors)
+kakaoApp.use(middleWareOfMessage)
+
+kakaoApp.get('/keyboard', function (request, response) {
     responseMessage = {"type" : "buttons", "buttons" : global.defineManager.MAIN_BUTTONS}
 
- // response.setHeader('Content-Type', 'application/json');
- response.status(200).send(JSON.stringify(responseMessage))
-});
+    // response.setHeader('Content-Type', 'application/json');
+    response.status(200).send(JSON.stringify(responseMessage))
+})
 
-exports.message = functions.https.onRequest(function(request, response){
+kakaoApp.post('/message', function (request, response) {
     userContent = ""
     responseButton = []
     databaseSnapshot = {}
@@ -69,163 +94,134 @@ exports.message = functions.https.onRequest(function(request, response){
 
     requestMessage = request.body
     userContent = requestMessage["content"]
+    databaseSnapshot = request.databaseSnapshot
 
     global.logManager.PrintLogMessage("index", "message",
         "request info user_key: " + requestMessage["user_key"] +
         " content: " + requestMessage["content"] + " type: " + requestMessage["type"],
         global.defineManager.LOG_LEVEL_INFO)
 
-    switch(request.method) {
-        case 'POST':
-            admin.database().ref('/BusStopSchedule/').once('value', function (snapshot) {
-                busStopScheduleDatabase = snapshot.val()
-                if(userContent == global.defineManager.LEAVE_AS_SOON_AS_SHUTTLE) {
+    // busStopScheduleDatabase = snapshot.val()
+    if(userContent == global.defineManager.LEAVE_AS_SOON_AS_SHUTTLE) {
 
-                    responseButton = busStopScheduleDatabase["busStop"]
-                    responseText = global.defineManager.PLZ_INPUT_DEPART_AND_ARRIVE_POINT
-                    responseMessage["text"] = responseText
+        responseButton = databaseSnapshot["BusStopSchedule"]["busStop"]
+        responseText = global.defineManager.PLZ_INPUT_DEPART_AND_ARRIVE_POINT
+        responseMessage["text"] = responseText
 
-                    responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
+        responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
 
-                    weatherManager.GetCurrentWeather(admin, "Gyeonggi-do,kr", "kr")
-                }
-                else if(userContent == global.defineManager.ALL_SHUTTLE_TIME) {
-                    responseButton = global.defineManager.MAIN_BUTTONS
-                    // responseText = busTimeManager.PrintAllShuttle(userContent, databaseSnapshot)
-                    responseText = global.defineManager.LET_ME_SHOW_ALL_OF_BUS_TIME
-                    photoResponse = {
-                        "url": global.defineManager.SHUTTLE_SCHEDULE_PHOTO,
-                        "width": 679,
-                        "height": 960
+        weatherManager.GetCurrentWeather(admin, "Gyeonggi-do,kr", "kr", databaseSnapshot["System"]["weatherApiKey"])
+    }
+    else if(userContent == global.defineManager.ALL_SHUTTLE_TIME) {
+        responseButton = global.defineManager.MAIN_BUTTONS
+        // responseText = busTimeManager.PrintAllShuttle(userContent, databaseSnapshot)
+        responseText = global.defineManager.LET_ME_SHOW_ALL_OF_BUS_TIME
+        photoResponse = {
+            "url": global.defineManager.SHUTTLE_SCHEDULE_PHOTO,
+            "width": 679,
+            "height": 960
+        }
+        labelButton = {"label": "자세히", "url": global.defineManager.SHUTTLE_SCHEDULE_PHOTO}
+        responseMessage["message_button"] = labelButton
+        responseMessage["photo"] = photoResponse
+        responseMessage["text"] = responseText
+
+        responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
+    }
+    else if(userContent == global.defineManager.SHUTTLE_STATION) {
+        responseButton = global.defineManager.MAIN_BUTTONS
+        responseText = busTimeManager.PrintShuttleRoute()
+        responseMessage["text"] = responseText
+
+        responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
+    }
+    else if(userContent == global.defineManager.DICE_NUMBER_START) {
+        responseButton = global.defineManager.MAIN_BUTTONS
+        responseText = contentsManager.RollingDice()
+        responseMessage["text"] = responseText
+
+        responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
+    }
+    else if(userContent == global.defineManager.SERVICE_INFO) {
+
+        responseButton = global.defineManager.MAIN_BUTTONS
+        // system
+        systemData = databaseSnapshot["System"]
+        responseText = global.util.format(global.defineManager.SYSTEM_INFO_STR, systemData["ver"], systemData["lastEdit"], systemData["developer"], systemData["email"])
+
+        labelButton = {"label": "홈페이지", "url": global.defineManager.GO_TO_HOMEPAGE}
+        responseMessage["message_button"] = labelButton
+        responseMessage["text"] = responseText
+
+        responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
+    }
+    else if(userContent == global.defineManager.ACADEMIC_CALENDAR) {
+        var currentDate = new Date();
+        currentTimezoneDate = new Date(currentDate.valueOf() + global.defineManager.GMT_KOREA_TIME_MIN * global.defineManager.HOUR_TO_MILE)
+        currentMonth = currentTimezoneDate.getMonth()
+        global.logManager.PrintLogMessage("index", "message", "searching current month: " + currentMonth + " schedule",
+            global.defineManager.LOG_LEVEL_INFO)
+        schoolManager.GetAcademicScheduleThisMonth(currentMonth, admin, convertManager, generateManager, response, requestMessage, responseManager, databaseSnapshot["SchoolSchedule"][currentMonth])
+    }
+    else {
+        messageSent = false
+        busStopScheduleDatabase = databaseSnapshot["BusStopSchedule"]
+        for(indexNumber in busStopScheduleDatabase["busStop"]) {
+            if(userContent == busStopScheduleDatabase["busStop"][indexNumber]) {
+                global.logManager.PrintLogMessage("index", "message", "found moving path: " + userContent + " at #" + indexNumber,
+                    global.defineManager.LOG_LEVEL_INFO)
+                messageSent = true
+                busStopScheduleTimeLineDatabase = busStopScheduleDatabase["busSchedule"][indexNumber]
+
+                responseButton = global.defineManager.MAIN_BUTTONS
+                responseText = busTimeManager.SearchFastestShuttleBasedOnStartPoint(userContent, busStopScheduleTimeLineDatabase)
+
+                databaseSnapshotWeather = databaseSnapshot["Weather"]
+                if(databaseSnapshotWeather != null) {
+                    processResultCode = databaseSnapshotWeather["cod"]
+                    if(processResultCode == global.defineManager.HTTP_REQUEST_SUCCESS) {
+                        weatherCastStr = weatherManager.WeatherCast(databaseSnapshotWeather, convertManager)
+                        responseText = responseText + "\n" + weatherCastStr
                     }
-                    labelButton = {"label": "자세히", "url": global.defineManager.SHUTTLE_SCHEDULE_PHOTO}
-                    responseMessage["message_button"] = labelButton
-                    responseMessage["photo"] = photoResponse
-                    responseMessage["text"] = responseText
-
-                    responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
-                }
-                else if(userContent == global.defineManager.SHUTTLE_STATION) {
-                    responseButton = global.defineManager.MAIN_BUTTONS
-                    responseText = busTimeManager.PrintShuttleRoute()
-                    responseMessage["text"] = responseText
-
-                    responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
-                }
-                else if(userContent == global.defineManager.DICE_NUMBER_START) {
-                    responseButton = global.defineManager.MAIN_BUTTONS
-                    responseText = contentsManager.RollingDice()
-                    responseMessage["text"] = responseText
-
-                    responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
-                }
-                else if(userContent == global.defineManager.SERVICE_INFO) {
-
-                    admin.database().ref('/System/').once('value', function(snapshot){
-                        databaseSnapshot = snapshot.val()
-
-                        responseButton = global.defineManager.MAIN_BUTTONS
-                        // system
-                        systemData = databaseSnapshot
-                        responseText = global.util.format(global.defineManager.SYSTEM_INFO_STR, systemData["ver"], systemData["lastEdit"], systemData["developer"], systemData["email"])
-
-                        labelButton = {"label": "홈페이지", "url": global.defineManager.GO_TO_HOMEPAGE}
-                        responseMessage["message_button"] = labelButton
-                        responseMessage["text"] = responseText
-
-                        responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
-                    })
-                }
-                else if(userContent == global.defineManager.ACADEMIC_CALENDAR) {
-                    // responseButton = global.defineManager.YEAR_SCHEDULE
-                    // schoolManager.GetAcademicScheduleThisMonth()
-                    // responseMessage["text"] = global.defineManager.ASK_SEARCH_TARGET_MONTH
-                    //
-                    // responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
-                    var currentDate = new Date();
-                    currentTimezoneDate = new Date(currentDate.valueOf() + global.defineManager.GMT_KOREA_TIME_MIN * global.defineManager.HOUR_TO_MILE)
-                    currentMonth = currentTimezoneDate.getMonth()
-                    global.logManager.PrintLogMessage("index", "message", "searching current month: " + currentMonth + " schedule",
-                        global.defineManager.LOG_LEVEL_INFO)
-                    schoolManager.GetAcademicScheduleThisMonth(currentMonth, admin, convertManager, generateManager, response, requestMessage, responseManager)
+                    else {
+                        global.logManager.PrintLogMessage("index", "message", "weather api has problem code: " + processResultCode,
+                            global.defineManager.LOG_LEVEL_WARN)
+                    }
                 }
                 else {
-                    messageSent = false
-                    for(indexNumber in busStopScheduleDatabase["busStop"]) {
-                        if(userContent == busStopScheduleDatabase["busStop"][indexNumber]) {
-                            global.logManager.PrintLogMessage("index", "message", "found moving path: " + userContent + " at #" + indexNumber,
-                                global.defineManager.LOG_LEVEL_INFO)
-                            messageSent = true
-                            databaseSnapshot = busStopScheduleDatabase["busSchedule"][indexNumber]
-
-                            responseButton = global.defineManager.MAIN_BUTTONS
-                            responseText = busTimeManager.SearchFastestShuttleBasedOnStartPoint(userContent, databaseSnapshot)
-
-                            admin.database().ref('/' + global.defineManager.DATABASE_WEATHER + '/').once('value', function (snapshot) {
-                                databaseSnapshot = snapshot.val()
-                                if(databaseSnapshot != null) {
-                                    processResultCode = databaseSnapshot["cod"]
-                                    if(processResultCode == global.defineManager.HTTP_REQUEST_SUCCESS) {
-                                        weatherCastStr = weatherManager.WeatherCast(databaseSnapshot, convertManager)
-                                        responseText = responseText + "\n" + weatherCastStr
-                                    }
-                                    else {
-                                        global.logManager.PrintLogMessage("index", "message", "weather api has problem code: " + processResultCode,
-                                            global.defineManager.LOG_LEVEL_WARN)
-                                    }
-                                }
-                                else {
-                                    global.logManager.PrintLogMessage("index", "message", "weather data seems not rdy",
-                                        global.defineManager.LOG_LEVEL_WARN)
-                                }
-                                responseText = responseText + "\n" + contentsManager.NoticeMonday()
-
-                                admin.database().ref('/' + global.defineManager.DATABASE_ADVERTISE + '/').once('value', function(snapshot){
-                                    databaseSnapshot = snapshot.val()
-                                    responseMessage = advertiseManager.GetTimeAdvertise(databaseSnapshot, responseText)
-
-                                    messageSent = true
-                                    responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
-                                })
-                            })
-                            break;
-                        }
-                    }
-                    if(messageSent == false) {
-                        responseButton = global.defineManager.MAIN_BUTTONS
-                        responseMessage["text"] = global.defineManager.SAY_AGAIN
-                        responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
-                    }
+                    global.logManager.PrintLogMessage("index", "message", "weather data seems not rdy",
+                        global.defineManager.LOG_LEVEL_WARN)
                 }
-            })
-            break;
-        default:
-            global.logManager.PrintLogMessage("index", "message",
-                "wrong access accepted",
-                global.defineManager.LOG_LEVEL_WARN)
-            break;
-    }
-});
+                responseText = responseText + "\n" + contentsManager.NoticeMonday()
 
-exports.friend = functions.https.onRequest(function(request, response){
-    switch(request.method) {
-        case 'POST':
-            break;
-        case 'DELETE':
-            break;
-        default:
-            break;
-    }
-});
+                // console.log(JSON.stringify(databaseSnapshot))
+                databaseSnapshotAdvertise = databaseSnapshot["Advertise"]
+                responseMessage = advertiseManager.GetTimeAdvertise(databaseSnapshotAdvertise, responseText)
 
-exports.chat_room = functions.https.onRequest(function(request, response){
-    switch(request.method) {
-        case 'DELETE':
-            break;
-        default:
-            break;
+                messageSent = true
+                responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
+                break;
+            }
+        }
+        if(messageSent == false) {
+            responseButton = global.defineManager.MAIN_BUTTONS
+            responseMessage["text"] = global.defineManager.SAY_AGAIN
+            responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
+        }
     }
-});
+})
+
+kakaoApp.post('/friend', function (request, response) {
+    response.status(200).send()
+})
+
+kakaoApp.delete('/friend:user_key', function (request, response) {
+    response.status(200).send()
+})
+
+kakaoApp.delete('/chat_room:user_key', function (request, response) {
+    response.status(200).send()
+})
 
 exports.log = functions.https.onRequest(function(request, response){
     switch(request.method) {
@@ -259,6 +255,8 @@ exports.beta = functions.https.onRequest(function(request, response){
             break;
     }
 });
+
+exports.kakao = functions.https.onRequest(kakaoApp);
 
 // Web api
 
