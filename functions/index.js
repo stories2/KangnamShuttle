@@ -24,7 +24,7 @@ const app = express();
 const lineApp = express();
 const kakaoApp = express();
 
-global.performanceManager.PreventColdStart2()
+// global.performanceManager.PreventColdStart2()
 
 const verifyAuthToken = function (request, response, next) {
     try {
@@ -126,7 +126,7 @@ kakaoApp.get('/warmstart2', function (request, response) {
 kakaoApp.get('/staywarm', function (request, response) {
     global.logManager.PrintLogMessage("index", "staywarm", "start stay warm", global.defineManager.LOG_LEVEL_DEBUG)
     response.status(200).send()
-    global.performanceManager.PreventColdStart()
+    global.performanceManager.PreventColdStart3()
 })
 
 kakaoApp.get('/keyboard', function (request, response) {
