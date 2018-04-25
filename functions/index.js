@@ -82,7 +82,7 @@ kakaoApp.use(middleWareOfMessage)
 
 kakaoApp.get('/warmstart2', function (request, response) {
 
-    setTime = 60000
+    setTime = 15000
 
     url = "https://us-central1-kangnamshuttle.cloudfunctions.net/kakao/warmstart2"
     // url = "http://localhost:5000/kangnamshuttle/us-central1/kakao/keyboard"
