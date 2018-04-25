@@ -123,6 +123,12 @@ kakaoApp.get('/warmstart2', function (request, response) {
     }, setTime)
 })
 
+kakaoApp.get('/staywarm', function (request, response) {
+    global.logManager.PrintLogMessage("index", "staywarm", "start stay warm", global.defineManager.LOG_LEVEL_DEBUG)
+    response.status(200).send()
+    performanceManager.PreventColdStart()
+})
+
 kakaoApp.get('/keyboard', function (request, response) {
 
     global.logManager.PrintLogMessage("index", "keyboard", "init keyboard", global.defineManager.LOG_LEVEL_INFO)
