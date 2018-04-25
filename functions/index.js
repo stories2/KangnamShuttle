@@ -80,14 +80,30 @@ const middleWareOfMessage = function (request, response, next) {
 kakaoApp.use(cors)
 kakaoApp.use(middleWareOfMessage)
 
-kakaoApp.get('/warmstart', function (request, response) {
+kakaoApp.get('/warmstart2', function (request, response) {
 
-    setTime = 600000
+    setTime = 60000
 
-    url = "https://us-central1-kangnamshuttle.cloudfunctions.net/kakao/warmstart"
+    url = "https://us-central1-kangnamshuttle.cloudfunctions.net/kakao/warmstart2"
     // url = "http://localhost:5000/kangnamshuttle/us-central1/kakao/keyboard"
-    global.logManager.PrintLogMessage("index", "warmstart", "start set functions time: " + setTime + "warm: " + url, global.defineManager.LOG_LEVEL_DEBUG)
+    global.logManager.PrintLogMessage("index", "warmstart2", "start set functions time: " + setTime + "warm: " + url, global.defineManager.LOG_LEVEL_DEBUG)
     response.status(200).send()
+
+    recursiveCallFunc = function () {
+        var httpsManager = require("https")
+        httpsManager.get(url, function (response) {
+            var serverData = ""
+            response.on('data', function (chunk) {
+                serverData += chunk
+            })
+            response.on('end', function () {
+                global.logManager.PrintLogMessage("index", "warmstart2", "setting still warm ok", global.defineManager.LOG_LEVEL_DEBUG)
+            })
+            response.on('error', function (except) {
+                global.logManager.PrintLogMessage("index", "warmstart2", "something has problem while set still warm: " + except, global.defineManager.LOG_LEVEL_ERROR)
+            })
+        })
+    }
 
     setTimeout(function () {
         var httpsManager = require("https")
@@ -97,10 +113,11 @@ kakaoApp.get('/warmstart', function (request, response) {
                 serverData += chunk
             })
             response.on('end', function () {
-                global.logManager.PrintLogMessage("index", "warmstart", "setting still warm ok", global.defineManager.LOG_LEVEL_DEBUG)
+                global.logManager.PrintLogMessage("index", "warmstart2", "setting still warm ok", global.defineManager.LOG_LEVEL_DEBUG)
             })
             response.on('error', function (except) {
-                global.logManager.PrintLogMessage("index", "warmstart", "something has problem while set still warm: " + except, global.defineManager.LOG_LEVEL_ERROR)
+                global.logManager.PrintLogMessage("index", "warmstart2", "something has problem while set still warm: " + except, global.defineManager.LOG_LEVEL_ERROR)
+                setTimeout(recursiveCallFunc, setTime)
             })
         })
     }, setTime)
