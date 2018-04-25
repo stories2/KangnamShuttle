@@ -1,6 +1,16 @@
 from Settings import DefineManager
 from Utils import LogManager
 import datetime
+import requests
+import time
+import threading
+
+def Runner(delayTime):
+    while DefineManager.RUNNING_STATUS:
+        response = requests.get('https://us-central1-kangnamshuttle.cloudfunctions.net/kakao/keyboard')
+        LogManager.PrintLogMessage("RequestManager", "Runner", "status code: " + str(response.status_code),
+                                   DefineManager.LOG_LEVEL_INFO)
+        time.sleep(delayTime)
 
 def PreventColdStart(enable):
     if DefineManager.RUNNING_STATUS == enable:
@@ -35,9 +45,7 @@ def PreventColdStart(enable):
         return
 
     DefineManager.RUNNING_STATUS = enable
-    Runner()
+    # Runner(15)
+    threadRunner = threading.Thread(target=Runner, args=(DefineManager.REQUEST_THREAD_DELAY_TIME, ))
+    threadRunner.start()
     return
-
-def Runner():
-    while DefineManager.RUNNING_STATUS:
-        break;
