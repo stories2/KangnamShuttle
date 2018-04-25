@@ -1,6 +1,7 @@
 global.defineManager = require('./Settings/DefineManager');
 global.logManager = require('./Utils/LogManager');
 global.util = require('util')
+global.performanceManager = require('./Core/PerformanceManager');
 
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
@@ -13,7 +14,6 @@ const generateManager = require('./Utils/GenerateManager');
 const convertManager = require('./Utils/ConvertManager');
 const schoolManager = require('./Core/SchoolManager');
 const weatherManager = require('./Core/WeatherManager');
-const performanceManager = require('./Core/PerformanceManager');
 
 admin.initializeApp(functions.config().firebase);
 
@@ -24,7 +24,7 @@ const app = express();
 const lineApp = express();
 const kakaoApp = express();
 
-// performanceManager.PreventColdStart()
+global.performanceManager.PreventColdStart2()
 
 const verifyAuthToken = function (request, response, next) {
     try {
@@ -126,7 +126,7 @@ kakaoApp.get('/warmstart2', function (request, response) {
 kakaoApp.get('/staywarm', function (request, response) {
     global.logManager.PrintLogMessage("index", "staywarm", "start stay warm", global.defineManager.LOG_LEVEL_DEBUG)
     response.status(200).send()
-    performanceManager.PreventColdStart()
+    global.performanceManager.PreventColdStart()
 })
 
 kakaoApp.get('/keyboard', function (request, response) {
