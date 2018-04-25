@@ -1,7 +1,9 @@
 from Settings import DefineManager
 from Utils import LogManager, ConvertManager
+from Core import RequestManager
 
 def GetUpTime():
+    RequestManager.UpdateRunningTime()
     if DefineManager.RUNNING_TIME == None:
         LogManager.PrintLogMessage("CountManager", "GetUpTime", "process not running", DefineManager.LOG_LEVEL_WARN)
         return [0, 0, 0, 0]
