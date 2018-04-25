@@ -7,7 +7,7 @@
    <!--- basic page needs
    ================================================== -->
    <meta charset="utf-8">
-	<title>Khronos - Static</title>
+	<title>KangnamShuttle system control page</title>
 	<meta name="description" content="">  
 	<meta name="author" content="">
 
@@ -17,17 +17,17 @@
 
  	<!-- CSS
    ================================================== -->
-   <link rel="stylesheet" href="css/base.css">  
-   <link rel="stylesheet" href="css/main.css">
-   <link rel="stylesheet" href="css/vendor.css">
+   <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+   <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+   <link rel="stylesheet" href="{{ url_for('static', filename='css/vendor.css') }}">
 
    <!-- script
    ================================================== -->
-	<script src="js/modernizr.js"></script>
+	<script src="{{ url_for('static', filename='js/modernizr.js') }}"></script>
 
    <!-- favicons
 	================================================== -->
-	<link rel="icon" type="image/png" href="favicon.png">
+	<!--<link rel="icon" type="image/png" href="favicon.png">-->
 
 </head>
 
@@ -38,17 +38,17 @@
    <header>
 
    	<div class="row">
-   		<div class="logo">
-	         <a href="index.html">Khronos</a>
-	      </div> 
+   		<!--<div class="logo">-->
+	         <!--<a href="index.html">Khronos</a>-->
+	      <!--</div> -->
 
 			<div class="social-links">
 			   <ul>
-					<li><a href="#"><i class="fa fa-facebook"></i></a></li>
-					<li><a href="#"><i class="fa fa-twitter"></i></a></li>
-				   <li><a href="#"><i class="fa fa-pinterest"></i></a></li>				   
-				   <li><a href="#"><i class="fa fa-instagram"></i></a></li> 
-				   <li><a href="#"><i class="fa fa-dribbble"></i></a></li>				     			
+					<!--<li><a href="#"><i class="fa fa-facebook"></i></a></li>-->
+					<!--<li><a href="#"><i class="fa fa-twitter"></i></a></li>-->
+				   <!--<li><a href="#"><i class="fa fa-pinterest"></i></a></li>				   -->
+				   <!--<li><a href="#"><i class="fa fa-instagram"></i></a></li> -->
+				   <li><a href="https://github.com/stories2/KangnamShuttle"><i class="fa fa-github"></i></a></li>
 				</ul>
 			</div>
    	</div> 
@@ -67,37 +67,37 @@
 
 		   	<div class="row">
 		   		<div class="col-twelve">
-
+					{% block content %}
 		   			<div id="counter">
 		   				<div class="half">
-		   					<span>334 <sup>days</sup></span> 
-		 						<span>23 <sup>hours</sup></span>
+		   					<span>{{ days }} <sup>일</sup></span>
+		 						<span>{{ hours }} <sup>시간</sup></span>
 		   				</div>
 							<div class="half">
-								<span>50 <sup>mins</sup></span>
-		 						<span>33 <sup>secs</sup></span>
+								<span>{{ mins }} <sup>분</sup></span>
+		 						<span>{{ sec }} <sup>초</sup></span>
 		 					</div> 
 		   			</div>
+					{% endblock %}
 
 			  			<div class="bottom-text">
-			  				<h1>Our site is launching soon.</h1>
+			  				<h1>사이트 작동 중</h1>
 				  			<p>
-							Khronos is a modern and stylish website template designed to present
-							your future super awesome product or service. 
+							Firebase의 KangnamShuttle 프로젝트가 자꾸 Cold Start로 인해 응답속도가 느려저 해결하기 위해 제작된 페이지 입니다.
 				  			</p>			  				
 			  			</div>			  						  			   			
 
 			   	</div> <!-- /twelve --> 
 
-			   	<div class="scroll-icon">
+			   	<!--<div class="scroll-icon">-->
 
-					   <p class="scroll-text">Scroll For More Info</p>
-					   <a href="#info" class="smoothscroll">
-					   	<div class="mouse"></div>
-					   </a>
-				   	<div class="end-top"></div>
+					   <!--<p class="scroll-text">Scroll For More Info</p>-->
+					   <!--<a href="#info" class="smoothscroll">-->
+					   	<!--<div class="mouse"></div>-->
+					   <!--</a>-->
+				   	<!--<div class="end-top"></div>-->
 
-					</div> <!-- /scroll-icon -->
+					<!--</div> &lt;!&ndash; /scroll-icon &ndash;&gt;-->
 		   	</div> <!-- /row -->  
 
 		   </div> <!-- /main-content --> 
@@ -109,337 +109,337 @@
 
    <!-- info
    ================================================== -->
-   <section id="info">
+   <!--<section id="info">-->
 
-   	<div class="info-overlay"></div>
+   	<!--<div class="info-overlay"></div>-->
 
-   	<div class="row">   		
-   		<div class="col-twelve tabs-wrap">
+   	<!--<div class="row">   		-->
+   		<!--<div class="col-twelve tabs-wrap">-->
 
-   			<ul class="tabs"> 
-   				<li class="active" data-id="tab-about"><i class="icon-user"></i><span>About</span></li>
-   				<li data-id="tab-contact"><i class="icon-mail"></i><span>Contact</span></li>							
-					<li data-id="tab-subscribe"><i class="icon-newspaper"></i><span>Subscribe</span></li>				
-				</ul> <!-- /tabs -->
+   			<!--<ul class="tabs"> -->
+   				<!--<li class="active" data-id="tab-about"><i class="icon-user"></i><span>About</span></li>-->
+   				<!--<li data-id="tab-contact"><i class="icon-mail"></i><span>Contact</span></li>							-->
+					<!--<li data-id="tab-subscribe"><i class="icon-newspaper"></i><span>Subscribe</span></li>				-->
+				<!--</ul> &lt;!&ndash; /tabs &ndash;&gt;-->
 
-				<div class="tab-container">
+				<!--<div class="tab-container">-->
 
-					<!-- tab content - about
-   				================================================== -->
-					<div id="tab-about" class="tab-content">
-						
-					   <div class="tab-entry">
+					<!--&lt;!&ndash; tab content - about-->
+   				<!--================================================== &ndash;&gt;-->
+					<!--<div id="tab-about" class="tab-content">-->
+						<!---->
+					   <!--<div class="tab-entry">-->
 
-					   	<div class="row tab-entry-intro">
-					   		<div class="col-twelve with-bottom-line">
+					   	<!--<div class="row tab-entry-intro">-->
+					   		<!--<div class="col-twelve with-bottom-line">-->
 
-					   			<h1>Get To Know Us.</h1>
+					   			<!--<h1>Get To Know Us.</h1>-->
 
-					   			<p class="lead">Lorem ipsum Do commodo in proident enim in dolor cupidatat adipisicing dolore officia nisi aliqua incididunt Ut veniam lorem ipsum Consectetur ut in in eu do.</p>
+					   			<!--<p class="lead">Lorem ipsum Do commodo in proident enim in dolor cupidatat adipisicing dolore officia nisi aliqua incididunt Ut veniam lorem ipsum Consectetur ut in in eu do.</p>-->
 
-					   		</div>   		
-					   	</div> <!-- /tab-content-intro -->
+					   		<!--</div>   		-->
+					   	<!--</div> &lt;!&ndash; /tab-content-intro &ndash;&gt;-->
 
-					   	<div class="row about-content tab-entry-content">
-					     		
-					   		<div class="about-list block-1-3 block-s-1-2 block-tab-full">
+					   	<!--<div class="row about-content tab-entry-content">-->
+					     		<!---->
+					   		<!--<div class="about-list block-1-3 block-s-1-2 block-tab-full">-->
 
-						      	<div class="bgrid item">	
+						      	<!--<div class="bgrid item">	-->
 
-						      		<span class="icon"><i class="icon-mobile"></i></span>            
+						      		<!--<span class="icon"><i class="icon-mobile"></i></span>            -->
 
-						            <div class="item-content">	
+						            <!--<div class="item-content">	-->
 
-						            	 <h3 class="h05">Fully Resposive</h3>
+						            	 <!--<h3 class="h05">Fully Resposive</h3>-->
 
-							            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.
-						         		</p>
-						         		
-						         	</div> 	         	 
+							            <!--<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.-->
+						         		<!--</p>-->
+						         		<!---->
+						         	<!--</div> 	         	 -->
 
-									</div> <!-- /bgrid -->
+									<!--</div> &lt;!&ndash; /bgrid &ndash;&gt;-->
 
-									<div class="bgrid item">	
+									<!--<div class="bgrid item">	-->
 
-										<span class="icon"><i class="icon-eye"></i></span>                          
+										<!--<span class="icon"><i class="icon-eye"></i></span>                          -->
 
-						            <div class="item-content">	
-						            	<h3 class="h05">Retina Ready</h3>  
+						            <!--<div class="item-content">	-->
+						            	<!--<h3 class="h05">Retina Ready</h3>  -->
 
-							            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.
-						         		</p>
+							            <!--<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.-->
+						         		<!--</p>-->
 
-						         		
-						            </div>	                          
+						         		<!---->
+						            <!--</div>	                          -->
 
-								   </div> <!-- /bgrid -->
+								   <!--</div> &lt;!&ndash; /bgrid &ndash;&gt;-->
 
-								   <div class="bgrid item">
+								   <!--<div class="bgrid item">-->
 
-								   	<span class="icon"><i class="icon-pencil-ruler"></i></span>		            
+								   	<!--<span class="icon"><i class="icon-pencil-ruler"></i></span>		            -->
 
-						            <div class="item-content">
-						            	<h3 class="h05">Stylish Design</h3>
+						            <!--<div class="item-content">-->
+						            	<!--<h3 class="h05">Stylish Design</h3>-->
 
-							            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.
-						        			</p> 
+							            <!--<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.-->
+						        			<!--</p> -->
 
-						        			
-						            </div> 	            	               
+						        			<!---->
+						            <!--</div> 	            	               -->
 
-								   </div> <!-- /bgrid -->
+								   <!--</div> &lt;!&ndash; /bgrid &ndash;&gt;-->
 
-									<div class="bgrid item">
+									<!--<div class="bgrid item">-->
 
-										<span class="icon"><i class="icon-objects"></i></span>	              
+										<!--<span class="icon"><i class="icon-objects"></i></span>	              -->
 
-						            <div class="item-content">
-						            	<h3 class="h05">Clean Code</h3>
+						            <!--<div class="item-content">-->
+						            	<!--<h3 class="h05">Clean Code</h3>-->
 
-							            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.
-						         		</p> 
+							            <!--<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.-->
+						         		<!--</p> -->
 
-						         		
-						            </div>                
+						         		<!---->
+						            <!--</div>                -->
 
-									</div> <!-- /bgrid -->
+									<!--</div> &lt;!&ndash; /bgrid &ndash;&gt;-->
 
-								   <div class="bgrid item">
+								   <!--<div class="bgrid item">-->
 
-								   	<span class="icon"><i class="icon-sliders"></i></span>	            
+								   	<!--<span class="icon"><i class="icon-sliders"></i></span>	            -->
 
-						            <div class="item-content">	
-						            	<h3 class="h05">Easy To Customize</h3>
+						            <!--<div class="item-content">	-->
+						            	<!--<h3 class="h05">Easy To Customize</h3>-->
 
-							            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.
-						        			</p> 
+							            <!--<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.-->
+						        			<!--</p> -->
 
-						        			
-						            </div>	               
+						        			<!---->
+						            <!--</div>	               -->
 
-								   </div> <!-- /bgrid -->
+								   <!--</div> &lt;!&ndash; /bgrid &ndash;&gt;-->
 
-								   <div class="bgrid item">
+								   <!--<div class="bgrid item">-->
 
-								   	<span class="icon"><i class="icon-gift"></i></span>	   	           
+								   	<!--<span class="icon"><i class="icon-gift"></i></span>	   	           -->
 
-						            <div class="item-content">
-						            	 <h3 class="h05">Free of Charge</h3>
+						            <!--<div class="item-content">-->
+						            	 <!--<h3 class="h05">Free of Charge</h3>-->
 
-							            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.
-						        			</p> 
-						        			
-						            </div>	               
+							            <!--<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.-->
+						        			<!--</p> -->
+						        			<!---->
+						            <!--</div>	               -->
 
-								   </div> <!-- /bgrid -->
+								   <!--</div> &lt;!&ndash; /bgrid &ndash;&gt;-->
 
-						      </div> <!-- /about-list --> 
+						      <!--</div> &lt;!&ndash; /about-list &ndash;&gt; -->
 
-					     	</div> <!-- /row about-content -->
-					     		
-					   </div> <!-- /tab-entry -->
+					     	<!--</div> &lt;!&ndash; /row about-content &ndash;&gt;-->
+					     		<!---->
+					   <!--</div> &lt;!&ndash; /tab-entry &ndash;&gt;-->
 
-					</div> <!-- /tab-about -->	
+					<!--</div> &lt;!&ndash; /tab-about &ndash;&gt;	-->
 
 
-					<!-- tab content contact
-   				================================================== -->
-					<div id="tab-contact" class="tab-content">
+					<!--&lt;!&ndash; tab content contact-->
+   				<!--================================================== &ndash;&gt;-->
+					<!--<div id="tab-contact" class="tab-content">-->
 
-						<div class="tab-entry">
+						<!--<div class="tab-entry">-->
 
-							<div class="row tab-entry-intro">
-					   		<div class="col-twelve with-bottom-line">
+							<!--<div class="row tab-entry-intro">-->
+					   		<!--<div class="col-twelve with-bottom-line">-->
 
-					   			<h1>Get In Touch.</h1>
+					   			<!--<h1>Get In Touch.</h1>-->
 
-					   			<p class="lead">Lorem ipsum Do commodo in proident enim in dolor cupidatat adipisicing dolore officia nisi aliqua incididunt Ut veniam lorem ipsum Consectetur ut in in eu do.</p>
+					   			<!--<p class="lead">Lorem ipsum Do commodo in proident enim in dolor cupidatat adipisicing dolore officia nisi aliqua incididunt Ut veniam lorem ipsum Consectetur ut in in eu do.</p>-->
 
-					   		</div>   		
-					   	</div> <!-- /tab-content-intro -->
+					   		<!--</div>   		-->
+					   	<!--</div> &lt;!&ndash; /tab-content-intro &ndash;&gt;-->
 
-					   	<div class="row form-wrap tab-entry-content">
-					   		<div class="col-twelve">
+					   	<!--<div class="row form-wrap tab-entry-content">-->
+					   		<!--<div class="col-twelve">-->
 
-					            <!-- form -->
-					            <form name="contactForm" id="contactForm" method="post" action="">
-					      			<fieldset>
+					            <!--&lt;!&ndash; form &ndash;&gt;-->
+					            <!--<form name="contactForm" id="contactForm" method="post" action="">-->
+					      			<!--<fieldset>-->
 
-					                  <div class="form-field">
-					 						   <input name="contactName" type="text" id="contactName" placeholder="Name" value="" minlength="2" required="">
-					                  </div>
-					                  <div class="form-field">
-						      			   <input name="contactEmail" type="email" id="contactEmail" placeholder="Email" value="" required="">
-						               </div>
-					                  <div class="form-field">
-						     				   <input name="contactSubject" type="text" id="contactSubject" placeholder="Subject" value="">
-						               </div>                       
-					                  <div class="form-field">
-						                 	<textarea name="contactMessage" id="contactMessage" placeholder="message" rows="10" cols="50" required=""></textarea>
-						               </div>                      
-					                 <div class="form-field">
-					                     <button class="submitForm button button-primary large">Submit</button>
+					                  <!--<div class="form-field">-->
+					 						   <!--<input name="contactName" type="text" id="contactName" placeholder="Name" value="" minlength="2" required="">-->
+					                  <!--</div>-->
+					                  <!--<div class="form-field">-->
+						      			   <!--<input name="contactEmail" type="email" id="contactEmail" placeholder="Email" value="" required="">-->
+						               <!--</div>-->
+					                  <!--<div class="form-field">-->
+						     				   <!--<input name="contactSubject" type="text" id="contactSubject" placeholder="Subject" value="">-->
+						               <!--</div>                       -->
+					                  <!--<div class="form-field">-->
+						                 	<!--<textarea name="contactMessage" id="contactMessage" placeholder="message" rows="10" cols="50" required=""></textarea>-->
+						               <!--</div>                      -->
+					                 <!--<div class="form-field">-->
+					                     <!--<button class="submitForm button button-primary large">Submit</button>-->
 
-					                     <div id="submit-loader">
-					                        <div class="text-loader">Sending...</div>                             
-					       				      <div class="s-loader">
-													  	<div class="bounce1"></div>
-													  	<div class="bounce2"></div>
-													  	<div class="bounce3"></div>
-													</div>
-												</div><!-- submit-loader -->
-					                  </div>
+					                     <!--<div id="submit-loader">-->
+					                        <!--<div class="text-loader">Sending...</div>                             -->
+					       				      <!--<div class="s-loader">-->
+													  	<!--<div class="bounce1"></div>-->
+													  	<!--<div class="bounce2"></div>-->
+													  	<!--<div class="bounce3"></div>-->
+													<!--</div>-->
+												<!--</div>&lt;!&ndash; submit-loader &ndash;&gt;-->
+					                  <!--</div>-->
 
-					      			</fieldset>
-					      		</form> <!-- /form -->
+					      			<!--</fieldset>-->
+					      		<!--</form> &lt;!&ndash; /form &ndash;&gt;-->
 
-					            <!-- contact-warning -->
-					            <div id="message-warning">            	
-					            </div>            
-					            <!-- contact-success -->
-					      		<div id="message-success">
-					               <i class="fa fa-check"></i>Your message was sent, thank you!<br>
-					      		</div>
+					            <!--&lt;!&ndash; contact-warning &ndash;&gt;-->
+					            <!--<div id="message-warning">            	-->
+					            <!--</div>            -->
+					            <!--&lt;!&ndash; contact-success &ndash;&gt;-->
+					      		<!--<div id="message-success">-->
+					               <!--<i class="fa fa-check"></i>Your message was sent, thank you!<br>-->
+					      		<!--</div>-->
 
-					         </div> <!-- /col-twelve -->					   		
-					   	</div> <!-- /row contact-form -->
+					         <!--</div> &lt;!&ndash; /col-twelve &ndash;&gt;					   		-->
+					   	<!--</div> &lt;!&ndash; /row contact-form &ndash;&gt;-->
 
-						</div> <!-- /tab-entry --> 					
+						<!--</div> &lt;!&ndash; /tab-entry &ndash;&gt; 					-->
 
-					</div> <!-- /tab-contact -->
+					<!--</div> &lt;!&ndash; /tab-contact &ndash;&gt;-->
 
 
-					<!-- tab content - subscribe
-   				================================================== -->
-					<div id="tab-subscribe" class="tab-content">
+					<!--&lt;!&ndash; tab content - subscribe-->
+   				<!--================================================== &ndash;&gt;-->
+					<!--<div id="tab-subscribe" class="tab-content">-->
 
-						<div class="tab-entry">
+						<!--<div class="tab-entry">-->
 
-							<div class="row tab-entry-intro">
-					   		<div class="col-twelve with-bottom-line">
+							<!--<div class="row tab-entry-intro">-->
+					   		<!--<div class="col-twelve with-bottom-line">-->
 
-					   			<h1>Subcribe To Our Newsletter.</h1>
+					   			<!--<h1>Subcribe To Our Newsletter.</h1>-->
 
-					   			<p class="lead">Lorem ipsum Do commodo in proident enim in dolor cupidatat adipisicing dolore officia nisi aliqua incididunt Ut veniam lorem ipsum Consectetur ut in in eu do.</p>
+					   			<!--<p class="lead">Lorem ipsum Do commodo in proident enim in dolor cupidatat adipisicing dolore officia nisi aliqua incididunt Ut veniam lorem ipsum Consectetur ut in in eu do.</p>-->
 
-					   		</div>   		
-					   	</div> <!-- /tab-content-intro -->
+					   		<!--</div>   		-->
+					   	<!--</div> &lt;!&ndash; /tab-content-intro &ndash;&gt;-->
 
-					   	<div class="row form-wrap tab-entry-content">
-					   		<div class="col-twelve">
+					   	<!--<div class="row form-wrap tab-entry-content">-->
+					   		<!--<div class="col-twelve">-->
 
-					   			<form id="mc-form" class="group" novalidate="true">
+					   			<!--<form id="mc-form" class="group" novalidate="true">-->
 
-										<div class="form-field">					
-						   				<input type="email" value="" name="EMAIL" class="email" id="mce-EMAIL" placeholder="email address" required="">					   				
-						   			</div>
+										<!--<div class="form-field">					-->
+						   				<!--<input type="email" value="" name="EMAIL" class="email" id="mce-EMAIL" placeholder="email address" required="">					   				-->
+						   			<!--</div>-->
 
-							   		<div class="form-field">	
-							   			<input type="submit" value="Get Notified" name="subscribe" class="button button-primary large">
-							   		</div>
+							   		<!--<div class="form-field">	-->
+							   			<!--<input type="submit" value="Get Notified" name="subscribe" class="button button-primary large">-->
+							   		<!--</div>-->
 
-							   		<label for="mce-EMAIL" class="subscribe-message"></label>
-									
-									</form>
+							   		<!--<label for="mce-EMAIL" class="subscribe-message"></label>-->
+									<!---->
+									<!--</form>-->
 
-					   		</div> <!-- /twelve -->
-					   	</div> <!-- subscribe-form -->
+					   		<!--</div> &lt;!&ndash; /twelve &ndash;&gt;-->
+					   	<!--</div> &lt;!&ndash; subscribe-form &ndash;&gt;-->
 
-						</div> <!-- /tab-entry --> 						
+						<!--</div> &lt;!&ndash; /tab-entry &ndash;&gt; 						-->
 
-					</div> <!-- /tab-subscribe -->										
+					<!--</div> &lt;!&ndash; /tab-subscribe &ndash;&gt;										-->
 
-				</div> <!-- /tab-container -->
-   			
-   		</div> <!-- twelve -->
-   	</div> <!-- row -->   	
+				<!--</div> &lt;!&ndash; /tab-container &ndash;&gt;-->
+   			<!---->
+   		<!--</div> &lt;!&ndash; twelve &ndash;&gt;-->
+   	<!--</div> &lt;!&ndash; row &ndash;&gt;   	-->
 
-   </section> <!-- /info -->
+   <!--</section> &lt;!&ndash; /info &ndash;&gt;-->
 
 
    <!-- CTA Section
    ================================================== -->
-	<section id="cta">
+	<!--<section id="cta">-->
 
-   	<div class="row cta-wrap">
+   	<!--<div class="row cta-wrap">-->
 
-   		<div class="col-twelve cta-content">  
+   		<!--<div class="col-twelve cta-content">  -->
 
-	     		<h2 class="h01"><a href="http://www.dreamhost.com/r.cgi?287326|STYLESHOUT">Styleshout Recommends Dreamhost.</a></h2>
+	     		<!--<h2 class="h01"><a href="http://www.dreamhost.com/r.cgi?287326|STYLESHOUT">Styleshout Recommends Dreamhost.</a></h2>-->
 
-		      <p class="lead">
-		      Looking for an awesome and reliable webhosting? Try <a href="http://www.dreamhost.com/r.cgi?287326|STYLESHOUT"><span>DreamHost</span></a>.
-				Get <span>$50 off</span> when you sign up with the promocode <span>styleshout</span>. 
-				<!-- Simply type	the promocode in the box labeled “Promo Code” when placing your order. -->	
-				</p>
+		      <!--<p class="lead">-->
+		      <!--Looking for an awesome and reliable webhosting? Try <a href="http://www.dreamhost.com/r.cgi?287326|STYLESHOUT"><span>DreamHost</span></a>.-->
+				<!--Get <span>$50 off</span> when you sign up with the promocode <span>styleshout</span>. -->
+				<!--&lt;!&ndash; Simply type	the promocode in the box labeled “Promo Code” when placing your order. &ndash;&gt;	-->
+				<!--</p>-->
 
-				<div class="action">
-			      <a class="button large" href="http://www.dreamhost.com/r.cgi?287326|STYLESHOUT">Sign Up Now</a>
-		      </div>		     	
+				<!--<div class="action">-->
+			      <!--<a class="button large" href="http://www.dreamhost.com/r.cgi?287326|STYLESHOUT">Sign Up Now</a>-->
+		      <!--</div>		     	-->
 
-   		</div>
+   		<!--</div>-->
 
-   	</div> <!-- /cta-content -->
+   	<!--</div> &lt;!&ndash; /cta-content &ndash;&gt;-->
 
-   </section> <!-- /cta --> 
+   <!--</section> &lt;!&ndash; /cta &ndash;&gt; -->
 
 
    <!-- footer
    ================================================== -->
-   <footer>
+   <!--<footer>-->
 
-   	<div class="social-wrap">
-   		<div class="row">
-				
-	         <ul class="footer-social-list">
-	            <li><a href="#">
-	             	<i class="fa fa-facebook"></i><span>Facebook</span>
-	            </a></li>
-	            <li><a href="#">
-	              	<i class="fa fa-twitter"></i><span>Twitter</span>
-	            </a></li>
-	            <li><a href="#">
-	              	<i class="fa fa-pinterest"></i><span>Pinterest</span>
-	            </a></li>
-	            <li><a href="#">
-	              	<i class="fa fa-instagram"></i><span>Instagram</span>
-	            </a></li>
-	            <li><a href="#">
-	              	<i class="fa fa-dribbble"></i><span>Dribbble</span>
-	            </a></li>
-	         </ul>
-	         
-			</div> <!-- /row -->
-   	</div> <!-- /social-wrap -->
+   	<!--<div class="social-wrap">-->
+   		<!--<div class="row">-->
+				<!---->
+	         <!--<ul class="footer-social-list">-->
+	            <!--<li><a href="#">-->
+	             	<!--<i class="fa fa-facebook"></i><span>Facebook</span>-->
+	            <!--</a></li>-->
+	            <!--<li><a href="#">-->
+	              	<!--<i class="fa fa-twitter"></i><span>Twitter</span>-->
+	            <!--</a></li>-->
+	            <!--<li><a href="#">-->
+	              	<!--<i class="fa fa-pinterest"></i><span>Pinterest</span>-->
+	            <!--</a></li>-->
+	            <!--<li><a href="#">-->
+	              	<!--<i class="fa fa-instagram"></i><span>Instagram</span>-->
+	            <!--</a></li>-->
+	            <!--<li><a href="#">-->
+	              	<!--<i class="fa fa-dribbble"></i><span>Dribbble</span>-->
+	            <!--</a></li>-->
+	         <!--</ul>-->
+	         <!---->
+			<!--</div> &lt;!&ndash; /row &ndash;&gt;-->
+   	<!--</div> &lt;!&ndash; /social-wrap &ndash;&gt;-->
 
-   	<div class="footer-bottom">
+   	<!--<div class="footer-bottom">-->
 
-			<div class="footer-logo">
-					<img src="images/footer-logo.png" alt="">				
-			</div>
+			<!--<div class="footer-logo">-->
+					<!--<img src="images/footer-logo.png" alt="">				-->
+			<!--</div>-->
 
-   		<div class="copyright">
-		     	<span>© Copyright Khronos 2016.</span> 
-		     	<span>Design by <a href="http://www.styleshout.com/">styleshout</a></span>		         	
-		   </div>		   
+   		<!--<div class="copyright">-->
+		     	<!--<span>© Copyright Khronos 2016.</span> -->
+		     	<!--<span>Design by <a href="http://www.styleshout.com/">styleshout</a></span>		         	-->
+		   <!--</div>		   -->
 
-   	</div> <!-- /footer-bottom -->
+   	<!--</div> &lt;!&ndash; /footer-bottom &ndash;&gt;-->
 
-   	<div class="back-to-top">
-		 	<a href="#top" class="smoothscroll"><span>Back to Top</span></a>
-		</div>
+   	<!--<div class="back-to-top">-->
+		 	<!--<a href="#top" class="smoothscroll"><span>Back to Top</span></a>-->
+		<!--</div>-->
 
-   </footer>
+   <!--</footer>-->
 
-   <div id="preloader"> 
-    	<div id="loader"></div>
-   </div> 
+   <!--<div id="preloader"> -->
+    	<!--<div id="loader"></div>-->
+   <!--</div> -->
 
    <!-- Java Script
    ================================================== --> 
-   <script src="js/jquery-2.1.3.min.js"></script>
-   <script src="js/plugins.js"></script>
-   <script src="js/main.js"></script>
+   <script src="{{ url_for('static', filename='js/jquery-2.1.3.min.js') }}"></script>
+   <script src="{{ url_for('static', filename='js/plugins.js') }}"></script>
+   <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 
 </body>
 
