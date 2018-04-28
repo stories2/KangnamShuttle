@@ -318,52 +318,6 @@ exports.beta = functions.https.onRequest(function(request, response){
 
 exports.kakao = functions.https.onRequest(kakaoApp);
 
-// Web api
-
-exports.getListOfAdvertise = functions.https.onRequest(function(request, response){
-    switch(request.method) {
-        case 'GET':
-
-            admin.database().ref('/' + global.defineManager.DATABASE_ADVERTISE + '/').once('value', function(snapshot) {
-                databaseSnapshot = snapshot.val()
-
-                responseData = {}
-                responseData = advertiseManager.GetListOfAdvertise(databaseSnapshot)
-                response.setHeader('Content-Type', 'application/json');
-                response.setHeader("Access-Control-Allow-Origin", "*")
-                response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
-                response.status(200).send(JSON.stringify(responseData))
-            })
-            break;
-        default:
-            responseData = {
-                "msg": "Unavailable income."
-            }
-            response.setHeader('Content-Type', 'application/json');
-            response.setHeader("Access-Control-Allow-Origin", "*")
-            response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
-            response.status(405).send(JSON.stringify(responseData))
-            break;
-    }
-});
-
-exports.reservateAdvertise = functions.https.onRequest(function(request, response){
-    switch(request.method) {
-        case 'POST':
-            advertiseManager.ReservateAdvertise(admin, response, request.body)
-            break;
-        default:
-            responseData = {
-                "msg": "Unavailable income."
-            }
-            response.setHeader('Content-Type', 'application/json');
-            response.setHeader("Access-Control-Allow-Origin", "*")
-            response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
-            response.status(405).send(JSON.stringify(responseData))
-            break;
-    }
-});
-
 // Admin api
 
 app.post('/updateBusStop', function (request, response) {
