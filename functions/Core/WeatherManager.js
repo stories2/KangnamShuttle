@@ -48,9 +48,21 @@ exports.GetCurrentWeather = function (admin, country, lang, weatherApiKey) {
 
 exports.WeatherCast = function (weatherData, convertManager) {
     currentTemp = Math.floor(convertManager.ConvertKelvinToCelsius(weatherData["main"]["temp"]))
-    currentWeather = weatherData["weather"][0]["description"]
-    currentWeatherCode = weatherData["weather"][0]["id"]
-    weatherCastStr = global.util.format(global.defineManager.WEATHER_CAST_STR, currentWeather, currentTemp)
+
+    currentWeather = weatherData["weather"][0]
+    currentWeatherDes = currentWeather["description"]
+    currentWeatherCode = currentWeather["id"]
+
+    if(currentTemp > global.defineManager.HOT_WEATHER_CELSIUS_THRESHOLD &&
+        (currentWeather["id"] == global.defineManager.WEATHER_CODE_CLEAR_SKY ||
+            currentWeather["id"] == global.defineManager.WEATHER_CODE_FEW_CLOUDS)) {
+        weatherCastStr = global.util.format(global.defineManager.WEATHER_CAST_STR, currentWeatherDes, currentTemp)
+        global.logManager.PrintLogMessage("WeatherManager", "WeatherCast", "hot weather accepted",
+            global.defineManager.LOG_LEVEL_INFO)
+    }
+    else {
+        weatherCastStr = global.util.format(global.defineManager.WEATHER_CAST_WITH_NOTICE_STR, currentWeatherDes, currentTemp)
+    }
 
     global.logManager.PrintLogMessage("WeatherManager", "WeatherCast", "current weather cast: " + weatherCastStr,
         global.defineManager.LOG_LEVEL_INFO)

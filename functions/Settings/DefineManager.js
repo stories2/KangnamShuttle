@@ -82,6 +82,7 @@ exports.DICE_NUMBER_RESULT_STR = "%s 가즈아~!!"
 exports.SCHEDULE_RESULT_STR = "%s월달의 일정을 알려줄께요!\n"
 
 exports.WEATHER_CAST_STR = "현재 경기도의 날씨는 %s 이며 기온은 섭씨 %s도 이군요!"
+exports.WEATHER_CAST_WITH_NOTICE_STR = "현재 경기도의 날씨는 %s 이며 기온은 섭씨 %s도 이군요!\n날씨가 많이 더워요, 계단 안쪽으로 줄서주세요!"
 
 exports.SAY_AGAIN = "다시 말해주세요!"
 
@@ -153,3 +154,7 @@ exports.LINE_RESPONSE_MAIN_CAROUSEL = 12
 exports.LINE_RESPONSE_RUTE_CAROUSEL = 13
 
 exports.LINE_RESPONSE_INTRODUCE = 14
+
+exports.HOT_WEATHER_CELSIUS_THRESHOLD = 25
+exports.WEATHER_CODE_CLEAR_SKY = 800
+exports.WEATHER_CODE_FEW_CLOUDS = 801
