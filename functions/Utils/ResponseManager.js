@@ -32,16 +32,108 @@ exports.TemplateOfResponse = function (responseJsonDicData, responseCode, respon
 }
 
 exports.LineIntroResponse = function (responseManager, lineBotManager, event, recursiveId) {
-    if(recursiveId > 2){
+    if(recursiveId > 10){
         return
     }
-    delayTime = 750
+    delayTime = 10000
     global.logManager.PrintLogMessage("ResponseManager", "LineIntroResponse", "testing intro response delay time: " + delayTime,
         global.defineManager.LOG_LEVEL_DEBUG)
 
     userId = event.source.userId
 
-    lineBotManager.push(userId, "hello" + recursiveId)
+    switch (recursiveId) {
+        case 0:
+            lineBotManager.push(userId, ["안녕하세요 여러분!", "라인에서 만나게되서 정말 반가워요!"])
+            break;
+        case 1:
+            lineBotManager.push(userId, {
+                type: 'sticker',
+                packageId: '1',
+                stickerId: '2'
+            })
+            break;
+        case 2:
+            lineBotManager.push(userId, "라인에서는 보다 다양한 기능이 가능해지는데요")
+            break;
+        case 3:
+            lineBotManager.push(userId, {
+                type: 'location',
+                title: '달구지 위치',
+                address: '강남대학교 이공관',
+                latitude: 37.2770729,
+                longitude: 127.1341291
+            })
+            break;
+        case 4:
+            lineBotManager.push(userId, "실시간 달구지 위치를 알아본다던가")
+            break;
+        case 5:
+            lineBotManager.push(userId, {
+                type: 'imagemap',
+                baseUrl: 'https://example.com/bot/images/rm001',
+                altText: 'this is an imagemap',
+                baseSize: { height: 1040, width: 1040 },
+                actions: [{
+                    type: 'uri',
+                    linkUri: 'https://example.com/',
+                    area: { x: 0, y: 0, width: 520, height: 1040 }
+                }, {
+                    type: 'message',
+                    text: '분실물 안내',
+                    area: { x: 520, y: 0, width: 520, height: 1040 }
+                }]})
+            break;
+        case 6:
+            lineBotManager.push(userId, "혹시 잃어버린 물건을 발견했다면 알려줄 수 있어요!")
+            break;
+        case 7:
+            lineBotManager.push(userId,{
+                type: 'template',
+                altText: '달구지 이용 방향 설정',
+                template: {
+                    type: 'carousel',
+                    columns: [{
+                        thumbnailImageUrl: 'https://example.com/bot/images/item1.jpg',
+                        title: '달구지 목적지 설정',
+                        text: '가려는 목적지를 알려주세요',
+                        actions: [{
+                            type: 'postback',
+                            label: '기흥역에서 이공관으로 갈꺼야',
+                            data: 'action=buy&itemid=111'
+                        }, {
+                            type: 'postback',
+                            label: '강남대역에서 이공관으로 갈꺼야',
+                            data: 'action=buy&itemid=111'
+                        }]
+                    }, {
+                        thumbnailImageUrl: 'https://example.com/bot/images/item1.jpg',
+                        title: '달구지 목적지 설정',
+                        text: '가려는 목적지를 알려주세요',
+                        actions: [{
+                            type: 'postback',
+                            label: '이공관에서 기흥역으로 갈꺼야',
+                            data: 'action=buy&itemid=111'
+                        }, {
+                            type: 'postback',
+                            label: '이공관에서 강남대역으로 갈꺼야',
+                            data: 'action=buy&itemid=111'
+                        }]
+                    }]
+                }
+            })
+            break;
+        case 8:
+            lineBotManager.push(userId, "기본적인 기능은 당연히 그데로 있구요!")
+            break;
+        case 9:
+            lineBotManager.push(userId, "기대되지 않나요?")
+            break;
+        case 10:
+            lineBotManager.push(userId, "아직은 개발 중인 상태이지만, 빠른시일 내로 정식으로 만날 수 있을 꺼에요!")
+            break;
+        default:
+            break;
+    }
     setTimeout(function () {
         responseManager.LineIntroResponse(responseManager, lineBotManager, event, recursiveId + 1)
     }, delayTime)
