@@ -31,6 +31,22 @@ exports.TemplateOfResponse = function (responseJsonDicData, responseCode, respon
     response.status(responseCode).send(JSON.stringify(template));
 }
 
+exports.LineIntroResponse = function (responseManager, lineBotManager, event, recursiveId) {
+    if(recursiveId > 2){
+        return
+    }
+    delayTime = 750
+    global.logManager.PrintLogMessage("ResponseManager", "LineIntroResponse", "testing intro response delay time: " + delayTime,
+        global.defineManager.LOG_LEVEL_DEBUG)
+
+    userId = event.source.userId
+
+    lineBotManager.push(userId, "hello" + recursiveId)
+    setTimeout(function () {
+        responseManager.LineIntroResponse(responseManager, lineBotManager, event, recursiveId + 1)
+    }, delayTime)
+}
+
 exports.LineTemplateResponse = function (responseType) {
 
     responseType = parseInt(responseType, 0)
