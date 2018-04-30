@@ -283,38 +283,24 @@ kakaoApp.delete('/chat_room/:user_key', function (request, response) {
     response.status(200).send()
 })
 
-exports.log = functions.https.onRequest(function(request, response){
-    switch(request.method) {
-        case 'GET':
-            admin.database().ref('/Log/').once('value', function(snapshot){
-                databaseSnapshot = snapshot.val()
+kakaoApp.get('/log', function (request, response) {
+    admin.database().ref('/Log/').once('value', function(snapshot){
+        databaseSnapshot = snapshot.val()
 
-                response.setHeader('Content-Type', 'application/json');
-                response.status(200).send(JSON.stringify(databaseSnapshot))
-            });
-            break;
-        default:
-            break;
+        response.setHeader('Content-Type', 'application/json');
+        response.status(200).send(JSON.stringify(databaseSnapshot))
+    });
+})
+
+kakaoApp.post('/beta', function (request, response) {
+    contentsManager.NoticeMonday()
+
+    responseData = {
+        "msg": "This is testing feature"
     }
-});
-
-exports.beta = functions.https.onRequest(function(request, response){
-    switch(request.method) {
-        case 'POST':
-            // schoolManager.GetAcademicScheduleThisMonth()
-            // weatherManager.GetCurrentWeather(admin, "Gyeonggi-do,kr", "kr")
-            contentsManager.NoticeMonday()
-
-            responseData = {
-                "msg": "This is testing feature"
-            }
-            response.setHeader('Content-Type', 'application/json');
-            response.status(200).send(JSON.stringify(responseData))
-            break;
-        default:
-            break;
-    }
-});
+    response.setHeader('Content-Type', 'application/json');
+    response.status(200).send(JSON.stringify(responseData))
+})
 
 exports.kakao = functions.https.onRequest(kakaoApp);
 
@@ -393,17 +379,18 @@ lineApp.post('/lineWebhook', lineBotParser)
 
 lineBotManager.on('message', function (event) {
 
-    replyData = responseManager.LineTemplateResponse(event.message.text)
-
-    event.reply(replyData).then(function (data) {
-        // console.log('Success', data);
-        dataStr = JSON.stringify(data)
-        messageStr = JSON.stringify(event)
-        global.logManager.PrintLogMessage("index", "message", "success-> data: " + dataStr + " msg: " + messageStr, global.defineManager.LOG_LEVEL_INFO)
-    }).catch(function (error) {
-        // console.log('Error', error);
-        global.logManager.PrintLogMessage("index", "message", "error: " + error, global.defineManager.LOG_LEVEL_ERROR)
-    });
+    // replyData = responseManager.LineTemplateResponse(event.message.text)
+    //
+    // event.reply(replyData).then(function (data) {
+    //     // console.log('Success', data);
+    //     dataStr = JSON.stringify(data)
+    //     messageStr = JSON.stringify(event)
+    //     global.logManager.PrintLogMessage("index", "message", "success-> data: " + dataStr + " msg: " + messageStr, global.defineManager.LOG_LEVEL_INFO)
+    // }).catch(function (error) {
+    //     // console.log('Error', error);
+    //     global.logManager.PrintLogMessage("index", "message", "error: " + error, global.defineManager.LOG_LEVEL_ERROR)
+    // });
+    responseManager.LineIntroResponse(responseManager, lineBotManager, event, 0)
 })
 
 lineBotManager.on('follow', function (event) {
