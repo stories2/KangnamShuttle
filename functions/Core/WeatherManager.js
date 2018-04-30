@@ -56,12 +56,12 @@ exports.WeatherCast = function (weatherData, convertManager) {
     if(currentTemp > global.defineManager.HOT_WEATHER_CELSIUS_THRESHOLD &&
         (currentWeather["id"] == global.defineManager.WEATHER_CODE_CLEAR_SKY ||
             currentWeather["id"] == global.defineManager.WEATHER_CODE_FEW_CLOUDS)) {
-        weatherCastStr = global.util.format(global.defineManager.WEATHER_CAST_STR, currentWeatherDes, currentTemp)
+        weatherCastStr = global.util.format(global.defineManager.WEATHER_CAST_WITH_NOTICE_STR, currentWeatherDes, currentTemp)
         global.logManager.PrintLogMessage("WeatherManager", "WeatherCast", "hot weather accepted",
             global.defineManager.LOG_LEVEL_INFO)
     }
     else {
-        weatherCastStr = global.util.format(global.defineManager.WEATHER_CAST_WITH_NOTICE_STR, currentWeatherDes, currentTemp)
+        weatherCastStr = global.util.format(global.defineManager.WEATHER_CAST_STR, currentWeatherDes, currentTemp)
     }
 
     global.logManager.PrintLogMessage("WeatherManager", "WeatherCast", "current weather cast: " + weatherCastStr,
