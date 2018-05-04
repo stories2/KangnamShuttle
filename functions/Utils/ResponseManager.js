@@ -35,8 +35,8 @@ exports.LineIntroResponse = function (responseManager, lineBotManager, event, re
     if(recursiveId > 10){
         return
     }
-    delayTime = 10000
-    global.logManager.PrintLogMessage("ResponseManager", "LineIntroResponse", "testing intro response delay time: " + delayTime,
+    delayTime = 5000
+    global.logManager.PrintLogMessage("ResponseManager", "LineIntroResponse", "#" + recursiveId + "testing intro response delay time: " + delayTime,
         global.defineManager.LOG_LEVEL_DEBUG)
 
     userId = event.source.userId
@@ -69,19 +69,10 @@ exports.LineIntroResponse = function (responseManager, lineBotManager, event, re
             break;
         case 5:
             lineBotManager.push(userId, {
-                type: 'imagemap',
-                baseUrl: 'https://example.com/bot/images/rm001',
-                altText: 'this is an imagemap',
-                baseSize: { height: 1040, width: 1040 },
-                actions: [{
-                    type: 'uri',
-                    linkUri: 'https://example.com/',
-                    area: { x: 0, y: 0, width: 520, height: 1040 }
-                }, {
-                    type: 'message',
-                    text: '분실물 안내',
-                    area: { x: 520, y: 0, width: 520, height: 1040 }
-                }]})
+                type: 'image',
+                originalContentUrl: 'https://firebasestorage.googleapis.com/v0/b/kangnamshuttle.appspot.com/o/lostItem.jpg?alt=media&token=9ce07e2f-0fc0-4882-bf69-ec18a24b9b76',
+                previewImageUrl: 'https://firebasestorage.googleapis.com/v0/b/kangnamshuttle.appspot.com/o/lostItem.jpg?alt=media&token=9ce07e2f-0fc0-4882-bf69-ec18a24b9b76'
+            })
             break;
         case 6:
             lineBotManager.push(userId, "혹시 잃어버린 물건을 발견했다면 알려줄 수 있어요!")
@@ -93,7 +84,7 @@ exports.LineIntroResponse = function (responseManager, lineBotManager, event, re
                 template: {
                     type: 'carousel',
                     columns: [{
-                        thumbnailImageUrl: 'https://example.com/bot/images/item1.jpg',
+                        thumbnailImageUrl: 'https://firebasestorage.googleapis.com/v0/b/kangnamshuttle.appspot.com/o/schoolPic.JPG?alt=media&token=c1f4d1b5-7345-4dee-be6d-802d20c1805f',
                         title: '달구지 목적지 설정',
                         text: '가려는 목적지를 알려주세요',
                         actions: [{
@@ -106,7 +97,7 @@ exports.LineIntroResponse = function (responseManager, lineBotManager, event, re
                             data: 'action=buy&itemid=111'
                         }]
                     }, {
-                        thumbnailImageUrl: 'https://example.com/bot/images/item1.jpg',
+                        thumbnailImageUrl: 'https://firebasestorage.googleapis.com/v0/b/kangnamshuttle.appspot.com/o/schoolPic.JPG?alt=media&token=c1f4d1b5-7345-4dee-be6d-802d20c1805f',
                         title: '달구지 목적지 설정',
                         text: '가려는 목적지를 알려주세요',
                         actions: [{
@@ -123,7 +114,7 @@ exports.LineIntroResponse = function (responseManager, lineBotManager, event, re
             })
             break;
         case 8:
-            lineBotManager.push(userId, "기본적인 기능은 당연히 그데로 있구요!")
+            lineBotManager.push(userId, "기본적인 기능은 당연히 그대로 있구요!")
             break;
         case 9:
             lineBotManager.push(userId, "기대되지 않나요?")
