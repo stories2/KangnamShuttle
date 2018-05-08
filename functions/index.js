@@ -66,7 +66,6 @@ const middleWareOfMessage = function (request, response, next) {
         switch (request.url) {
             case "/message":
                 admin.database().ref(global.defineManager.DATABASE_SERVICE).once('value', function (snapshot) {
-                    // console.log("url: " + request.url)
                     global.logManager.PrintLogMessage("index", "middleWareOfMessage<message>", "getting service database",
                         global.defineManager.LOG_LEVEL_INFO)
                     request.databaseSnapshot = snapshot.val()
@@ -103,6 +102,7 @@ kakaoApp.get('/keyboard', function (request, response) {
 
     // response.setHeader('Content-Type', 'application/json');
     response.status(200).send(JSON.stringify(responseMessage))
+    busTrackingManager.PostfixUpdateUbikanBusData(admin, busTrackingManager, ubikanRequestData)
 })
 
 kakaoApp.post('/message', function (request, response) {
