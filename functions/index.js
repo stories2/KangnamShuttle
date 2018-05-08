@@ -67,7 +67,16 @@ const middleWareOfMessage = function (request, response, next) {
             case "/message":
                 admin.database().ref(global.defineManager.DATABASE_SERVICE).once('value', function (snapshot) {
                     // console.log("url: " + request.url)
-                    global.logManager.PrintLogMessage("index", "middleWareOfMessage", "getting service database",
+                    global.logManager.PrintLogMessage("index", "middleWareOfMessage<message>", "getting service database",
+                        global.defineManager.LOG_LEVEL_INFO)
+                    request.databaseSnapshot = snapshot.val()
+                    return next();
+                })
+                break;
+            case "/beta":
+                admin.database().ref(global.defineManager.DATABASE_SERVICE).once('value', function (snapshot) {
+                    // console.log("url: " + request.url)
+                    global.logManager.PrintLogMessage("index", "middleWareOfMessage<beta>", "getting service database",
                         global.defineManager.LOG_LEVEL_INFO)
                     request.databaseSnapshot = snapshot.val()
                     return next();
@@ -85,55 +94,6 @@ const middleWareOfMessage = function (request, response, next) {
 
 kakaoApp.use(cors)
 kakaoApp.use(middleWareOfMessage)
-
-kakaoApp.get('/warmstart2', function (request, response) {
-
-    setTime = 15000
-
-    url = "https://us-central1-kangnamshuttle.cloudfunctions.net/kakao/warmstart2"
-    // url = "http://localhost:5000/kangnamshuttle/us-central1/kakao/keyboard"
-    global.logManager.PrintLogMessage("index", "warmstart2", "start set functions time: " + setTime + "warm: " + url, global.defineManager.LOG_LEVEL_DEBUG)
-    response.status(200).send()
-
-    recursiveCallFunc = function () {
-        var httpsManager = require("https")
-        httpsManager.get(url, function (response) {
-            var serverData = ""
-            response.on('data', function (chunk) {
-                serverData += chunk
-            })
-            response.on('end', function () {
-                global.logManager.PrintLogMessage("index", "warmstart2", "setting still warm ok", global.defineManager.LOG_LEVEL_DEBUG)
-            })
-            response.on('error', function (except) {
-                global.logManager.PrintLogMessage("index", "warmstart2", "something has problem while set still warm: " + except, global.defineManager.LOG_LEVEL_ERROR)
-            })
-        })
-    }
-
-    setTimeout(function () {
-        var httpsManager = require("https")
-        httpsManager.get(url, function (response) {
-            var serverData = ""
-            response.on('data', function (chunk) {
-                serverData += chunk
-            })
-            response.on('end', function () {
-                global.logManager.PrintLogMessage("index", "warmstart2", "setting still warm ok", global.defineManager.LOG_LEVEL_DEBUG)
-            })
-            response.on('error', function (except) {
-                global.logManager.PrintLogMessage("index", "warmstart2", "something has problem while set still warm: " + except, global.defineManager.LOG_LEVEL_ERROR)
-                setTimeout(recursiveCallFunc, setTime)
-            })
-        })
-    }, setTime)
-})
-
-kakaoApp.get('/staywarm', function (request, response) {
-    global.logManager.PrintLogMessage("index", "staywarm", "start stay warm", global.defineManager.LOG_LEVEL_DEBUG)
-    response.status(200).send()
-    global.performanceManager.PreventColdStart3()
-})
 
 kakaoApp.get('/keyboard', function (request, response) {
 
@@ -300,13 +260,20 @@ kakaoApp.get('/log', function (request, response) {
 
 kakaoApp.post('/beta', function (request, response) {
     // contentsManager.NoticeMonday()
-    busTrackingManager.PostfixUpdateUbikanBusData(admin, busTrackingManager, ubikanRequestData)
+    latestBusTrackingData = busTrackingManager.GetUbikanRealtimeData(request.databaseSnapshot)
+
+    // responseData = {
+    //     "msg": "This is testing feature"
+    // }
 
     responseData = {
-        "msg": "This is testing feature"
+        "msg": latestBusTrackingData
     }
+
     response.setHeader('Content-Type', 'application/json');
     response.status(200).send(JSON.stringify(responseData))
+
+    busTrackingManager.PostfixUpdateUbikanBusData(admin, busTrackingManager, ubikanRequestData)
 })
 
 exports.kakao = functions.https.onRequest(kakaoApp);
