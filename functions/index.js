@@ -14,6 +14,7 @@ const generateManager = require('./Utils/GenerateManager');
 const convertManager = require('./Utils/ConvertManager');
 const schoolManager = require('./Core/SchoolManager');
 const weatherManager = require('./Core/WeatherManager');
+const busTrackingManager = require('./Core/BusTrackingManager');
 
 admin.initializeApp(functions.config().firebase);
 
@@ -23,6 +24,8 @@ const lineBot = require('linebot');
 const app = express();
 const lineApp = express();
 const kakaoApp = express();
+
+const ubikanLoginInfo = functions.config().ubikan.login_info
 
 // global.performanceManager.PreventColdStart2()
 
@@ -293,7 +296,8 @@ kakaoApp.get('/log', function (request, response) {
 })
 
 kakaoApp.post('/beta', function (request, response) {
-    contentsManager.NoticeMonday()
+    // contentsManager.NoticeMonday()
+    busTrackingManager.LoginUbikan(busTrackingManager, ubikanLoginInfo)
 
     responseData = {
         "msg": "This is testing feature"
