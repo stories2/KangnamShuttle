@@ -1,4 +1,10 @@
-exports.LoginUbikan = function (busTrackingManager, ubikanRequestData) {
+exports.PostfixUpdateUbikanBusData = function (admin, busTrackingManager, ubikanRequestData) {
+    global.logManager.PrintLogMessage("BusTrackingManager", "PostfixUpdateUbikanBusData", "try update ubikan bus data",
+        global.defineManager.LOG_LEVEL_DEBUG)
+    busTrackingManager.LoginUbikan(admin, busTrackingManager, ubikanRequestData)
+}
+
+exports.LoginUbikan = function (admin, busTrackingManager, ubikanRequestData) {
     var httpManager = require("http")
 
     postData = ubikanRequestData["loginInfo"]
@@ -44,7 +50,7 @@ exports.LoginUbikan = function (busTrackingManager, ubikanRequestData) {
             global.logManager.PrintLogMessage("BusTrackingManager", "LoginUbikan", "response accepted: " + str,
                 global.defineManager.LOG_LEVEL_DEBUG)
 
-            busTrackingManager.CheckLoggedInUbikan(httpRequestResponse.headers["set-cookie"], busTrackingManager, ubikanRequestData)
+            busTrackingManager.CheckLoggedInUbikan(admin, httpRequestResponse.headers["set-cookie"], busTrackingManager, ubikanRequestData)
         });
         httpRequestResponse.on('error', function (except) {
             global.logManager.PrintLogMessage("BusTrackingManager", "LoginUbikan", "somthing goes wrong: " + except,
@@ -59,7 +65,7 @@ exports.LoginUbikan = function (busTrackingManager, ubikanRequestData) {
     httpRequest.end();
 }
 
-exports.CheckLoggedInUbikan = function (cookieData, busTrackingManager, ubikanRequestData) {
+exports.CheckLoggedInUbikan = function (admin, cookieData, busTrackingManager, ubikanRequestData) {
     var httpManager = require("http")
 
     global.logManager.PrintLogMessage("BusTrackingManager", "CheckLoggedInUbikan", "cookie val: " + cookieData,
@@ -102,7 +108,7 @@ exports.CheckLoggedInUbikan = function (cookieData, busTrackingManager, ubikanRe
             if(ubikanLoginResponseData["Logged In"] == true) {
                 global.logManager.PrintLogMessage("BusTrackingManager", "CheckLoggedInUbikan", "successfully logged in",
                     global.defineManager.LOG_LEVEL_DEBUG)
-                busTrackingManager.GetBusDataList(cookieData, busTrackingManager, ubikanRequestData)
+                busTrackingManager.GetBusDataList(admin, cookieData, busTrackingManager, ubikanRequestData)
             }
             else {
                 global.logManager.PrintLogMessage("BusTrackingManager", "CheckLoggedInUbikan", "login failed",
@@ -119,7 +125,7 @@ exports.CheckLoggedInUbikan = function (cookieData, busTrackingManager, ubikanRe
     httpRequest.end();
 }
 
-exports.GetBusDataList = function (cookieData, busTrackingManager, ubikanRequestData) {
+exports.GetBusDataList = function (admin, cookieData, busTrackingManager, ubikanRequestData) {
     var httpManager = require("http")
 
     global.logManager.PrintLogMessage("BusTrackingManager", "GetBusDataList", "get realtime bus data param: " + ubikanRequestData["apiParam"],
@@ -172,6 +178,7 @@ exports.GetBusDataList = function (cookieData, busTrackingManager, ubikanRequest
                 if(busTrackingData["result"] == true) {
                     global.logManager.PrintLogMessage("BusTrackingManager", "GetBusDataList", "getting bus realtime data successfully",
                         global.defineManager.LOG_LEVEL_DEBUG)
+                    busTrackingManager.SaveUbikanRealtimeData(admin, busTrackingData)
                 }
                 else {
                     global.logManager.PrintLogMessage("BusTrackingManager", "GetBusDataList", "something wrong with bus data: " + JSON.stringify(busTrackingData),
@@ -193,4 +200,13 @@ exports.GetBusDataList = function (cookieData, busTrackingManager, ubikanRequest
     var httpRequest = httpManager.request(fakeHeaderOptions, httpRequestCallback);
     httpRequest.write(postData);
     httpRequest.end();
+}
+
+exports.SaveUbikanRealtimeData = function (admin, busTrackingData) {
+    global.logManager.PrintLogMessage("BusTrackingManager", "SaveUbikanRealtimeData", "save ubikan bus tracking data to database",
+        global.defineManager.LOG_LEVEL_DEBUG)
+
+    status = admin.database().ref(global.defineManager.DATABASE_UBIKAN_BUS_TRACKING_DATA).set(busTrackingData);
+    global.logManager.PrintLogMessage("BusTrackingManager", "SaveUbikanRealtimeData", "whatever i am done!",
+        global.defineManager.LOG_LEVEL_DEBUG)
 }

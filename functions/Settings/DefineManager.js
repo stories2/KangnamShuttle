@@ -67,6 +67,7 @@ exports.GMT_KOREA_TIME_MIN = 540
 exports.HOUR_TO_MILE = 60000
 
 exports.DATABASE_SCHOOL_SCHEDULE = "/service/SchoolSchedule/"
+exports.DATABASE_UBIKAN_BUS_TRACKING_DATA = "/service/UbikanBus/"
 exports.DATABASE_WEATHER = "/service/Weather/"
 exports.DATABASE_SERVICE = "/service/"
 

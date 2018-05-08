@@ -300,7 +300,7 @@ kakaoApp.get('/log', function (request, response) {
 
 kakaoApp.post('/beta', function (request, response) {
     // contentsManager.NoticeMonday()
-    busTrackingManager.LoginUbikan(busTrackingManager, ubikanRequestData)
+    busTrackingManager.PostfixUpdateUbikanBusData(admin, busTrackingManager, ubikanRequestData)
 
     responseData = {
         "msg": "This is testing feature"
