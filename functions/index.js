@@ -25,7 +25,10 @@ const app = express();
 const lineApp = express();
 const kakaoApp = express();
 
-const ubikanLoginInfo = functions.config().ubikan.login_info
+const ubikanRequestData = {
+    loginInfo: functions.config().ubikan.login_info,
+    apiParam: functions.config().ubikan.api_param
+}
 
 // global.performanceManager.PreventColdStart2()
 
@@ -297,7 +300,7 @@ kakaoApp.get('/log', function (request, response) {
 
 kakaoApp.post('/beta', function (request, response) {
     // contentsManager.NoticeMonday()
-    busTrackingManager.LoginUbikan(busTrackingManager, ubikanLoginInfo)
+    busTrackingManager.LoginUbikan(busTrackingManager, ubikanRequestData)
 
     responseData = {
         "msg": "This is testing feature"
