@@ -15,7 +15,6 @@ const convertManager = require('./Utils/ConvertManager');
 const schoolManager = require('./Core/SchoolManager');
 const weatherManager = require('./Core/WeatherManager');
 const busTrackingManager = require('./Core/BusTrackingManager');
-const schoolAuthManager = require('./Core/SchoolAuthManager');
 
 admin.initializeApp(functions.config().firebase);
 
@@ -275,14 +274,6 @@ kakaoApp.post('/beta', function (request, response) {
     response.status(200).send(JSON.stringify(responseData))
 
     busTrackingManager.PostfixUpdateUbikanBusData(admin, busTrackingManager, ubikanRequestData)
-})
-
-kakaoApp.post('/loginToEclass', function (request, response) {
-
-    global.logManager.PrintLogMessage("index", "loginToEclass", "try login to eclass",
-        global.defineManager.LOG_LEVEL_INFO);
-
-    schoolAuthManager.LoginToEclass(admin, request, response, responseManager, schoolAuthManager)
 })
 
 exports.kakao = functions.https.onRequest(kakaoApp);
