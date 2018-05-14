@@ -135,3 +135,39 @@ exports.GetAcademicScheduleThisMonth = function (month, admin, convertManager, g
         })
     }
 }
+
+exports.RecursivePortScan = function (portScanIPStack, portScanPortStack, portScanStackPoint, schoolManager, response, resultData) {
+
+    if(portScanIPStack.length <= portScanStackPoint) {
+        global.logManager.PrintLogMessage("SchoolManager", "RecursivePortScan", "port scan done!", global.defineManager.LOG_LEVEL_INFO)
+        response.setHeader('Content-Type', 'application/json');
+        response.status(200).send(JSON.stringify(resultData))
+        return
+    }
+
+    targetPort = portScanPortStack[portScanStackPoint]
+    targetIP = portScanIPStack[portScanStackPoint]
+
+    global.logManager.PrintLogMessage("SchoolManager", "RecursivePortScan",
+        "#" + portScanStackPoint + " target ip: " + targetIP + ":" + targetPort, global.defineManager.LOG_LEVEL_INFO)
+
+    var portscanner = require('portscanner')
+
+    portscanner.checkPortStatus(targetPort, targetIP, function(error, status) {
+        // Status is 'open' if currently in use or 'closed' if available
+
+        scanResult = {
+            "error": error,
+            "status": status
+        }
+
+        global.logManager.PrintLogMessage("SchoolManager", "RecursivePortScan",
+            "#" + portScanStackPoint + " scan done target ip: " + targetIP + ":" + targetPort + " result: " + JSON.stringify(scanResult),
+            global.defineManager.LOG_LEVEL_INFO)
+
+
+        resultData.push(scanResult)
+
+        schoolManager.RecursivePortScan(portScanIPStack, portScanPortStack, portScanStackPoint + 1, schoolManager, response, resultData)
+    })
+}
