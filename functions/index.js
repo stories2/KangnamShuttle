@@ -260,25 +260,57 @@ kakaoApp.get('/log', function (request, response) {
 
 kakaoApp.post('/beta', function (request, response) {
     // contentsManager.NoticeMonday()
-    latestBusTrackingData = busTrackingManager.GetUbikanRealtimeData(request.databaseSnapshot)
+    // latestBusTrackingData = busTrackingManager.GetUbikanRealtimeData(request.databaseSnapshot)
 
-    // responseData = {
-    //     "msg": "This is testing feature"
-    // }
+    scanServerIp = []
+    scanServerPort = []
+    result = []
+
+    schoolManager.RecursivePortScan(scanServerIp, scanServerPort, 0, schoolManager, response, result)
 
     responseData = {
-        "msg": latestBusTrackingData
+        "msg": "This is testing feature"
     }
 
-    response.setHeader('Content-Type', 'application/json');
-    response.status(200).send(JSON.stringify(responseData))
+    // responseData = {
+    //     "msg": latestBusTrackingData
+    // }
 
-    busTrackingManager.PostfixUpdateUbikanBusData(admin, busTrackingManager, ubikanRequestData)
+    // response.setHeader('Content-Type', 'application/json');
+    // response.status(200).send(JSON.stringify(responseData))
 })
 
 exports.kakao = functions.https.onRequest(kakaoApp);
 
+exports.portScan = functions.https.onRequest(function(request, response) {
+
+    global.logManager.PrintLogMessage("index", "portScan", "scan several server port",
+        global.defineManager.LOG_LEVEL_DEBUG)
+
+    requestData = request.body
+
+    scanServerIp = requestData["serverList"]
+    scanServerPort = requestData["serverPortList"]
+    result = []
+
+    schoolManager.RecursivePortScan(scanServerIp, scanServerPort, 0, schoolManager, response, result)
+});
+
 // Admin api
+
+// app.post('/portScan', function (request, response) {
+//
+//     global.logManager.PrintLogMessage("index", "portScan", "scan several server port",
+//         global.defineManager.LOG_LEVEL_DEBUG)
+//
+//     requestData = request.body
+//
+//     scanServerIp = requestData["serverList"]
+//     scanServerPort = requestData["serverPortList"]
+//     result = []
+//
+//     schoolManager.RecursivePortScan(scanServerIp, scanServerPort, 0, schoolManager, response, result)
+// })
 
 app.post('/updateBusStop', function (request, response) {
     admin.database().ref("/BusStopSchedule/busStop/").set(request.body["data"]);
