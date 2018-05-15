@@ -102,7 +102,7 @@ kakaoApp.get('/keyboard', function (request, response) {
 
     // response.setHeader('Content-Type', 'application/json');
     response.status(200).send(JSON.stringify(responseMessage))
-    busTrackingManager.PostfixUpdateUbikanBusData(admin, busTrackingManager, ubikanRequestData)
+    // busTrackingManager.PostfixUpdateUbikanBusData(admin, busTrackingManager, ubikanRequestData)
 })
 
 kakaoApp.post('/message', function (request, response) {
