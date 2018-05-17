@@ -24,6 +24,7 @@ const lineBot = require('linebot');
 const app = express();
 const lineApp = express();
 const kakaoApp = express();
+const publicApp = express();
 
 const ubikanRequestData = {
     loginInfo: functions.config().ubikan.login_info,
@@ -76,6 +77,24 @@ const middleWareOfMessage = function (request, response, next) {
                 admin.database().ref(global.defineManager.DATABASE_SERVICE).once('value', function (snapshot) {
                     // console.log("url: " + request.url)
                     global.logManager.PrintLogMessage("index", "middleWareOfMessage<beta>", "getting service database",
+                        global.defineManager.LOG_LEVEL_INFO)
+                    request.databaseSnapshot = snapshot.val()
+                    return next();
+                })
+                break;
+            case "/busLocation":
+                admin.database().ref(global.defineManager.DATABASE_SERVICE).once('value', function (snapshot) {
+                    // console.log("url: " + request.url)
+                    global.logManager.PrintLogMessage("index", "middleWareOfMessage<busLocation>", "getting service database",
+                        global.defineManager.LOG_LEVEL_INFO)
+                    request.databaseSnapshot = snapshot.val()
+                    return next();
+                })
+                break;
+            case "/updateBusLocation":
+                admin.database().ref(global.defineManager.DATABASE_SERVICE).once('value', function (snapshot) {
+                    // console.log("url: " + request.url)
+                    global.logManager.PrintLogMessage("index", "middleWareOfMessage<updateBusLocation>", "getting service database",
                         global.defineManager.LOG_LEVEL_INFO)
                     request.databaseSnapshot = snapshot.val()
                     return next();
@@ -282,7 +301,10 @@ kakaoApp.post('/beta', function (request, response) {
 
 exports.kakao = functions.https.onRequest(kakaoApp);
 
-exports.portScan = functions.https.onRequest(function(request, response) {
+publicApp.use(cors)
+publicApp.use(middleWareOfMessage)
+
+publicApp.post('/portScan', function(request, response) {
 
     global.logManager.PrintLogMessage("index", "portScan", "scan several server port",
         global.defineManager.LOG_LEVEL_DEBUG)
@@ -294,7 +316,33 @@ exports.portScan = functions.https.onRequest(function(request, response) {
     result = []
 
     schoolManager.RecursivePortScan(scanServerIp, scanServerPort, 0, schoolManager, response, result)
-});
+})
+
+publicApp.get('/busLocation', function (request, response) {
+    global.logManager.PrintLogMessage("index", "busLocation", "get bus location data",
+        global.defineManager.LOG_LEVEL_DEBUG)
+
+    responseData = busTrackingManager.GetUbikanRealtimeData(request.databaseSnapshot)
+
+    response.setHeader('Content-Type', 'application/json');
+    response.status(200).send(JSON.stringify(responseData))
+})
+
+publicApp.get('/updateBusLocation', function (request, response) {
+    global.logManager.PrintLogMessage("index", "updateBusLocation", "update bus location data",
+        global.defineManager.LOG_LEVEL_DEBUG)
+
+    busTrackingManager.PostfixUpdateUbikanBusData(admin, busTrackingManager, ubikanRequestData)
+
+    responseData = {
+        "msg": "Bus data will update as soon as possible. Check the logs."
+    }
+
+    response.setHeader('Content-Type', 'application/json');
+    response.status(200).send(JSON.stringify(responseData))
+})
+
+exports.public = functions.https.onRequest(publicApp)
 
 // Admin api
 
