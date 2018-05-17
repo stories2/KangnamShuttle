@@ -1,0 +1,131 @@
+<!DOCTYPE HTML>
+<!--
+	Hyperspace by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>강남대학교 달구지봇</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+
+		<style>
+			/* Always set the map height explicitly to define the size of the div
+             * element that contains the map. */
+			#map {
+				height: 300px;
+			}
+			/* Optional: Makes the sample page fill the window. */
+			html, body {
+				height: 100%;
+				margin: 0;
+				padding: 0;
+			}
+		</style>
+	</head>
+	<body>
+
+		<!-- Header -->
+			<header id="header">
+				<a href="index.html" class="title">강남대학교 달구지봇</a>
+				<nav>
+					<ul>
+						<!--<li><a href="index.html">Home</a></li>-->
+						<li><a href="map.html" class="active">실시간 달구지 위치 (Beta)</a></li>
+						<!--<li><a href="elements.html">Elements</a></li>-->
+					</ul>
+				</nav>
+			</header>
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Main -->
+					<section id="main" class="wrapper">
+						<div class="inner">
+							<h1 class="major">실시간 달구지 위치 (Beta)</h1>
+							<div class="row">
+								<div id="map" class="12u$">
+									?
+								</div>
+								<div class="12u$">
+									<p>달구지 위치 데이터는 Ubikan 업체로 부터 가져오고 있습니다.<br>
+										본 SW는 시험 운영중인 서비스이므로 예상치 못한 문제가 발생할 수도 있습니다.</p>
+								</div>
+							</div>
+						</div>
+					</section>
+
+			</div>
+
+		<!-- Footer -->
+			<footer id="footer" class="wrapper alt">
+				<div class="inner">
+					<ul class="menu">
+						<li>&copy; stories282. All rights reserved.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+					</ul>
+				</div>
+			</footer>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/skel.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+			<script src="assets/js/main.js"></script>
+			<script>
+                function initMap() {
+                    var uluru = {lat: -25.363, lng: 131.044};
+                    var map = new google.maps.Map(document.getElementById('map'), {
+                        zoom: 4,
+                        center: uluru
+                    });
+
+                    var contentString = '<div id="content">'+
+                        '<div id="siteNotice">'+
+                        '</div>'+
+                        '<h1 id="firstHeading" class="firstHeading">Uluru</h1>'+
+                        '<div id="bodyContent">'+
+                        '<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large ' +
+                        'sandstone rock formation in the southern part of the '+
+                        'Northern Territory, central Australia. It lies 335&#160;km (208&#160;mi) '+
+                        'south west of the nearest large town, Alice Springs; 450&#160;km '+
+                        '(280&#160;mi) by road. Kata Tjuta and Uluru are the two major '+
+                        'features of the Uluru - Kata Tjuta National Park. Uluru is '+
+                        'sacred to the Pitjantjatjara and Yankunytjatjara, the '+
+                        'Aboriginal people of the area. It has many springs, waterholes, '+
+                        'rock caves and ancient paintings. Uluru is listed as a World '+
+                        'Heritage Site.</p>'+
+                        '<p>Attribution: Uluru, <a href="https://en.wikipedia.org/w/index.php?title=Uluru&oldid=297882194">'+
+                        'https://en.wikipedia.org/w/index.php?title=Uluru</a> '+
+                        '(last visited June 22, 2009).</p>'+
+                        '</div>'+
+                        '</div>';
+
+                    var infowindow = new google.maps.InfoWindow({
+                        content: contentString
+                    });
+
+                    var marker = new google.maps.Marker({
+                        position: uluru,
+                        map: map,
+                        title: 'Uluru (Ayers Rock)'
+                    });
+                    marker.addListener('click', function() {
+                        infowindow.open(map, marker);
+                    });
+                }
+			</script>
+			<script async defer
+					src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBv58DW58VFaQjKTJvRmX2izLcRqrbsbVI&callback=initMap">
+			</script>
+
+	</body>
+</html>
