@@ -15,6 +15,6 @@ DOMAIN = "https://us-central1-kangnamshuttle.cloudfunctions.net/"
 
 SUB_DOMAIN_PATH_PUBLIC = "public/"
 
-BUS_LOCATION_REFRESH_TIME = 15000
+BUS_LOCATION_REFRESH_TIME = 30000
 
 SUB_PATH = "admin/"

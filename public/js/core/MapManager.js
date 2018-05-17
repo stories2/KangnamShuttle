@@ -17,7 +17,6 @@ MapManager.prototype.GetBusLocationOk = function (data) {
 
     ResetMark()
 
-
     dataStatusCode = data["code"]
     PrintLogMessage("MapManager", "GetBusLocation", "getting bus location data successfully, code: " + dataStatusCode, LOG_LEVEL_INFO)
 
@@ -26,6 +25,7 @@ MapManager.prototype.GetBusLocationOk = function (data) {
     for(index in busLocList) {
         PrintLogMessage("MapManager", "GetBusLocation",
             "check index of bus pos: " + busLocList[index]["lat"] + " " + busLocList[index]["lon"], LOG_LEVEL_DEBUG)
+
         PushMark(map, Number(busLocList[index]["lat"]), Number(busLocList[index]["lon"]))
     }
 }
