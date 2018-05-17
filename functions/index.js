@@ -324,8 +324,7 @@ publicApp.get('/busLocation', function (request, response) {
 
     responseData = busTrackingManager.GetUbikanRealtimeData(request.databaseSnapshot)
 
-    response.setHeader('Content-Type', 'application/json');
-    response.status(200).send(JSON.stringify(responseData))
+    responseManager.TemplateOfResponse(responseData, 200, response)
 })
 
 publicApp.get('/updateBusLocation', function (request, response) {
@@ -338,8 +337,7 @@ publicApp.get('/updateBusLocation', function (request, response) {
         "msg": "Bus data will update as soon as possible. Check the logs."
     }
 
-    response.setHeader('Content-Type', 'application/json');
-    response.status(200).send(JSON.stringify(responseData))
+    responseManager.TemplateOfResponse(responseData, 200, response)
 })
 
 exports.public = functions.https.onRequest(publicApp)
