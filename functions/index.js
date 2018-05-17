@@ -152,6 +152,14 @@ kakaoApp.post('/message', function (request, response) {
 
         weatherManager.GetCurrentWeather(admin, "Gyeonggi-do,kr", "kr", databaseSnapshot["System"]["weatherApiKey"])
     }
+    else if(userContent == global.defineManager.SHOW_ME_WHERE_IS_THE_SHUTTLE) {
+        responseButton = global.defineManager.MAIN_BUTTONS
+        labelButton = {"label": "확인하기", "url": global.defineManager.GO_TO_SHUTTLE_PAGE}
+        responseMessage["message_button"] = labelButton
+        responseMessage["text"] = global.defineManager.SHOW_SHUTTLE_LOCATION
+
+        responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
+    }
     else if(userContent == global.defineManager.ALL_SHUTTLE_TIME) {
         responseButton = global.defineManager.MAIN_BUTTONS
         // responseText = busTimeManager.PrintAllShuttle(userContent, databaseSnapshot)

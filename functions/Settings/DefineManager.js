@@ -1,4 +1,5 @@
 exports.LEAVE_AS_SOON_AS_SHUTTLE = "가까운 시간의 달구지를 알려줘"
+exports.SHOW_ME_WHERE_IS_THE_SHUTTLE = "지금 달구지 어디있어?"
 exports.ALL_SHUTTLE_TIME = "전체 달구지 시간표를 알려줘"
 exports.SHUTTLE_STATION = "달구지 운행노선을 알려줘"
 exports.SERVICE_INFO = "서비스 정보"
@@ -10,6 +11,7 @@ exports.ACADEMIC_CALENDAR = "이번달 학사 일정을 알려줘"
 exports.DICE_NUMBER_START = "주사위 굴리기 가즈아~!!"
 exports.MAIN_BUTTONS = [
     exports.LEAVE_AS_SOON_AS_SHUTTLE,
+    exports.SHOW_ME_WHERE_IS_THE_SHUTTLE,
     exports.ALL_SHUTTLE_TIME,
     exports.SHUTTLE_STATION,
     exports.ACADEMIC_CALENDAR,
@@ -46,6 +48,7 @@ exports.DATABASE_ADVERTISE = "Advertise"
 exports.STORAGE_SHARE_CARD_URL = "https://firebasestorage.googleapis.com/v0/b/kangnamshuttle.appspot.com/o/poster.png?alt=media&token=fb60f794-50a2-40c8-be0c-f2400eabaad4"
 exports.KAKAO_PLUS_SHARE_URL = "https://pf.kakao.com/_wkxjxoxl"
 exports.GO_TO_HOMEPAGE = "https://kangnamshuttle.firebaseapp.com/"
+exports.GO_TO_SHUTTLE_PAGE = "https://kangnamshuttle.firebaseapp.com/map.html"
 exports.SHUTTLE_SCHEDULE_PHOTO = "https://firebasestorage.googleapis.com/v0/b/kangnamshuttle.appspot.com/o/IMG_0496.JPG?alt=media&token=8ef827c4-f566-49f1-8cf7-f7d2b667a3a2"
 exports.PLZ_INPUT_DEPART_AND_ARRIVE_POINT = "출발 지점과 도착지점을 알려주세요!"
 exports.LET_ME_SHOW_ALL_OF_BUS_TIME = "전체 시간표를 알려드릴께요~"
@@ -54,6 +57,7 @@ exports.TEXT_KANGNAM_UNIV_TO_SCHOOL = "====강남대역 -> 이공관====\n"
 exports.TEXT_SCHOOL_TO_GIHEUNG = "====이공관 -> 기흥역====\n"
 exports.TEXT_SCHOOL_TO_KANGNAM_UNIV = "====이공관 -> 강남대역====\n"
 exports.SHUTTLE_STATION_ROUTE = "달구지 운행정보 알려드릴께요~\n[목양축전 기간]\n이공관 -> 주차 관리소 앞 -> 맥도날드 앞 -> 기흥역 -> 강남대역 -> 주차 관리소 앞 -> 교육관 -> 이공관\n\n이공관 -> 본관(교육관) -> 인문사회관 -> 맥도날드앞 -> 기흥역 -> 강남대역 -> 샬롬관 -> 본관(교육관)-> 이공관"
+exports.SHOW_SHUTTLE_LOCATION = "우리 같이 달구지가 어디있는지 보러가볼까요?"
 
 exports.LOG_LEVEL_VERBOSE = 0
 exports.LOG_LEVEL_INFO = 1
@@ -117,6 +121,7 @@ exports.ORDER_TO_ID[exports.YEAR_SCHEDULE[8]] = 19
 exports.ORDER_TO_ID[exports.YEAR_SCHEDULE[9]] = 20
 exports.ORDER_TO_ID[exports.YEAR_SCHEDULE[10]] = 21
 exports.ORDER_TO_ID[exports.YEAR_SCHEDULE[11]] = 22
+exports.ORDER_TO_ID[exports.SHOW_ME_WHERE_IS_THE_SHUTTLE] = 23
 
 exports.NOT_AVAILABLE = -1
 
