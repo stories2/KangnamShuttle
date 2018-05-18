@@ -56,7 +56,7 @@ exports.TEXT_GIHEUNG_TO_SCHOOL = "====기흥역 -> 이공관====\n"
 exports.TEXT_KANGNAM_UNIV_TO_SCHOOL = "====강남대역 -> 이공관====\n"
 exports.TEXT_SCHOOL_TO_GIHEUNG = "====이공관 -> 기흥역====\n"
 exports.TEXT_SCHOOL_TO_KANGNAM_UNIV = "====이공관 -> 강남대역====\n"
-exports.SHUTTLE_STATION_ROUTE = "달구지 운행정보 알려드릴께요~\n[목양축전 기간]\n이공관 -> 주차 관리소 앞 -> 맥도날드 앞 -> 기흥역 -> 강남대역 -> 주차 관리소 앞 -> 교육관 -> 이공관\n\n이공관 -> 본관(교육관) -> 인문사회관 -> 맥도날드앞 -> 기흥역 -> 강남대역 -> 샬롬관 -> 본관(교육관)-> 이공관"
+exports.SHUTTLE_STATION_ROUTE = "달구지 운행정보 알려드릴께요~\n%s"
 exports.SHOW_SHUTTLE_LOCATION = "우리 같이 달구지가 어디있는지 보러가볼까요?"
 
 exports.LOG_LEVEL_VERBOSE = 0

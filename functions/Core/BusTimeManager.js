@@ -117,8 +117,8 @@ exports.SearchFastestShuttleBasedOnStartPoint = function(userContent, databaseSn
     return responseText
 }
 
-exports.PrintShuttleRoute = function () {
-    return global.defineManager.SHUTTLE_STATION_ROUTE
+exports.PrintShuttleRoute = function (databaseSnapshot) {
+    return global.util.format(global.defineManager.SHUTTLE_STATION_ROUTE, databaseSnapshot["BusStopSchedule"]["busStopRoutine"])
 }
 
 exports.TimeToSec = function(hour, min, sec) {

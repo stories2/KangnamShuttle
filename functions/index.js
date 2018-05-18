@@ -178,7 +178,7 @@ kakaoApp.post('/message', function (request, response) {
     }
     else if(userContent == global.defineManager.SHUTTLE_STATION) {
         responseButton = global.defineManager.MAIN_BUTTONS
-        responseText = busTimeManager.PrintShuttleRoute()
+        responseText = busTimeManager.PrintShuttleRoute(databaseSnapshot)
         responseMessage["text"] = responseText
 
         responseManager.TemplateResponse(admin, convertManager, generateManager, response, requestMessage, responseMessage, responseButton)
