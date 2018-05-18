@@ -22,6 +22,9 @@ MapManager.prototype.GetBusLocationOk = function (data) {
 
     busLocList = data["data"]["list"]
 
+    busRawDataStr = JSON.stringify(data)
+    PrintRawBusPosition(busRawDataStr)
+
     for(index in busLocList) {
         PrintLogMessage("MapManager", "GetBusLocation",
             "check index of bus pos: " + busLocList[index]["lat"] + " " + busLocList[index]["lon"], LOG_LEVEL_DEBUG)
@@ -38,6 +41,7 @@ MapManager.prototype.GetBusLocationOk = function (data) {
 
 MapManager.prototype.GetBusLocationFail = function (errorText, errorStatus) {
     PrintLogMessage("MapManager", "GetBusLocation", "something wrong with getting bus data", LOG_LEVEL_WARN)
+    PrintRawBusPosition(COMMUNICATION_FAILED_MSG)
 }
 
 MapManager.prototype.UpdateBusLocation = function () {

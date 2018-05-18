@@ -32,3 +32,7 @@ function ResetMark() {
     }
     PrintLogMessage("MapViewManager", "ResetMark", "all markers are deleted", LOG_LEVEL_INFO)
 }
+
+function PrintRawBusPosition(rawDataStr) {
+    $("#busLocRawData").text(rawDataStr)
+}

@@ -23,3 +23,5 @@ BUS_POSITION_ICON = "https://firebasestorage.googleapis.com/v0/b/kangnamshuttle.
 BUS_DISABLE_ICON = "https://firebasestorage.googleapis.com/v0/b/kangnamshuttle.appspot.com/o/busNotAvailable.png?alt=media&token=7f28ed75-d60f-4c50-8bf8-9646d0e5ca49"
 
 BUS_STATUS_ENABLE = "1"
+
+COMMUNICATION_FAILED_MSG = "Failed to get bus location response data."
