@@ -18,3 +18,8 @@ SUB_DOMAIN_PATH_PUBLIC = "public/"
 BUS_LOCATION_REFRESH_TIME = 30000
 
 SUB_PATH = "admin/"
+
+BUS_POSITION_ICON = "https://firebasestorage.googleapis.com/v0/b/kangnamshuttle.appspot.com/o/busPosIcon.png?alt=media&token=4c863129-a243-4a91-84dd-3c7a4a11efe5"
+BUS_DISABLE_ICON = "https://firebasestorage.googleapis.com/v0/b/kangnamshuttle.appspot.com/o/busNotAvailable.png?alt=media&token=7f28ed75-d60f-4c50-8bf8-9646d0e5ca49"
+
+BUS_STATUS_ENABLE = "1"

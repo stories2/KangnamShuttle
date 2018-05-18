@@ -26,7 +26,13 @@ MapManager.prototype.GetBusLocationOk = function (data) {
         PrintLogMessage("MapManager", "GetBusLocation",
             "check index of bus pos: " + busLocList[index]["lat"] + " " + busLocList[index]["lon"], LOG_LEVEL_DEBUG)
 
-        PushMark(map, Number(busLocList[index]["lat"]), Number(busLocList[index]["lon"]))
+        iconUrl = BUS_DISABLE_ICON
+        if(busLocList[index]["startstatus"] == BUS_STATUS_ENABLE) {
+            iconUrl = BUS_POSITION_ICON
+        }
+
+        PushMark(map, Number(busLocList[index]["lat"]), Number(busLocList[index]["lon"]),
+            busLocList[index]["licenseid"], iconUrl)
     }
 }
 

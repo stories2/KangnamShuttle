@@ -1,9 +1,11 @@
-function PushMark(map, latPos, longPos) {
-    PrintLogMessage("MapViewManager", "PushMark", "add new markers pos: " + latPos + " " + longPos, LOG_LEVEL_INFO)
+function PushMark(map, latPos, longPos, titleStr, iconLink) {
+    PrintLogMessage("MapViewManager", "PushMark", "add new markers pos: " +
+        latPos + " " + longPos + " title: " + titleStr, LOG_LEVEL_INFO)
     var marker = new google.maps.Marker({
         position: {lat: latPos, lng: longPos},
         map: map,
-        title: 'Uluru (Ayers Rock)'
+        title: titleStr,
+        icon: iconLink
     });
 
     locationMarkStack.push(marker)
