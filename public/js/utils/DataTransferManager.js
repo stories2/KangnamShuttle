@@ -17,11 +17,12 @@ DataTransferManager.prototype.PreventCache = function () {
 
 DataTransferManager.prototype.PostRequest = function (url, data, callbackObj, token) {
     PrintLogMessage("DataTransferManager", "PostRequest", "send data to url: " + url, LOG_LEVEL_INFO)
-    data["seconds"] = this.PreventCache()
+    // data["seconds"] = this.PreventCache()
     $.ajax({
         type: "POST",
         dataType: 'json',
         url: url,
+        cache: false,
         contentType: 'application/x-www-form-urlencoded',
         data: data,
         crossDomain : true,
@@ -53,11 +54,12 @@ DataTransferManager.prototype.PostRequest = function (url, data, callbackObj, to
 
 DataTransferManager.prototype.PostRequestWithCallbackFunc = function (url, data, successFunc, failFunc, token) {
     PrintLogMessage("DataTransferManager", "PostRequestWithCallbackFunc", "send data to url: " + url, LOG_LEVEL_INFO)
-    data["seconds"] = this.PreventCache()
+    // data["seconds"] = this.PreventCache()
     $.ajax({
         type: "POST",
         dataType: 'json',
         url: url,
+        cache: false,
         contentType: 'application/x-www-form-urlencoded',
         data: data,
         crossDomain : true,
@@ -89,11 +91,12 @@ DataTransferManager.prototype.PostRequestWithCallbackFunc = function (url, data,
 
 DataTransferManager.prototype.GetRequest = function (url, data, callbackObj, token) {
     PrintLogMessage("DataTransferManager", "GetRequest", "send data to url: " + url, LOG_LEVEL_INFO)
-    data["seconds"] = this.PreventCache()
+    // data["seconds"] = this.PreventCache()
     $.ajax({
         type: "GET",
         dataType: 'json',
         url: url,
+        cache: false,
         contentType: 'application/x-www-form-urlencoded',
         data: data,
         crossDomain : true,
@@ -125,11 +128,12 @@ DataTransferManager.prototype.GetRequest = function (url, data, callbackObj, tok
 
 DataTransferManager.prototype.GetRequestWithCallbackFunc = function (url, data, successFunc, failFunc, token) {
     PrintLogMessage("DataTransferManager", "GetRequest", "send data to url: " + url, LOG_LEVEL_INFO)
-    data["seconds"] = this.PreventCache()
+    // data["seconds"] = this.PreventCache()
     $.ajax({
         type: "GET",
         dataType: 'json',
         url: url,
+        cache: false,
         contentType: 'application/x-www-form-urlencoded',
         data: data,
         async: false,
