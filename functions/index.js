@@ -21,6 +21,7 @@ admin.initializeApp(functions.config().firebase);
 const express = require('express');
 const cors = require('cors')({origin: true});
 const lineBot = require('linebot');
+const url = require('url')
 const app = express();
 const lineApp = express();
 const kakaoApp = express();
@@ -64,7 +65,9 @@ app.use(verifyAuthToken)
 
 const middleWareOfMessage = function (request, response, next) {
     try{
-        switch (request.url) {
+        // console.log("path: " + location.pathname)
+        requestPath = url.parse(request.url).pathname
+        switch (requestPath) {
             case "/message":
                 admin.database().ref(global.defineManager.DATABASE_SERVICE).once('value', function (snapshot) {
                     global.logManager.PrintLogMessage("index", "middleWareOfMessage<message>", "getting service database",
