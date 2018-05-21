@@ -7,7 +7,7 @@ MapManager.prototype.GetBusLocation = function () {
     PrintLogMessage("MapManager", "GetBusLocation", "getting bus location data", LOG_LEVEL_INFO)
     this.dataTransferManager.GetRequestWithCallbackFunc(
         DOMAIN + SUB_DOMAIN_PATH_PUBLIC + "busLocation",
-        "",
+        {},
         this.GetBusLocationOk,
         this.GetBusLocationFail
     )
@@ -48,7 +48,7 @@ MapManager.prototype.UpdateBusLocation = function () {
     PrintLogMessage("MapManager", "UpdateBusLocation", "update bus location data", LOG_LEVEL_INFO)
     this.dataTransferManager.GetRequestWithCallbackFunc(
         DOMAIN + SUB_DOMAIN_PATH_PUBLIC + "updateBusLocation",
-        "",
+        {},
         this.UpdateBusLocationOk,
         this.UpdateBusLocationFail
     )

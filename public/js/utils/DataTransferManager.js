@@ -8,8 +8,16 @@ function DataTransferManager() {
     // });
 }
 
+DataTransferManager.prototype.PreventCache = function () {
+
+    var date = new Date();
+    var seconds = date.getTime() / 1000; //1440516958
+    return seconds
+}
+
 DataTransferManager.prototype.PostRequest = function (url, data, callbackObj, token) {
     PrintLogMessage("DataTransferManager", "PostRequest", "send data to url: " + url, LOG_LEVEL_INFO)
+    data["seconds"] = this.PreventCache()
     $.ajax({
         type: "POST",
         dataType: 'json',
@@ -45,6 +53,7 @@ DataTransferManager.prototype.PostRequest = function (url, data, callbackObj, to
 
 DataTransferManager.prototype.PostRequestWithCallbackFunc = function (url, data, successFunc, failFunc, token) {
     PrintLogMessage("DataTransferManager", "PostRequestWithCallbackFunc", "send data to url: " + url, LOG_LEVEL_INFO)
+    data["seconds"] = this.PreventCache()
     $.ajax({
         type: "POST",
         dataType: 'json',
@@ -80,6 +89,7 @@ DataTransferManager.prototype.PostRequestWithCallbackFunc = function (url, data,
 
 DataTransferManager.prototype.GetRequest = function (url, data, callbackObj, token) {
     PrintLogMessage("DataTransferManager", "GetRequest", "send data to url: " + url, LOG_LEVEL_INFO)
+    data["seconds"] = this.PreventCache()
     $.ajax({
         type: "GET",
         dataType: 'json',
@@ -115,6 +125,7 @@ DataTransferManager.prototype.GetRequest = function (url, data, callbackObj, tok
 
 DataTransferManager.prototype.GetRequestWithCallbackFunc = function (url, data, successFunc, failFunc, token) {
     PrintLogMessage("DataTransferManager", "GetRequest", "send data to url: " + url, LOG_LEVEL_INFO)
+    data["seconds"] = this.PreventCache()
     $.ajax({
         type: "GET",
         dataType: 'json',
