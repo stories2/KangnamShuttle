@@ -19,6 +19,7 @@
     "http": "0.0.0",
     "https": "^1.0.0",
     "linebot": "^1.4.1",
+    "nexmo": "^2.2.1",
     "portscanner": "^2.2.0",
     "request": "^2.85.0",
     "request-promise": "^4.2.2",
