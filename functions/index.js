@@ -15,6 +15,7 @@ const convertManager = require('./Utils/ConvertManager');
 const schoolManager = require('./Core/SchoolManager');
 const weatherManager = require('./Core/WeatherManager');
 const busTrackingManager = require('./Core/BusTrackingManager');
+const adminManager = require('./Core/AdminManager');
 
 admin.initializeApp(functions.config().firebase);
 
@@ -22,6 +23,8 @@ const express = require('express');
 const cors = require('cors')({origin: true});
 const lineBot = require('linebot');
 const url = require('url')
+const nexmoModule = require('nexmo');
+
 const app = express();
 const lineApp = express();
 const kakaoApp = express();
@@ -31,6 +34,11 @@ const ubikanRequestData = {
     loginInfo: functions.config().ubikan.login_info,
     apiParam: functions.config().ubikan.api_param
 }
+
+const nexmoApiModule = new nexmoModule ({
+    apiKey: functions.config().nexmo.api_key,
+    apiSecret: functions.config().nexmo.api_key_secret
+})
 
 // global.performanceManager.PreventColdStart2()
 
@@ -423,6 +431,11 @@ app.get('/getBusSchedule/:busStopNumber', function (request, response) {
         }
         responseManager.TemplateOfResponse(responseMessage, global.defineManager.HTTP_SERVER_ERROR, response)
     }
+})
+
+app.post('/sendSms', function (request, response) {
+    request.body["from"] = functions.config().nexmo.from
+    adminManager.SendSms(nexmoApiModule, request, response, responseManager)
 })
 
 exports.admin = functions.https.onRequest(app);
