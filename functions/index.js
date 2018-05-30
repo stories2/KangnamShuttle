@@ -165,7 +165,7 @@ kakaoApp.post('/message', function (request, response) {
     }
     else if(userContent == global.defineManager.SHOW_ME_WHERE_IS_THE_SHUTTLE) {
         responseButton = global.defineManager.MAIN_BUTTONS
-        labelButton = {"label": "확인하기", "url": global.defineManager.GO_TO_SHUTTLE_PAGE}
+        labelButton = {"label": global.defineManager.GO_TO_SHUTTLE_PAGE_LABEL, "url": global.defineManager.GO_TO_SHUTTLE_PAGE}
         responseMessage["message_button"] = labelButton
         responseMessage["text"] = global.defineManager.SHOW_SHUTTLE_LOCATION
 
@@ -180,7 +180,7 @@ kakaoApp.post('/message', function (request, response) {
             "width": 679,
             "height": 960
         }
-        labelButton = {"label": "자세히", "url": global.defineManager.SHUTTLE_SCHEDULE_PHOTO}
+        labelButton = {"label": global.defineManager.ALL_SHUTTLE_TIME_LABEL, "url": global.defineManager.SHUTTLE_SCHEDULE_PHOTO}
         responseMessage["message_button"] = labelButton
         responseMessage["photo"] = photoResponse
         responseMessage["text"] = responseText
@@ -208,7 +208,7 @@ kakaoApp.post('/message', function (request, response) {
         systemData = databaseSnapshot["System"]
         responseText = global.util.format(global.defineManager.SYSTEM_INFO_STR, systemData["ver"], systemData["lastEdit"], systemData["developer"], systemData["email"])
 
-        labelButton = {"label": "홈페이지", "url": global.defineManager.GO_TO_HOMEPAGE}
+        labelButton = {"label": global.defineManager.GO_TO_HOMEPAGE_LABEL, "url": global.defineManager.GO_TO_HOMEPAGE}
         responseMessage["message_button"] = labelButton
         responseMessage["text"] = responseText
 

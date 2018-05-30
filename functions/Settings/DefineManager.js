@@ -58,6 +58,9 @@ exports.TEXT_SCHOOL_TO_GIHEUNG = "====이공관 -> 기흥역====\n"
 exports.TEXT_SCHOOL_TO_KANGNAM_UNIV = "====이공관 -> 강남대역====\n"
 exports.SHUTTLE_STATION_ROUTE = "달구지 운행정보 알려드릴께요~\n%s"
 exports.SHOW_SHUTTLE_LOCATION = "우리 같이 달구지가 어디있는지 보러가볼까요?"
+exports.GO_TO_SHUTTLE_PAGE_LABEL = "확인하기"
+exports.ALL_SHUTTLE_TIME_LABEL = "자세히"
+exports.GO_TO_HOMEPAGE_LABEL = "홈페이지"
 
 exports.LOG_LEVEL_VERBOSE = 0
 exports.LOG_LEVEL_INFO = 1
