@@ -206,6 +206,12 @@ exports.SaveUbikanRealtimeData = function (admin, busTrackingData) {
     global.logManager.PrintLogMessage("BusTrackingManager", "SaveUbikanRealtimeData", "save ubikan bus tracking data to database",
         global.defineManager.LOG_LEVEL_DEBUG)
 
+    date = new Date()
+    var currentDate = date
+    date = new Date(currentDate.valueOf() + global.defineManager.GMT_KOREA_TIME_MIN * global.defineManager.HOUR_TO_MILE)
+    dateStr = date.toISOString()
+    busTrackingData["updatedDateTime"] = dateStr
+
     status = admin.database().ref(global.defineManager.DATABASE_UBIKAN_BUS_TRACKING_DATA).set(busTrackingData);
     global.logManager.PrintLogMessage("BusTrackingManager", "SaveUbikanRealtimeData", "whatever i am done!",
         global.defineManager.LOG_LEVEL_DEBUG)

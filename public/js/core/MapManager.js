@@ -22,6 +22,9 @@ MapManager.prototype.GetBusLocationOk = function (data) {
 
     busLocList = data["data"]["list"]
 
+    lastUpdatedTime = data["data"]["updatedDateTime"]
+    SetLastUpdatedTime(lastUpdatedTime)
+
     busRawDataStr = JSON.stringify(data)
     PrintRawBusPosition(busRawDataStr)
 

@@ -36,3 +36,7 @@ function ResetMark() {
 function PrintRawBusPosition(rawDataStr) {
     $("#busLocRawData").text(rawDataStr)
 }
+
+function SetLastUpdatedTime(lastUpdateTime) {
+    $("#lastUpdateDateTime").text(lastUpdateTime)
+}
