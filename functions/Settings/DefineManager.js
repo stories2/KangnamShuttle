@@ -17,9 +17,9 @@ exports.MAIN_BUTTONS = [
     exports.ACADEMIC_CALENDAR,
     exports.DICE_NUMBER_START,
     exports.SERVICE_INFO]
-exports.ERROR_MSG = "오 이런! 어딘가 문제가 발생한것 같군요!"
+exports.ERROR_MSG = "어우, 저기...미안해요"
 
-exports.ASK_SEARCH_TARGET_MONTH = "조회하려는 달을 선택해주세요!"
+exports.ASK_SEARCH_TARGET_MONTH = "조회하고 싶은 달을 선택해주세요!"
 exports.MONTH_STR = "월"
 exports.YEAR_SCHEDULE = [
     "1" + exports.MONTH_STR,
@@ -50,14 +50,14 @@ exports.KAKAO_PLUS_SHARE_URL = "https://pf.kakao.com/_wkxjxoxl"
 exports.GO_TO_HOMEPAGE = "https://kangnamshuttle.firebaseapp.com/"
 exports.GO_TO_SHUTTLE_PAGE = "https://kangnamshuttle.firebaseapp.com/map.html"
 exports.SHUTTLE_SCHEDULE_PHOTO = "https://firebasestorage.googleapis.com/v0/b/kangnamshuttle.appspot.com/o/IMG_0496.JPG?alt=media&token=8ef827c4-f566-49f1-8cf7-f7d2b667a3a2"
-exports.PLZ_INPUT_DEPART_AND_ARRIVE_POINT = "출발 지점과 도착지점을 알려주세요!"
-exports.LET_ME_SHOW_ALL_OF_BUS_TIME = "전체 시간표를 알려드릴께요~"
+exports.PLZ_INPUT_DEPART_AND_ARRIVE_POINT = "어디로 모험을 떠나볼까요?"
+exports.LET_ME_SHOW_ALL_OF_BUS_TIME = "어? 전체 시간표가 여기 있네요~"
 exports.TEXT_GIHEUNG_TO_SCHOOL = "====기흥역 -> 이공관====\n"
 exports.TEXT_KANGNAM_UNIV_TO_SCHOOL = "====강남대역 -> 이공관====\n"
 exports.TEXT_SCHOOL_TO_GIHEUNG = "====이공관 -> 기흥역====\n"
 exports.TEXT_SCHOOL_TO_KANGNAM_UNIV = "====이공관 -> 강남대역====\n"
-exports.SHUTTLE_STATION_ROUTE = "달구지 운행정보 알려드릴께요~\n%s"
-exports.SHOW_SHUTTLE_LOCATION = "우리 같이 달구지가 어디있는지 보러가볼까요?"
+exports.SHUTTLE_STATION_ROUTE = "다들 비키세요! 달구지 운행정보를 알려드릴께요!\n%s"
+exports.SHOW_SHUTTLE_LOCATION = "달구지 위치는 지킬 가치가 있어요!"
 exports.GO_TO_SHUTTLE_PAGE_LABEL = "확인하기"
 exports.ALL_SHUTTLE_TIME_LABEL = "자세히"
 exports.GO_TO_HOMEPAGE_LABEL = "홈페이지"
@@ -80,14 +80,14 @@ exports.DATABASE_SERVICE = "/service/"
 
 exports.SYSTEM_INFO_STR = "버전: %s\n최종 수정일: %s\n개발자: %s\n메일: %s"
 
-exports.BUS_FIRST_TIME_STR = "첫 차가 %s에 있어요!\n다음 버스는 %s에 있어요."
-exports.BUS_LAST_TIME_STR = "마지막 차가 %s에 있어요!"
-exports.BUS_END_STR = "풉! 차를 다 놓치셨군요!\n첫 차는 %s에 있어요."
-exports.BUS_NORMAL_TIME_STR = "이번 차는 %s에 있어요!\n다음 버스는 %s에 있어요."
+exports.BUS_FIRST_TIME_STR = "첫 차가 %s에 나타나요!\n다음 버스는 %s에 있으니 준비하세요."
+exports.BUS_LAST_TIME_STR = "달구지는 아직 끝나지 않았어요, 마지막 차가 %s에 있어요!"
+exports.BUS_END_STR = "풉! 차를 다 놓치셨군요!\n그러니까 평소에 잘 하란 말이에요\n첫 차는 %s에 있어요."
+exports.BUS_NORMAL_TIME_STR = "이번 차는 %s에 있어요!\n다음 버스는 %s에 있어요. 알았죠?"
 
-exports.DICE_NUMBER_RESULT_STR = "%s 가즈아~!!"
+exports.DICE_NUMBER_RESULT_STR = "%s !! 어후, 더 잘할 수 있었는데!"
 
-exports.SCHEDULE_RESULT_STR = "%s월달의 일정을 알려줄께요!\n"
+exports.SCHEDULE_RESULT_STR = "똑똑? %s월달 일정이 왔어요!\n"
 
 exports.WEATHER_CAST_STR = "현재 경기도의 날씨는 %s 이며 기온은 섭씨 %s도 이군요!"
 exports.WEATHER_CAST_WITH_NOTICE_STR = "현재 경기도의 날씨는 %s 이며 기온은 섭씨 %s도 이군요!\n날씨가 많이 더워요, 계단 안쪽으로 줄서주세요!"
@@ -97,7 +97,7 @@ exports.SAY_AGAIN = "다시 말해주세요!"
 exports.TODAY_IS_MONDAY = "월요일이에요! >.<"
 exports.CALCULATED_MONDAY_PERCENT_STR = "월요일이 되기까지 %s% 지나왔어요!"
 
-exports.PASSED_BUS = "\n버스가 %s초 전에 출발해버렸네요 풉ㅋ풉ㅋ"
+exports.PASSED_BUS = "\n버스가 %s초 전에 출발해버렸네요ㅋㅋ 개인적인 감정은 없어요"
 
 exports.ORDER_TO_ID = {}
 exports.ORDER_TO_ID[exports.SAY_AGAIN] = 0
