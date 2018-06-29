@@ -121,12 +121,72 @@ exports.PrintShuttleRoute = function (databaseSnapshot) {
     return global.util.format(global.defineManager.SHUTTLE_STATION_ROUTE, databaseSnapshot["BusStopSchedule"]["busStopRoutine"])
 }
 
+exports.SearchFastestShuttleBasedOnStartPointV2 = function (admin, busTimeListSavedPoint, callbackFunc) {
+    global.logManager.PrintLogMessage("BusTimeManager", "SearchFastestShuttleBasedOnStartPointV2", "search fastest bus time", global.defineManager.LOG_LEVEL_INFO)
+
+    busTimeListPath = global.defineManager.DATABASE_SERVICE_V2_0_0_BUS_INFO_SCHEDULE_LIST_PATH + "/" + busTimeListSavedPoint
+    global.logManager.PrintLogMessage("BusTimeManager", "SearchFastestShuttleBasedOnStartPointV2", "search bus time path: " + busTimeListPath, global.defineManager.LOG_LEVEL_DEBUG)
+
+    admin.database().ref(busTimeListPath).once('value', function (busTimeScheduleBasedOnMoveDirectionList) {
+
+        busTimeScheduleBasedOnMoveDirectionList = JSON.parse(JSON.stringify(busTimeScheduleBasedOnMoveDirectionList))
+
+        var currentDate = new Date();
+        var hour = (currentDate.getHours() + global.defineManager.GMT_KOREA_TIME) % global.defineManager.DAY_TO_HOUR
+        var min = currentDate.getMinutes()
+        var sec = currentDate.getSeconds()
+
+        currentSec = hour * 3600 + min * 60 + sec * 1
+        shuttleSec = 0
+        resultShuttleSec = 0
+        bakShuttleSec = 0
+        resultStatus = global.defineManager.BUS_STATUS_NORMAL
+
+        global.logManager.PrintLogMessage("BusTimeManager", "SearchFastestShuttleBasedOnStartPointV2", "current time sec: " + currentSec + " date: " + currentDate, global.defineManager.LOG_LEVEL_DEBUG)
+
+        for(index in busTimeScheduleBasedOnMoveDirectionList) {
+            shuttleSec = Number(busTimeScheduleBasedOnMoveDirectionList[index])
+            console.log("sec: ", shuttleSec, " index: ", index)
+            if(index == 0) { // 첫차 시간
+                if(currentSec < shuttleSec) {
+                    resultShuttleSec = shuttleSec;
+                    resultStatus = global.defineManager.BUS_STATUS_FIRST
+                    global.logManager.PrintLogMessage("BusTimeManager", "SearchFastestShuttleBasedOnStartPointV2", "we found first shuttle time: " + shuttleSec, global.defineManager.LOG_LEVEL_DEBUG)
+                    break
+                }
+            }
+            else if(index == busTimeScheduleBasedOnMoveDirectionList.length - 1){
+                gapPastBusTimeSec =  currentSec - bakShuttleSec
+                if(currentSec < shuttleSec) { // 마지막차 시간
+                    resultShuttleSec = shuttleSec;
+                    resultStatus = global.defineManager.BUS_STATUS_LAST
+                    global.logManager.PrintLogMessage("BusTimeManager", "SearchFastestShuttleBasedOnStartPointV2", "we found last shuttle time: " + shuttleSec, global.defineManager.LOG_LEVEL_DEBUG)
+                    break
+                }
+                else if(currentSec >= shuttleSec) { // 마지막차 놓침
+                    resultShuttleSec = busTimeScheduleBasedOnMoveDirectionList[0];
+                    resultStatus = global.defineManager.BUS_STATUS_MISSED_ALL
+                    global.logManager.PrintLogMessage("BusTimeManager", "SearchFastestShuttleBasedOnStartPointV2", "missed last shuttle, so first shuttle time is: " + resultShuttleSec, global.defineManager.LOG_LEVEL_DEBUG)
+                    break
+                }
+            }
+            else {
+                gapPastBusTimeSec =  currentSec - bakShuttleSec
+                if(bakShuttleSec < currentSec && currentSec < shuttleSec) { // 보통차 시간
+                    resultShuttleSec = shuttleSec;
+                    resultStatus = global.defineManager.BUS_STATUS_NORMAL
+                    global.logManager.PrintLogMessage("BusTimeManager", "SearchFastestShuttleBasedOnStartPointV2", "we found shuttle time: " + shuttleSec, global.defineManager.LOG_LEVEL_DEBUG)
+                    break
+                }
+            }
+
+            bakShuttleSec = shuttleSec
+        }
+
+        callbackFunc(resultShuttleSec, resultStatus)
+    })
+}
+
 exports.TimeToSec = function(hour, min, sec) {
     return hour * 3600 + min * 60 + sec * 1
 }
-
-exports.SearchFastestShuttleBasedOnStartPointV2 = function (admin, callbackFunc) {
-    global.logManager.PrintLogMessage("BusTimeManager", "SearchFastestShuttleBasedOnStartPointV2", "search fastest bus time", global.defineManager.LOG_LEVEL_INFO)
-    callbackFunc(0)
-}
-
