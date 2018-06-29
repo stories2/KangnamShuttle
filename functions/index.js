@@ -68,9 +68,17 @@ kakaoAppV2.get('/keyboard', function (request, response) {
 
 kakaoAppV2.post('/message', function (request, response) {
     global.logManager.PrintLogMessage("index", "message", "message accepted", global.defineManager.LOG_LEVEL_INFO)
-    automatonManager.AnalysisCurrentOrderNumber(admin, null, request.databaseSnapshot, request.body["content"], request.body["user_key"])
-    response.setHeader('Content-Type', 'application/json');
-    response.status(200).send()
+    automatonManager.AnalysisCurrentOrderNumber(admin, function (currentOrderNumber) {
+        if(currentOrderNumber == global.defineManager.NOT_AVAILABLE) {
+            response.setHeader('Content-Type', 'application/json');
+            response.status(global.defineManager.HTTP_SERVER_ERROR).send()
+        }
+        else {
+            automatonManager.OrderExecute(admin, request, currentOrderNumber)
+            response.setHeader('Content-Type', 'application/json');
+            response.status(200).send()
+        }
+    }, request.databaseSnapshot, request.body["content"], request.body["user_key"])
 })
 
 kakaoAppV2.post('/friend', function (request, response) {

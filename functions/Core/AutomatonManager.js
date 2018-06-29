@@ -24,11 +24,17 @@ exports.AnalysisCurrentOrderNumber = function (admin, callbackFunc, routineLinke
                     }
                 }
                 global.logManager.PrintLogMessage("AutomatonManager", "AnalysisCurrentOrderNumber", "current order number: " + currentOrderNumber, global.defineManager.LOG_LEVEL_DEBUG)
-                // callbackFunc(currentOrderNumber)
+                callbackFunc(currentOrderNumber)
             })
     }
     else {
         global.logManager.PrintLogMessage("AutomatonManager", "AnalysisCurrentOrderNumber", "you must send user_key", global.defineManager.LOG_LEVEL_WARN)
         callbackFunc(global.defineManager.NOT_AVAILABLE)
     }
+}
+
+exports.OrderExecute = function (admin, request, currentOrderNumber) {
+    global.logManager.PrintLogMessage("AutomatonManager", "OrderExecute", "execute order: " + currentOrderNumber, global.defineManager.LOG_LEVEL_DEBUG)
+
+
 }
