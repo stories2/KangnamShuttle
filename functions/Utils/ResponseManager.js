@@ -1,3 +1,22 @@
+exports.SimpleMsgAndButtonResponseV2 = function (response, currentOrderNumber, buttonList, msg) {
+    global.logManager.PrintLogMessage("ResponseManager", "SimpleMsgAndButtonResponseV2", "order: " + currentOrderNumber + " msg: " + msg, global.defineManager.LOG_LEVEL_DEBUG)
+
+    responseMsg = {
+        "keyboard": {
+            "type": "buttons",
+            "buttons": buttonList[currentOrderNumber][global.defineManager.DATABASE_INPUT_ORDER_LIST_SHORT_PATH]
+        }
+    }
+    if(msg != null) {
+        responseMsg["message"] = msg
+        response.setHeader('Content-Type', 'application/json');
+    }
+
+    responseStr = JSON.stringify(responseMsg)
+    global.logManager.PrintLogMessage("ResponseManager", "SimpleMsgAndButtonResponseV2", "current response: " + responseStr, global.defineManager.LOG_LEVEL_DEBUG)
+    response.status(200).send(responseStr)
+}
+
 exports.TemplateResponse = function (admin, convertManager, generateManager, response, requestMessage, responseMsg, responseButton) {
     global.logManager.PrintLogMessage("ResponseManager", "TemplateResponse",
         "result message: " + responseMsg["text"],
