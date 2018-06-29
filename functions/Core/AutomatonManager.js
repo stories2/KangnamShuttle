@@ -56,10 +56,16 @@ exports.OrderExecute = function (admin, request, currentRoutineLinkItem, current
     if(currentOrderNumber >= global.defineManager.AUTOMATON_BUS_SEARCH_ORDER_START_NUMBER) {
         busTimeManager = require('./BusTimeManager');
         busTimeListSavedPoint = Math.floor(currentOrderNumber / global.defineManager.AUTOMATON_BUS_SEARCH_ORDER_START_NUMBER)
-        busTimeManager.SearchFastestShuttleBasedOnStartPointV2(admin, busTimeListSavedPoint, function (resultTimeSec, state) {
+        busTimeManager.SearchFastestShuttleBasedOnStartPointV2(admin, busTimeListSavedPoint, function (resultTimeSec, nextShuttleSec, state) {
             global.logManager.PrintLogMessage("AutomatonManager", "OrderExecute", "received shuttle time sec: " + resultTimeSec, global.defineManager.LOG_LEVEL_DEBUG)
-            
-            makeUpResponse(currentRoutineLinkItem["responseMsgDic"][currentUserResponseMsgType][0], null, null)
+
+            responseMsgStr = busTimeManager.GenerateBusScheduleReview(
+                currentRoutineLinkItem["responseMsgDic"][currentUserResponseMsgType],
+                resultTimeSec,
+                nextShuttleSec,
+                state
+                )
+            makeUpResponse(responseMsgStr, null, null)
         })
     }
     else {
