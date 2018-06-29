@@ -2,10 +2,8 @@ exports.SimpleMsgAndButtonResponseV2 = function (response, currentOrderNumber, b
     global.logManager.PrintLogMessage("ResponseManager", "SimpleMsgAndButtonResponseV2", "order: " + currentOrderNumber + " msg: " + msg, global.defineManager.LOG_LEVEL_DEBUG)
 
     responseMsg = {
-        "keyboard": {
-            "type": "buttons",
-            "buttons": buttonList[currentOrderNumber][global.defineManager.DATABASE_INPUT_ORDER_LIST_SHORT_PATH]
-        }
+        "type": "buttons",
+        "buttons": buttonList[currentOrderNumber][global.defineManager.DATABASE_INPUT_ORDER_LIST_SHORT_PATH]
     }
     if(msg != null) {
         responseMsg["message"] = msg
