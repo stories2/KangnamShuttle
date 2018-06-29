@@ -8,6 +8,7 @@ const admin = require('firebase-admin');
 admin.initializeApp(functions.config().firebase);
 
 const responseManager = require('./Utils/ResponseManager');
+const automatonManager = require('./Core/AutomatonManager');
 
 const url = require('url')
 const express = require('express');
@@ -28,7 +29,8 @@ const middleWareOfMessage = function (request, response, next) {
                 })
                 break;
             case "/message":
-                admin.database().ref(global.defineManager.DATABASE_SERVICE).once('value', function (snapshot) {
+                admin.database().ref(global.defineManager.DATABASE_SERVICE_V2_0_0_RULE_INFO_ROUTINE_LINKED_LIST_PATH)
+                    .once('value', function (snapshot) {
                     global.logManager.PrintLogMessage("index", "middleWareOfMessage<message>", "getting service database",
                         global.defineManager.LOG_LEVEL_INFO)
                     request.databaseSnapshot = snapshot.val()
@@ -66,6 +68,7 @@ kakaoAppV2.get('/keyboard', function (request, response) {
 
 kakaoAppV2.post('/message', function (request, response) {
     global.logManager.PrintLogMessage("index", "message", "message accepted", global.defineManager.LOG_LEVEL_INFO)
+    automatonManager.AnalysisCurrentOrderNumber(admin, null, request.databaseSnapshot, request.body["content"], request.body["user_key"])
     response.setHeader('Content-Type', 'application/json');
     response.status(200).send()
 })
