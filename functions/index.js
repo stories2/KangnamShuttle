@@ -9,6 +9,7 @@ admin.initializeApp(functions.config().firebase);
 
 const responseManager = require('./Utils/ResponseManager');
 const automatonManager = require('./Core/AutomatonManager');
+const userManager = require('./Core/UserManager');
 
 const url = require('url')
 const express = require('express');
@@ -68,6 +69,11 @@ kakaoAppV2.get('/keyboard', function (request, response) {
 
 kakaoAppV2.post('/message', function (request, response) {
     global.logManager.PrintLogMessage("index", "message", "message accepted", global.defineManager.LOG_LEVEL_INFO)
+
+    currentUserKey = request.body["user_key"]
+    inputContent = request.body["content"]
+    inputType = request.body["type"]
+
     automatonManager.AnalysisCurrentOrderNumber(admin, function (currentOrderNumber) {
         if(currentOrderNumber == global.defineManager.NOT_AVAILABLE) {
             response.setHeader('Content-Type', 'application/json');
@@ -75,10 +81,11 @@ kakaoAppV2.post('/message', function (request, response) {
         }
         else {
             automatonManager.OrderExecute(admin, request, currentOrderNumber)
+            userManager.UpdateLastInputOrder(admin, currentUserKey, currentOrderNumber)
             response.setHeader('Content-Type', 'application/json');
             response.status(200).send()
         }
-    }, request.databaseSnapshot, request.body["content"], request.body["user_key"])
+    }, request.databaseSnapshot, inputContent, currentUserKey)
 })
 
 kakaoAppV2.post('/friend', function (request, response) {
