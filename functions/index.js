@@ -52,7 +52,7 @@ const middleWareOfMessage = function (request, response, next) {
     catch (exception) {
         global.logManager.PrintLogMessage("index", "middleWareOfMessage", "exception accepted path: " + requestPath + " except: " + exception,
             global.defineManager.LOG_LEVEL_ERROR)
-        response.status(500).send()
+        response.status(global.defineManager.HTTP_SERVER_ERROR).send()
     }
 }
 
