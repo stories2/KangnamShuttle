@@ -130,6 +130,11 @@ exports.SearchFastestShuttleBasedOnStartPointV2 = function (admin, busTimeListSa
     admin.database().ref(busTimeListPath).once('value', function (busTimeScheduleBasedOnMoveDirectionList) {
 
         busTimeScheduleBasedOnMoveDirectionList = JSON.parse(JSON.stringify(busTimeScheduleBasedOnMoveDirectionList))
+        tempArray = []
+        for(index in busTimeScheduleBasedOnMoveDirectionList) {
+            tempArray.push(busTimeScheduleBasedOnMoveDirectionList[index])
+        }
+        busTimeScheduleBasedOnMoveDirectionList = tempArray
 
         var currentDate = new Date();
         var hour = (currentDate.getHours() + global.defineManager.GMT_KOREA_TIME) % global.defineManager.DAY_TO_HOUR
@@ -147,13 +152,13 @@ exports.SearchFastestShuttleBasedOnStartPointV2 = function (admin, busTimeListSa
 
         for(index in busTimeScheduleBasedOnMoveDirectionList) {
             shuttleSec = Number(busTimeScheduleBasedOnMoveDirectionList[index])
-            console.log("sec: ", shuttleSec, " index: ", index)
+            // console.log("sec: ", shuttleSec, " index: ", index, " / ", busTimeScheduleBasedOnMoveDirectionList.length)
             if(index == 0) { // 첫차 시간
                 if(currentSec < shuttleSec) {
                     resultShuttleSec = shuttleSec;
                     resultStatus = global.defineManager.BUS_STATUS_FIRST
-                    nextShuttleSec = Number(busTimeScheduleBasedOnMoveDirectionList[Number(index + 1)])
-                    global.logManager.PrintLogMessage("BusTimeManager", "SearchFastestShuttleBasedOnStartPointV2", "we found first shuttle time: " + shuttleSec, global.defineManager.LOG_LEVEL_DEBUG)
+                    nextShuttleSec = Number(busTimeScheduleBasedOnMoveDirectionList[Number(index) + 1])
+                    global.logManager.PrintLogMessage("BusTimeManager", "SearchFastestShuttleBasedOnStartPointV2", "we found first shuttle time: " + shuttleSec + " ~ " + nextShuttleSec, global.defineManager.LOG_LEVEL_DEBUG)
                     break
                 }
             }
@@ -179,8 +184,8 @@ exports.SearchFastestShuttleBasedOnStartPointV2 = function (admin, busTimeListSa
                 if(bakShuttleSec < currentSec && currentSec < shuttleSec) { // 보통차 시간
                     resultShuttleSec = shuttleSec;
                     resultStatus = global.defineManager.BUS_STATUS_NORMAL
-                    nextShuttleSec = Number(busTimeScheduleBasedOnMoveDirectionList[Number(index + 1)])
-                    global.logManager.PrintLogMessage("BusTimeManager", "SearchFastestShuttleBasedOnStartPointV2", "we found shuttle time: " + shuttleSec, global.defineManager.LOG_LEVEL_DEBUG)
+                    nextShuttleSec = Number(busTimeScheduleBasedOnMoveDirectionList[Number(index) + 1])
+                    global.logManager.PrintLogMessage("BusTimeManager", "SearchFastestShuttleBasedOnStartPointV2", "we found shuttle time: " + shuttleSec + " ~ " + nextShuttleSec, global.defineManager.LOG_LEVEL_DEBUG)
                     break
                 }
             }
@@ -243,7 +248,7 @@ exports.GenerateBusScheduleReview = function (responseMsgDic, resultTimeSec, nex
     }
 
     global.logManager.PrintLogMessage("BusTimeManager", "GenerateBusScheduleReview", "next nearest gap: "
-        + nextNearestTimeGap + " str: " + nextNearestSec, global.defineManager.LOG_LEVEL_DEBUG)
+        + nextNearestTimeGap + " str: " + nextNearestTimeStr, global.defineManager.LOG_LEVEL_DEBUG)
 
     switch (state) {
         case global.defineManager.BUS_STATUS_FIRST:

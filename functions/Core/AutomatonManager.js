@@ -8,6 +8,13 @@ exports.AnalysisCurrentOrderNumber = function (admin, callbackFunc, routineLinke
         admin.database().ref(searchPath)
             .once('value', function (snapshot) {
                 snapshot = JSON.parse(JSON.stringify(snapshot))
+
+                if(snapshot == null) {
+                    userManager = require('./UserManager');
+                    snapshot = userManager.CreateNewUserTemplate(admin, currentUserKey)
+                    global.logManager.PrintLogMessage("AutomatonManager", "AnalysisCurrentOrderNumber", "user created return template", global.defineManager.LOG_LEVEL_WARN)
+                }
+
                 global.logManager.PrintLogMessage("AutomatonManager", "AnalysisCurrentOrderNumber", "snapshot: " + JSON.stringify(snapshot), global.defineManager.LOG_LEVEL_DEBUG)
 
                 lastOrderNumber = snapshot["lastOrder"] == null ? global.defineManager.AUTOMATON_START_NUMBER : snapshot["lastOrder"]

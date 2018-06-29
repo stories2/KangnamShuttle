@@ -11,3 +11,19 @@ exports.UpdateLastInputOrder = function (admin, currentUserKey, currentOrderNumb
         admin.database().ref(orderNumberUpdatePath).set(currentOrderNumber)
     }
 }
+
+exports.CreateNewUserTemplate = function (admin, currentUserKey) {
+    global.logManager.PrintLogMessage("UserManager", "CreateNewUserTemplate", "create user with template", global.defineManager.LOG_LEVEL_INFO)
+    templateUserData = {
+        "lastOrder": global.defineManager.AUTOMATON_START_NUMBER,
+        "responseType": global.defineManager.RESPONSE_TYPE_OF_STR
+    }
+
+    newUserPath = global.defineManager.DATABASE_USERS_PATH + "/" + currentUserKey
+
+    global.logManager.PrintLogMessage("UserManager", "CreateNewUserTemplate", "user create path: " + newUserPath, global.defineManager.LOG_LEVEL_DEBUG)
+
+    admin.database().ref(newUserPath).set(templateUserData)
+
+    return templateUserData
+}
