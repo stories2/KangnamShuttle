@@ -124,3 +124,9 @@ exports.PrintShuttleRoute = function (databaseSnapshot) {
 exports.TimeToSec = function(hour, min, sec) {
     return hour * 3600 + min * 60 + sec * 1
 }
+
+exports.SearchFastestShuttleBasedOnStartPointV2 = function (admin, callbackFunc) {
+    global.logManager.PrintLogMessage("BusTimeManager", "SearchFastestShuttleBasedOnStartPointV2", "search fastest bus time", global.defineManager.LOG_LEVEL_INFO)
+    callbackFunc(0)
+}
+

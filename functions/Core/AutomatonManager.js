@@ -33,23 +33,34 @@ exports.AnalysisCurrentOrderNumber = function (admin, callbackFunc, routineLinke
     }
 }
 
-exports.OrderExecute = function (admin, request, currentOrderNumber, routineLinkedList, currentUserData, callbackFunc) {
-    global.logManager.PrintLogMessage("AutomatonManager", "OrderExecute", "execute order: " + currentOrderNumber, global.defineManager.LOG_LEVEL_DEBUG)
+exports.OrderExecute = function (admin, request, currentRoutineLinkItem, currentOrderNumber, currentUserData, callbackFunc) {
+    global.logManager.PrintLogMessage("AutomatonManager", "OrderExecute", "execute order", global.defineManager.LOG_LEVEL_INFO)
 
-    currentUserResponseType = currentUserData["responseType"]
-    responseText = routineLinkedList[currentOrderNumber]["responseMsgDic"][currentUserResponseType][0]
-
-    responseMessage = {
-        "message": {
-            "text": responseText
-        },
-        "keyboard": {
-            "type": "buttons",
-            "buttons": routineLinkedList[currentOrderNumber]["inputOrderList"]
+    currentUserResponseMsgType = currentUserData["responseType"]
+    makeUpResponse = function (responseText, labelUrl, photoUrl) {
+        responseMessage = {
+            "message": {
+                "text": responseText
+            },
+            "keyboard": {
+                "type": "buttons",
+                "buttons": currentRoutineLinkItem["inputOrderList"]
+            }
         }
+
+        global.logManager.PrintLogMessage("AutomatonManager", "OrderExecute", "response template: " + JSON.stringify(responseMessage), global.defineManager.LOG_LEVEL_DEBUG)
+
+        callbackFunc(responseMessage)
     }
 
-    global.logManager.PrintLogMessage("AutomatonManager", "OrderExecute", "response template: " + JSON.stringify(responseMessage), global.defineManager.LOG_LEVEL_DEBUG)
+    if(currentOrderNumber >= global.defineManager.AUTOMATON_BUS_SEARCH_ORDER_START_NUMBER) {
+        busTimeManager = require('./BusTimeManager');
+        busTimeManager.SearchFastestShuttleBasedOnStartPointV2(admin, function (resultTimeSec) {
+            makeUpResponse(currentRoutineLinkItem["responseMsgDic"][currentUserResponseMsgType][0], null, null)
+        })
+    }
+    else {
 
-    callbackFunc(responseMessage)
+        makeUpResponse(currentRoutineLinkItem["responseMsgDic"][currentUserResponseMsgType][0], null, null)
+    }
 }
