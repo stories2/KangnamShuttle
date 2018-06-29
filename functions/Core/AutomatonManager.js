@@ -24,7 +24,7 @@ exports.AnalysisCurrentOrderNumber = function (admin, callbackFunc, routineLinke
                     }
                 }
                 global.logManager.PrintLogMessage("AutomatonManager", "AnalysisCurrentOrderNumber", "current order number: " + currentOrderNumber, global.defineManager.LOG_LEVEL_DEBUG)
-                callbackFunc(currentOrderNumber)
+                callbackFunc(currentOrderNumber, snapshot)
             })
     }
     else {
@@ -33,8 +33,23 @@ exports.AnalysisCurrentOrderNumber = function (admin, callbackFunc, routineLinke
     }
 }
 
-exports.OrderExecute = function (admin, request, currentOrderNumber) {
+exports.OrderExecute = function (admin, request, currentOrderNumber, routineLinkedList, currentUserData, callbackFunc) {
     global.logManager.PrintLogMessage("AutomatonManager", "OrderExecute", "execute order: " + currentOrderNumber, global.defineManager.LOG_LEVEL_DEBUG)
 
+    currentUserResponseType = currentUserData["responseType"]
+    responseText = routineLinkedList[currentOrderNumber]["responseMsgDic"][currentUserResponseType][0]
 
+    responseMessage = {
+        "message": {
+            "text": responseText
+        },
+        "keyboard": {
+            "type": "buttons",
+            "buttons": routineLinkedList[currentOrderNumber]["inputOrderList"]
+        }
+    }
+
+    global.logManager.PrintLogMessage("AutomatonManager", "OrderExecute", "response template: " + JSON.stringify(responseMessage), global.defineManager.LOG_LEVEL_DEBUG)
+
+    callbackFunc(responseMessage)
 }

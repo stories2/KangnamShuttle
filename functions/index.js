@@ -74,35 +74,36 @@ kakaoAppV2.post('/message', function (request, response) {
     inputContent = request.body["content"]
     inputType = request.body["type"]
 
-    automatonManager.AnalysisCurrentOrderNumber(admin, function (currentOrderNumber) {
+    automatonManager.AnalysisCurrentOrderNumber(admin, function (currentOrderNumber, currentUserData) {
         if(currentOrderNumber == global.defineManager.NOT_AVAILABLE) {
             response.setHeader('Content-Type', 'application/json');
             response.status(global.defineManager.HTTP_SERVER_ERROR).send()
         }
         else {
-            automatonManager.OrderExecute(admin, request, currentOrderNumber)
             userManager.UpdateLastInputOrder(admin, currentUserKey, currentOrderNumber)
-            response.setHeader('Content-Type', 'application/json');
-            response.status(200).send()
+            automatonManager.OrderExecute(admin, request, currentOrderNumber, request.databaseSnapshot, currentUserData,
+                function (responseData) {
+                responseManager.AutoMsgResponseV2(response, responseData)
+            })
         }
     }, request.databaseSnapshot, inputContent, currentUserKey)
 })
 
 kakaoAppV2.post('/friend', function (request, response) {
     global.logManager.PrintLogMessage("index", "friend", "new member accepted", global.defineManager.LOG_LEVEL_INFO)
-    response.status(200).send()
+    response.status(global.defineManager.HTTP_SUCCESS).send()
 })
 
 kakaoAppV2.delete('/friend/:user_key', function (request, response) {
     userKey = request.params.user_key
     global.logManager.PrintLogMessage("index", "friend", "bye bye my friend: " + userKey, global.defineManager.LOG_LEVEL_INFO)
-    response.status(200).send()
+    response.status(global.defineManager.HTTP_SUCCESS).send()
 })
 
 kakaoAppV2.delete('/chat_room/:user_key', function (request, response) {
     userKey = request.params.user_key
     global.logManager.PrintLogMessage("index", "chat_room", "delete chat room: " + userKey, global.defineManager.LOG_LEVEL_INFO)
-    response.status(200).send()
+    response.status(global.defineManager.HTTP_SUCCESS).send()
 })
 
 exports.V2 = functions.https.onRequest(kakaoAppV2);

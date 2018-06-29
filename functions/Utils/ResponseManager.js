@@ -17,6 +17,13 @@ exports.SimpleMsgAndButtonResponseV2 = function (response, currentOrderNumber, b
     response.status(200).send(responseStr)
 }
 
+exports.AutoMsgResponseV2 = function (response, responseMsg) {
+    responseMsgStr = JSON.stringify(responseMsg)
+    global.logManager.PrintLogMessage("ResponseManager", "AutoMsgResponseV2", "response msg: " + responseMsgStr, global.defineManager.LOG_LEVEL_DEBUG)
+    response.setHeader('Content-Type', 'application/json');
+    response.status(200).send(responseMsgStr)
+}
+
 exports.TemplateResponse = function (admin, convertManager, generateManager, response, requestMessage, responseMsg, responseButton) {
     global.logManager.PrintLogMessage("ResponseManager", "TemplateResponse",
         "result message: " + responseMsg["text"],
