@@ -214,7 +214,7 @@ exports.GenerateBusScheduleReview = function (responseMsgDic, resultTimeSec, nex
 
     nearestTimeGap = resultTimeSec - currentSec
     nextNearestTimeGap = nextShuttleSec - currentSec
-    if(nearestTimeGap < global.defineManager.PRINT_TIME_OR_LEFT_MIN_THRES_SEC) {
+    if(nearestTimeGap < global.defineManager.PRINT_TIME_OR_LEFT_MIN_THRES_SEC && nearestTimeGap > 0) {
     //    print as left min
         nearestTimeStr = Math.floor(nearestTimeGap / 60) + "분 후"
     }
@@ -232,7 +232,7 @@ exports.GenerateBusScheduleReview = function (responseMsgDic, resultTimeSec, nex
     global.logManager.PrintLogMessage("BusTimeManager", "GenerateBusScheduleReview", "nearest gap: "
         + nearestTimeGap + " str: " + nearestTimeStr, global.defineManager.LOG_LEVEL_DEBUG)
 
-    if(nextNearestTimeGap < global.defineManager.PRINT_TIME_OR_LEFT_MIN_THRES_SEC) {
+    if(nextNearestTimeGap < global.defineManager.PRINT_TIME_OR_LEFT_MIN_THRES_SEC  && nextNearestTimeGap > 0) {
         //    print as left min
         nextNearestTimeStr = Math.floor(nextNearestTimeGap / 60) + "분 후"
     }
