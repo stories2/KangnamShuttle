@@ -106,6 +106,15 @@ exports.OrderExecute = function (admin, request, currentRoutineLinkItem, current
             currentRoutineLinkItem["labelUrl"],
             currentRoutineLinkItem["photo"]["url"])
     }
+    else if(currentOrderNumber == global.defineManager.AUTOMATON_SERVICE_INFO_ORDER_NUMBER) {
+        systemManager = require('./SystemManager');
+        systemManager.CurrentServiceInfo(
+            admin,
+            currentRoutineLinkItem["responseMsgDic"][currentUserResponseMsgType][global.defineManager.RESPONSE_DEFAULT_SELECTION],
+            function (responseText) {
+                makeUpResponse(responseText, null, null)
+            })
+    }
     else {
 
         makeUpResponse(currentRoutineLinkItem["responseMsgDic"][currentUserResponseMsgType][global.defineManager.RESPONSE_DEFAULT_SELECTION], null, null)
