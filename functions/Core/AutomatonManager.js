@@ -45,14 +45,39 @@ exports.OrderExecute = function (admin, request, currentRoutineLinkItem, current
 
     currentUserResponseMsgType = currentUserData["responseType"]
     makeUpResponse = function (responseText, labelUrl, photoUrl) {
+
         responseMessage = {
             "message": {
-                "text": responseText
+                "text": responseText,
             },
             "keyboard": {
                 "type": "buttons",
                 "buttons": currentRoutineLinkItem["inputOrderList"]
             }
+        }
+
+        if(labelUrl != null) {
+            msgBtnTemplate = {
+                "message_button": {
+                    "label": currentRoutineLinkItem["labelText"],
+                    "url": labelUrl
+                }
+            }
+
+            responseMessage["message"]["message_button"] = msgBtnTemplate["message_button"]
+            global.logManager.PrintLogMessage("AutomatonManager", "OrderExecute", "msg btn template attached", global.defineManager.LOG_LEVEL_INFO)
+        }
+        if(photoUrl != null) {
+            msgPhotoTemplate = {
+                "photo": {
+                    "url": photoUrl,
+                    "width": currentRoutineLinkItem["photo"]["width"],
+                    "height": currentRoutineLinkItem["photo"]["height"]
+                }
+            }
+
+            responseMessage["message"]["photo"] = msgPhotoTemplate["photo"]
+            global.logManager.PrintLogMessage("AutomatonManager", "OrderExecute", "msg photo template attached", global.defineManager.LOG_LEVEL_INFO)
         }
 
         global.logManager.PrintLogMessage("AutomatonManager", "OrderExecute", "response template: " + JSON.stringify(responseMessage), global.defineManager.LOG_LEVEL_DEBUG)
@@ -74,6 +99,12 @@ exports.OrderExecute = function (admin, request, currentRoutineLinkItem, current
                 )
             makeUpResponse(responseMsgStr, null, null)
         })
+    }
+    else if(currentOrderNumber == global.defineManager.AUTOMATON_PRINT_ALL_SHUTTLE_SCHEDULE_ORDER_NUMBER) {
+        makeUpResponse(
+            currentRoutineLinkItem["responseMsgDic"][currentUserResponseMsgType],
+            currentRoutineLinkItem["labelUrl"],
+            currentRoutineLinkItem["photo"]["url"])
     }
     else {
 
