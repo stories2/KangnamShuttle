@@ -102,12 +102,12 @@ exports.OrderExecute = function (admin, request, currentRoutineLinkItem, current
     }
     else if(currentOrderNumber == global.defineManager.AUTOMATON_PRINT_ALL_SHUTTLE_SCHEDULE_ORDER_NUMBER) {
         makeUpResponse(
-            currentRoutineLinkItem["responseMsgDic"][currentUserResponseMsgType],
+            currentRoutineLinkItem["responseMsgDic"][currentUserResponseMsgType][global.defineManager.RESPONSE_DEFAULT_SELECTION],
             currentRoutineLinkItem["labelUrl"],
             currentRoutineLinkItem["photo"]["url"])
     }
     else {
 
-        makeUpResponse(currentRoutineLinkItem["responseMsgDic"][currentUserResponseMsgType][0], null, null)
+        makeUpResponse(currentRoutineLinkItem["responseMsgDic"][currentUserResponseMsgType][global.defineManager.RESPONSE_DEFAULT_SELECTION], null, null)
     }
 }
