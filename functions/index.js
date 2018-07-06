@@ -15,6 +15,7 @@ const url = require('url')
 const express = require('express');
 const cors = require('cors')({origin: true});
 const kakaoAppV2 = express();
+const publicV2 = express();
 
 const middleWareOfMessage = function (request, response, next) {
     requestPath = url.parse(request.url).pathname
@@ -107,3 +108,28 @@ kakaoAppV2.delete('/chat_room/:user_key', function (request, response) {
 })
 
 exports.V2 = functions.https.onRequest(kakaoAppV2);
+
+publicV2.use(cors)
+publicV2.use(middleWareOfMessage)
+
+publicV2.get('/busLocation', function(request, response) {
+
+})
+
+publicV2.get('/updateBusLocation', function (request, response) {
+    ubikhanRequestData = {
+        loginInfo: functions.config().ubikan.login_info,
+        apiParam: functions.config().ubikan.api_param
+    }
+
+    busTrackingManager = require('./Core/BusTrackingManager');
+    busTrackingManager.PostfixUpdateUbikanBusData(admin, busTrackingManager, ubikhanRequestData)
+
+    responseData = {
+        "msg": "Bus data will update as soon as possible. Check the logs."
+    }
+
+    responseManager.TemplateOfResponse(responseData, 200, response)
+})
+
+exports.PublicV2 = functions.https.onRequest(publicV2);
