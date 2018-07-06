@@ -178,6 +178,7 @@ exports.DATABASE_SERVICE_V2_0_0_BUS_INFO_SCHEDULE_LIST_PATH = "/V2/Service/V2_0_
 exports.DATABASE_SERVICE_V2_0_0_SYSTEM_INFO_PATH = "/V2/Service/V2_0_0/StaticContent/SystemInfo"
 exports.DATABASE_SERVICE_V2_0_0_RELEASE_NOTE_PATH = "/V2/Service/V2_0_0/StaticContent/ReleaseNote"
 exports.DATABASE_SERVICE_BUS_INFO_ROUTINE_PATH = "/V2/Service/V2_0_0/StaticContent/BusInfo/Routine"
+exports.DATABASE_SERVICE_V2_0_0_BUS_LOCATION_PATH = "/V2/Service/V2_0_0/StaticContent/BusInfo/LocationDic"
 
 exports.AUTOMATON_START_NUMBER = 1
 exports.AUTOMATON_DEFAULT_INPUT_NUMBER = 0

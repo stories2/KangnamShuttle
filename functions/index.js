@@ -48,6 +48,14 @@ const middleWareOfMessage = function (request, response, next) {
                     return next();
                 })
                 break;
+            case "/busLocation":
+                admin.database().ref(global.defineManager.DATABASE_SERVICE_V2_0_0_BUS_LOCATION_PATH).once('value', function (snapshot) {
+                    global.logManager.PrintLogMessage("index", "middleWareOfMessage<busLocation>", "getting service database",
+                        global.defineManager.LOG_LEVEL_INFO)
+                    request.databaseSnapshot = snapshot.val()
+                    return next();
+                })
+                break;
             default:
                 return next();
                 break;
@@ -116,22 +124,30 @@ publicV2.engine('ejs', require('ejs').__express);
 publicV2.use(express.static('Public'));
 
 publicV2.get('/', function(request, response) {
-    response.status(200).render("template", {
+    response.status(global.defineManager.HTTP_SUCCESS).render("template", {
         test: "It Works!"
     })
 })
 
 publicV2.get('/map', function (request, response) {
-    response.status(200).render("map", {
+    response.status(global.defineManager.HTTP_SUCCESS).render("map", {
 
     })
 })
 
 publicV2.get('/busLocation', function(request, response) {
+    global.logManager.PrintLogMessage("index", "busLocation", "get bus location data",
+        global.defineManager.LOG_LEVEL_DEBUG)
 
+    busTrackingManager = require('./Core/BusTrackingManager');
+    responseData = busTrackingManager.GetUbikanRealtimeData(request.databaseSnapshot)
+
+    responseManager.TemplateOfResponse(responseData, global.defineManager.HTTP_SUCCESS, response)
 })
 
 publicV2.get('/updateBusLocation', function (request, response) {
+    global.logManager.PrintLogMessage("index", "updateBusLocation", "request update bus gps location data", global.defineManager.LOG_LEVEL_INFO)
+
     ubikhanRequestData = {
         loginInfo: functions.config().ubikan.login_info,
         apiParam: functions.config().ubikan.api_param
@@ -144,7 +160,7 @@ publicV2.get('/updateBusLocation', function (request, response) {
         "msg": "Bus data will update as soon as possible. Check the logs."
     }
 
-    responseManager.TemplateOfResponse(responseData, 200, response)
+    responseManager.TemplateOfResponse(responseData, global.defineManager.HTTP_SUCCESS, response)
 })
 
 exports.PublicV2 = functions.https.onRequest(publicV2);

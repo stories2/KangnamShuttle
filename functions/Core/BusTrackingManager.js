@@ -212,13 +212,13 @@ exports.SaveUbikanRealtimeData = function (admin, busTrackingData) {
     dateStr = date.toISOString()
     busTrackingData["updatedDateTime"] = dateStr
 
-    status = admin.database().ref(global.defineManager.DATABASE_UBIKAN_BUS_TRACKING_DATA).set(busTrackingData);
+    status = admin.database().ref(global.defineManager.DATABASE_SERVICE_V2_0_0_BUS_LOCATION_PATH).set(busTrackingData);
     global.logManager.PrintLogMessage("BusTrackingManager", "SaveUbikanRealtimeData", "whatever i am done!",
         global.defineManager.LOG_LEVEL_DEBUG)
 }
 
 exports.GetUbikanRealtimeData = function (databaseSnapshot) {
     global.logManager.PrintLogMessage("BusTrackingManager", "GetUbikanRealtimeData", "return latest ubikan bus data from database",
-        global.defineManager.LOG_LEVEL_DEBUG)
-    return databaseSnapshot["UbikanBus"]
+        global.defineManager.LOG_LEVEL_INFO)
+    return databaseSnapshot
 }
