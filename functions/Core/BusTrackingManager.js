@@ -222,3 +222,11 @@ exports.GetUbikanRealtimeData = function (databaseSnapshot) {
         global.defineManager.LOG_LEVEL_INFO)
     return databaseSnapshot
 }
+
+exports.GetBusTrackingPageUrl = function (admin, callbackFunc) {
+    global.logManager.PrintLogMessage("BusTrackingManager", "GetBusTrackingPageUrl", "getting bus tracking page url", global.defineManager.LOG_LEVEL_INFO)
+    admin.database().ref(global.defineManager.DATABASE_SERVICE_V2_0_0_BUS_LOCATION_PAGE_PATH).once('value', function (busLocationPageUrlSnapshot) {
+        global.logManager.PrintLogMessage("BusTrackingManager", "GetBusTrackingPageUrl", "page url: " + busLocationPageUrlSnapshot, global.defineManager.LOG_LEVEL_DEBUG)
+        callbackFunc(busLocationPageUrlSnapshot)
+    })
+}

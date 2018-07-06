@@ -135,6 +135,16 @@ exports.OrderExecute = function (admin, request, currentRoutineLinkItem, current
             }
         )
     }
+    else if(currentOrderNumber == global.defineManager.AUTOMATON_BUS_LOCATION_INFO_ORDER_NUMBER) {
+        busTrackingManager = require('./BusTrackingManager');
+        busTrackingManager.GetBusTrackingPageUrl(admin, function (busLocationPageUrl) {
+            makeUpResponse(
+                currentRoutineLinkItem["responseMsgDic"][currentUserResponseMsgType][global.defineManager.RESPONSE_DEFAULT_SELECTION],
+                busLocationPageUrl,
+                null
+                )
+        })
+    }
     else {
 
         makeUpResponse(currentRoutineLinkItem["responseMsgDic"][currentUserResponseMsgType][global.defineManager.RESPONSE_DEFAULT_SELECTION], null, null)
