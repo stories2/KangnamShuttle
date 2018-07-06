@@ -125,6 +125,16 @@ exports.OrderExecute = function (admin, request, currentRoutineLinkItem, current
             }
         )
     }
+    else if(currentOrderNumber == global.defineManager.AUTOMATON_BUS_STATION_PRINT_ORDER_NUMBER) {
+        busManager = require('./BusManager');
+        busManager.GetAllBusStation(
+            admin,
+            currentRoutineLinkItem["responseMsgDic"][currentUserResponseMsgType][global.defineManager.RESPONSE_DEFAULT_SELECTION],
+            function (responseText) {
+                makeUpResponse(responseText, null, null)
+            }
+        )
+    }
     else {
 
         makeUpResponse(currentRoutineLinkItem["responseMsgDic"][currentUserResponseMsgType][global.defineManager.RESPONSE_DEFAULT_SELECTION], null, null)
