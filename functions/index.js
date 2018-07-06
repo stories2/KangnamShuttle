@@ -111,6 +111,21 @@ exports.V2 = functions.https.onRequest(kakaoAppV2);
 
 publicV2.use(cors)
 publicV2.use(middleWareOfMessage)
+publicV2.set("view engine","ejs");
+publicV2.engine('ejs', require('ejs').__express);
+publicV2.use(express.static('Public'));
+
+publicV2.get('/', function(request, response) {
+    response.status(200).render("template", {
+        test: "It Works!"
+    })
+})
+
+publicV2.get('/map', function (request, response) {
+    response.status(200).render("map", {
+
+    })
+})
 
 publicV2.get('/busLocation', function(request, response) {
 

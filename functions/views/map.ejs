@@ -1,0 +1,141 @@
+<!DOCTYPE HTML>
+<!--
+	Hyperspace by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+<head>
+    <title>강남대학교 달구지봇</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+    <!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+
+    <style>
+        /* Always set the map height explicitly to define the size of the div
+         * element that contains the map. */
+        #map {
+            height: 400px;
+            width: 100%;
+        }
+        /* Optional: Makes the sample page fill the window. */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Header -->
+<header id="header">
+    <a href="index.html" class="title">강남대학교 달구지봇</a>
+    <nav>
+        <ul>
+            <li><a href="index.html">공식 홈페이지</a></li>
+            <li><a href="map.html" class="active">실시간 달구지 위치 (Beta)</a></li>
+            <!--<li><a href="elements.html">Elements</a></li>-->
+        </ul>
+    </nav>
+</header>
+
+<!-- Wrapper -->
+<div id="wrapper">
+
+    <!-- Main -->
+    <section id="main" class="wrapper">
+        <div class="inner">
+            <h1 class="major">실시간 달구지 위치 (Beta v0.2)</h1>
+            <div class="row">
+                <div id="map" class="12u$">
+                    ?
+                </div>
+                <br>
+                <div class="6u 12u$(medium)">
+                    <h3>마지막 달구지 위치 갱신 시간</h3>
+                    <ul class="alt">
+                        <li id="lastUpdateDateTime"></li>
+                    </ul>
+                </div>
+
+                <div class="6u 12u$(medium)">
+                    <h3>주의사항</h3>
+                    <ul class="alt">
+                        <li>지도에 표시된 달구지 위치는 매 30초마다 자동 갱신됩니다.</li>
+                        <li>달구지 위치 데이터는 <a href="https://new.ubikhan.com/">Ubikhan</a> 업체로 부터 가져오고 있습니다.</li>
+                        <li>본 SW는 시험 운영중인 서비스이므로 예상치 못한 문제가 발생할 수도 있습니다.</li>
+                    </ul>
+                </div>
+                <img class="1u 3u(small)" src="images/busPosIcon.png" />
+                <img class="1u 3u$(small)" src="images/busNotAvailable.png" />
+                <div class="10u$ 12u$(small)">Icons made by
+                    <a href="http://www.freepik.com" title="Freepik">Freepik</a> from
+                    <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by
+                    <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>
+                </div>
+                <br><br>
+                <h4 class="12u$">
+                    Debug response
+                </h4>
+                <pre class="12u$"><code id="busLocRawData">
+
+                                </code></pre>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<!-- Footer -->
+<footer id="footer" class="wrapper alt">
+    <div class="inner">
+        <ul class="menu">
+            <li>&copy; stories282. All rights reserved.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+        </ul>
+    </div>
+</footer>
+
+<!-- Scripts -->
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/jquery.scrollex.min.js"></script>
+<script src="assets/js/jquery.scrolly.min.js"></script>
+<script src="assets/js/skel.min.js"></script>
+<script src="assets/js/util.js"></script>
+<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+<script src="assets/js/main.js"></script>
+<script src="js/settings/DefineManager.js"></script>
+<script src="js/utils/LogManager.js"></script>
+<script src="js/utils/DataTransferManager.js"></script>
+<script src="js/view/MapViewManager.js"></script>
+<script src="js/core/MapManager.js"></script>
+<script>
+    locationMarkStack = []
+    var map = null
+    mapManager = new MapManager()
+
+    function initMap() {
+        var centerOfShuttleRoutine = {lat: 37.274786, lng: 127.125394};
+        map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 14.3,
+            center: centerOfShuttleRoutine
+        });
+        mapManager.GetBusLocation()
+        mapManager.UpdateBusLocation()
+
+        setInterval(function(){
+            PrintLogMessage("map", "setInterval", "refresh bus loc data", LOG_LEVEL_DEBUG)
+            mapManager.GetBusLocation()
+            mapManager.UpdateBusLocation()
+        }, BUS_LOCATION_REFRESH_TIME)
+    }
+</script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBv58DW58VFaQjKTJvRmX2izLcRqrbsbVI&callback=initMap">
+</script>
+
+</body>
+</html>
