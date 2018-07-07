@@ -54,3 +54,10 @@ If you want run this project locally, please type it in terminal.
 ```
 sudo firebase serve --only functions
 ```
+
+## Input type
+
+* text
+* photo
+* video
+* audio
