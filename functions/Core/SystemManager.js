@@ -11,9 +11,11 @@ exports.CurrentServiceInfo = function (admin, responseText, callbackFunc) {
             serviceInfoSnapshot["email"]
         )
 
+        webUrl = serviceInfoSnapshot["webUrl"]
+
         global.logManager.PrintLogMessage("SystemManager", "CurrentServiceInfo", "generated sys info str: " + responseText, global.defineManager.LOG_LEVEL_DEBUG)
 
-        callbackFunc(responseText)
+        callbackFunc(responseText, webUrl)
     })
 }
 
