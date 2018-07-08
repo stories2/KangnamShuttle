@@ -70,3 +70,25 @@ exports.UpdateSubwayScheduleToDatabase = function (admin, responseInfo, platform
             global.defineManager.LOG_LEVEL_WARN)
     }
 }
+
+exports.GetLastUpdatedSubwayScheduleInfo = function (admin, responseText, platformID, direction, callbackFunc) {
+    global.logManager.PrintLogMessage("SubwayManager", "GetLastUpdatedSubwayScheduleInfo", "generate subway info str", global.defineManager.LOG_LEVEL_INFO)
+    databasePath = global.util.format(global.defineManager.DATABASE_SERVICE_V2_0_0_SUBWAY_PLATFORM_INFO_PATH,
+        platformID, direction)
+    global.logManager.PrintLogMessage("SubwayManager", "GetLastUpdatedSubwayScheduleInfo", "database path: " + databasePath, global.defineManager.LOG_LEVEL_DEBUG)
+    admin.database().ref(databasePath).once('value', function (subwayScheduleSnapshot) {
+        subwayScheduleSnapshot = JSON.parse(JSON.stringify(subwayScheduleSnapshot))
+        responseText = global.util.format(
+            responseText,
+            subwayScheduleSnapshot["data"][0]["SUBWAYNAME"],
+            subwayScheduleSnapshot["data"][0]["TRAINCODE"],
+            subwayScheduleSnapshot["data"][0]["ARRIVETIME"],
+            subwayScheduleSnapshot["data"][1]["SUBWAYNAME"],
+            subwayScheduleSnapshot["data"][1]["TRAINCODE"],
+            subwayScheduleSnapshot["data"][1]["ARRIVETIME"],
+            subwayScheduleSnapshot["updatedDateTime"]
+        )
+        global.logManager.PrintLogMessage("SubwayManager", "GetLastUpdatedSubwayScheduleInfo", "generated str: " + responseText, global.defineManager.LOG_LEVEL_DEBUG)
+        callbackFunc(responseText)
+    })
+}
