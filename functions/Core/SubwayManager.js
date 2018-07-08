@@ -47,6 +47,15 @@ exports.UpdateSubwayScheduleToDatabase = function (admin, responseInfo, platform
     global.logManager.PrintLogMessage("SubwayManager", "UpdateSubwayScheduleToDatabase",
         "save data platform ID: " + platformID + " dir: " + direction, global.defineManager.LOG_LEVEL_DEBUG)
 
+    if(responseInfo.hasOwnProperty("RESULT") && responseInfo["RESULT"].hasOwnProperty("CODE")) {
+        apiCode = responseInfo["RESULT"]["CODE"]
+        if(apiCode != global.defineManager.SUBWAY_OPEN_API_RESULT_OK) {
+            global.logManager.PrintLogMessage("SubwayManager", "UpdateSubwayScheduleToDatabase", "wrong response accepted code: " + apiCode,
+                global.defineManager.LOG_LEVEL_WARN)
+            return
+        }
+    }
+
     responseCode = responseInfo["SearchArrivalTimeOfLine2SubwayByIDService"]["RESULT"]["CODE"]
 
     if(responseCode == global.defineManager.SUBWAY_OPEN_API_RESULT_OK) {
@@ -81,12 +90,12 @@ exports.GetLastUpdatedSubwayScheduleInfo = function (admin, responseText, platfo
         subwayScheduleSnapshot = JSON.parse(JSON.stringify(subwayScheduleSnapshot))
         responseText = global.util.format(
             responseText,
-            subwayScheduleSnapshot["data"][0]["DESTSTATION_NAME"],
-            subwayScheduleSnapshot["data"][0]["TRAINCODE"],
-            subwayScheduleSnapshot["data"][0]["ARRIVETIME"],
-            subwayScheduleSnapshot["data"][1]["DESTSTATION_NAME"],
-            subwayScheduleSnapshot["data"][1]["TRAINCODE"],
-            subwayScheduleSnapshot["data"][1]["ARRIVETIME"],
+            subwayScheduleSnapshot["data"][0] == null ? "N/A" : subwayScheduleSnapshot["data"][0]["DESTSTATION_NAME"],
+            subwayScheduleSnapshot["data"][0] == null ? "N/A" : subwayScheduleSnapshot["data"][0]["TRAINCODE"],
+            subwayScheduleSnapshot["data"][0] == null ? "N/A" : subwayScheduleSnapshot["data"][0]["ARRIVETIME"],
+            subwayScheduleSnapshot["data"][1] == null ? "N/A" : subwayScheduleSnapshot["data"][1]["DESTSTATION_NAME"],
+            subwayScheduleSnapshot["data"][1] == null ? "N/A" : subwayScheduleSnapshot["data"][1]["TRAINCODE"],
+            subwayScheduleSnapshot["data"][1] == null ? "N/A" : subwayScheduleSnapshot["data"][1]["ARRIVETIME"],
             subwayScheduleSnapshot["updatedDateTime"]
         )
         global.logManager.PrintLogMessage("SubwayManager", "GetLastUpdatedSubwayScheduleInfo", "generated str: " + responseText, global.defineManager.LOG_LEVEL_DEBUG)
