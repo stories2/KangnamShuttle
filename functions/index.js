@@ -115,6 +115,18 @@ kakaoAppV2.delete('/chat_room/:user_key', function (request, response) {
     response.status(global.defineManager.HTTP_SUCCESS).send()
 })
 
+kakaoAppV2.post('/beta', function (request, response) {
+    global.logManager.PrintLogMessage("index", "beta", "testing beta api", global.defineManager.LOG_LEVEL_INFO)
+    subwayManager = require('./Core/SubwayManager');
+    subwayOpenApiInfo = {
+        "endpoint_path": functions.config().seoul_open_api.endpoint_path,
+        "key": functions.config().seoul_open_api.key,
+        "endpoint": functions.config().seoul_open_api.endpoint
+    }
+    subwayManager.PostfixUpdateSubwaySchedule(admin, subwayOpenApiInfo, "1865", global.defineManager.SUBWAY_DIRECTION_UP)
+    response.status(global.defineManager.HTTP_SUCCESS).send()
+})
+
 exports.V2 = functions.https.onRequest(kakaoAppV2);
 
 publicV2.use(cors)
