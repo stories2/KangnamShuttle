@@ -180,6 +180,7 @@ exports.DATABASE_SERVICE_V2_0_0_RELEASE_NOTE_PATH = "/V2/Service/V2_0_0/StaticCo
 exports.DATABASE_SERVICE_BUS_INFO_ROUTINE_PATH = "/V2/Service/V2_0_0/StaticContent/BusInfo/Routine"
 exports.DATABASE_SERVICE_V2_0_0_BUS_LOCATION_PATH = "/V2/Service/V2_0_0/StaticContent/BusInfo/LocationDic"
 exports.DATABASE_SERVICE_V2_0_0_BUS_LOCATION_PAGE_PATH = "/V2/Service/V2_0_0/StaticContent/BusInfo/busLocationUrl"
+exports.DATABASE_SERVICE_V2_0_0_SUBWAY_PLATFORM_INFO_PATH = "/V2/Service/V2_0_0/StaticContent/SubwayInfo/%s/%s"
 
 exports.AUTOMATON_START_NUMBER = 1
 exports.AUTOMATON_DEFAULT_INPUT_NUMBER = 0
@@ -204,6 +205,7 @@ exports.SUBWAY_DIRECTION_DOWN = "2"
 exports.SUBWAY_NORMAL_DAY_OF_WEEK = "1"
 exports.SUBWAY_SATURDAY_OF_WEEK = "2"
 exports.SUBWAY_SUNDAY_OF_WEEK = "3"
+exports.SUBWAY_OPEN_API_RESULT_OK = "INFO-000"
 
 exports.DATE_TIME_SATURDAY = 6
 exports.DATE_TIME_SUNDAY = 0
