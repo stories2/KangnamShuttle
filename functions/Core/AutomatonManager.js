@@ -195,7 +195,7 @@ exports.OrderExecute = function (admin, functions, request, currentRoutineLinkIt
                 makeUpResponse(responseText, null, null)
             })
     }
-    else if(currentOrderNumber == global.defineManager.AUTOMATON_SUBWAY_PLATFORM_GIHEUNG_TO_SUWON_NUMBER) {
+    else if(currentOrderNumber == global.defineManager.AUTOMATON_SUBWAY_PLATFORM_GIHEUNG_TO_WANGSIMNI_NUMBER) {
         subwayManager = require('./SubwayManager');
         subwayOpenApiInfo = {
             "platform_giheung": functions.config().seoul_open_api.platform_giheung,
@@ -209,7 +209,7 @@ exports.OrderExecute = function (admin, functions, request, currentRoutineLinkIt
                 makeUpResponse(responseText, null, null)
             })
     }
-    else if(currentOrderNumber == global.defineManager.AUTOMATON_SUBWAY_PLATFORM_GIHEUNG_TO_WANGSIMNI_NUMBER) {
+    else if(currentOrderNumber == global.defineManager.AUTOMATON_SUBWAY_PLATFORM_GIHEUNG_TO_SUWON_NUMBER) {
         subwayManager = require('./SubwayManager');
         subwayOpenApiInfo = {
             "platform_giheung": functions.config().seoul_open_api.platform_giheung,

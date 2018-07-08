@@ -77,6 +77,7 @@ exports.GetLastUpdatedSubwayScheduleInfo = function (admin, responseText, platfo
         platformID, direction)
     global.logManager.PrintLogMessage("SubwayManager", "GetLastUpdatedSubwayScheduleInfo", "database path: " + databasePath, global.defineManager.LOG_LEVEL_DEBUG)
     admin.database().ref(databasePath).once('value', function (subwayScheduleSnapshot) {
+        global.logManager.PrintLogMessage("SubwayManager", "GetLastUpdatedSubwayScheduleInfo", "data: " + JSON.stringify(subwayScheduleSnapshot), global.defineManager.LOG_LEVEL_DEBUG)
         subwayScheduleSnapshot = JSON.parse(JSON.stringify(subwayScheduleSnapshot))
         responseText = global.util.format(
             responseText,
