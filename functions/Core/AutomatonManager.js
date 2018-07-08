@@ -40,7 +40,7 @@ exports.AnalysisCurrentOrderNumber = function (admin, callbackFunc, routineLinke
     }
 }
 
-exports.OrderExecute = function (admin, request, currentRoutineLinkItem, currentOrderNumber, currentUserData, callbackFunc) {
+exports.OrderExecute = function (admin, functions, request, currentRoutineLinkItem, currentOrderNumber, currentUserData, callbackFunc) {
     global.logManager.PrintLogMessage("AutomatonManager", "OrderExecute", "execute order", global.defineManager.LOG_LEVEL_INFO)
 
     currentUserResponseMsgType = currentUserData["responseType"]
@@ -144,6 +144,28 @@ exports.OrderExecute = function (admin, request, currentRoutineLinkItem, current
                 null
                 )
         })
+    }
+    else if(currentOrderNumber == global.defineManager.AUTOMATON_MAIN_ORDER_NUMBER) {
+
+        makeUpResponse(currentRoutineLinkItem["responseMsgDic"][currentUserResponseMsgType][global.defineManager.RESPONSE_DEFAULT_SELECTION], null, null)
+
+        subwayManager = require('./SubwayManager');
+        subwayOpenApiInfo = {
+            "endpoint_path": functions.config().seoul_open_api.endpoint_path,
+            "key": functions.config().seoul_open_api.key,
+            "endpoint": functions.config().seoul_open_api.endpoint,
+            "platform_giheung": functions.config().seoul_open_api.platform_giheung,
+            "platform_kangnam_univ": functions.config().seoul_open_api.platform_kangnam_univ
+        }
+
+        subwayManager.PostfixUpdateSubwaySchedule(admin, subwayManager, subwayOpenApiInfo, subwayOpenApiInfo["platform_giheung"],
+            global.defineManager.SUBWAY_DIRECTION_UP)
+        subwayManager.PostfixUpdateSubwaySchedule(admin, subwayManager, subwayOpenApiInfo, subwayOpenApiInfo["platform_giheung"],
+            global.defineManager.SUBWAY_DIRECTION_DOWN)
+        subwayManager.PostfixUpdateSubwaySchedule(admin, subwayManager, subwayOpenApiInfo, subwayOpenApiInfo["platform_kangnam_univ"],
+            global.defineManager.SUBWAY_DIRECTION_UP)
+        subwayManager.PostfixUpdateSubwaySchedule(admin, subwayManager, subwayOpenApiInfo, subwayOpenApiInfo["platform_kangnam_univ"],
+            global.defineManager.SUBWAY_DIRECTION_DOWN)
     }
     else {
 
