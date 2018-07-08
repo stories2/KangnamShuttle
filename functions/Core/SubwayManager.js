@@ -80,10 +80,10 @@ exports.GetLastUpdatedSubwayScheduleInfo = function (admin, responseText, platfo
         subwayScheduleSnapshot = JSON.parse(JSON.stringify(subwayScheduleSnapshot))
         responseText = global.util.format(
             responseText,
-            subwayScheduleSnapshot["data"][0]["SUBWAYNAME"],
+            subwayScheduleSnapshot["data"][0]["DESTINATION_NAME"],
             subwayScheduleSnapshot["data"][0]["TRAINCODE"],
             subwayScheduleSnapshot["data"][0]["ARRIVETIME"],
-            subwayScheduleSnapshot["data"][1]["SUBWAYNAME"],
+            subwayScheduleSnapshot["data"][1]["DESTINATION_NAME"],
             subwayScheduleSnapshot["data"][1]["TRAINCODE"],
             subwayScheduleSnapshot["data"][1]["ARRIVETIME"],
             subwayScheduleSnapshot["updatedDateTime"]
