@@ -167,6 +167,62 @@ exports.OrderExecute = function (admin, functions, request, currentRoutineLinkIt
         subwayManager.PostfixUpdateSubwaySchedule(admin, subwayManager, subwayOpenApiInfo, subwayOpenApiInfo["platform_kangnam_univ"],
             global.defineManager.SUBWAY_DIRECTION_DOWN)
     }
+    else if(currentOrderNumber == global.defineManager.AUTOMATON_SUBWAY_PLATFORM_KANGNAM_UNIV_TO_GIHEUNG_ORDER_NUMBER) {
+        subwayManager = require('./SubwayManager');
+        subwayOpenApiInfo = {
+            "platform_giheung": functions.config().seoul_open_api.platform_giheung,
+            "platform_kangnam_univ": functions.config().seoul_open_api.platform_kangnam_univ
+        }
+        subwayManager.GetLastUpdatedSubwayScheduleInfo(admin,
+            currentRoutineLinkItem["responseMsgDic"][currentUserResponseMsgType][global.defineManager.RESPONSE_DEFAULT_SELECTION],
+            subwayOpenApiInfo["platform_kangnam_univ"],
+            global.defineManager.SUBWAY_DIRECTION_UP,
+            function (responseText) {
+                makeUpResponse(responseText, null, null)
+            })
+    }
+    else if(currentOrderNumber == global.defineManager.AUTOMATON_SUBWAY_PLATFORM_KANGNAM_UNIV_TO_EVERLAND_NUMBER) {
+        subwayManager = require('./SubwayManager');
+        subwayOpenApiInfo = {
+            "platform_giheung": functions.config().seoul_open_api.platform_giheung,
+            "platform_kangnam_univ": functions.config().seoul_open_api.platform_kangnam_univ
+        }
+        subwayManager.GetLastUpdatedSubwayScheduleInfo(admin,
+            currentRoutineLinkItem["responseMsgDic"][currentUserResponseMsgType][global.defineManager.RESPONSE_DEFAULT_SELECTION],
+            subwayOpenApiInfo["platform_kangnam_univ"],
+            global.defineManager.SUBWAY_DIRECTION_DOWN,
+            function (responseText) {
+                makeUpResponse(responseText, null, null)
+            })
+    }
+    else if(currentOrderNumber == global.defineManager.AUTOMATON_SUBWAY_PLATFORM_GIHEUNG_TO_SUWON_NUMBER) {
+        subwayManager = require('./SubwayManager');
+        subwayOpenApiInfo = {
+            "platform_giheung": functions.config().seoul_open_api.platform_giheung,
+            "platform_kangnam_univ": functions.config().seoul_open_api.platform_kangnam_univ
+        }
+        subwayManager.GetLastUpdatedSubwayScheduleInfo(admin,
+            currentRoutineLinkItem["responseMsgDic"][currentUserResponseMsgType][global.defineManager.RESPONSE_DEFAULT_SELECTION],
+            subwayOpenApiInfo["platform_giheung"],
+            global.defineManager.SUBWAY_DIRECTION_UP,
+            function (responseText) {
+                makeUpResponse(responseText, null, null)
+            })
+    }
+    else if(currentOrderNumber == global.defineManager.AUTOMATON_SUBWAY_PLATFORM_GIHEUNG_TO_WANGSIMNI_NUMBER) {
+        subwayManager = require('./SubwayManager');
+        subwayOpenApiInfo = {
+            "platform_giheung": functions.config().seoul_open_api.platform_giheung,
+            "platform_kangnam_univ": functions.config().seoul_open_api.platform_kangnam_univ
+        }
+        subwayManager.GetLastUpdatedSubwayScheduleInfo(admin,
+            currentRoutineLinkItem["responseMsgDic"][currentUserResponseMsgType][global.defineManager.RESPONSE_DEFAULT_SELECTION],
+            subwayOpenApiInfo["platform_giheung"],
+            global.defineManager.SUBWAY_DIRECTION_DOWN,
+            function (responseText) {
+                makeUpResponse(responseText, null, null)
+            })
+    }
     else {
 
         makeUpResponse(currentRoutineLinkItem["responseMsgDic"][currentUserResponseMsgType][global.defineManager.RESPONSE_DEFAULT_SELECTION], null, null)
