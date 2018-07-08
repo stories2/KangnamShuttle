@@ -28,3 +28,11 @@ exports.ConvertCurrentDayOfWeekStartAtOne = function () {
         return global.defineManager.SUBWAY_NORMAL_DAY_OF_WEEK
     }
 }
+
+exports.ConvertDateTimeToStr = function () {
+    date = new Date()
+    var currentDate = date
+    date = new Date(currentDate.valueOf() + global.defineManager.GMT_KOREA_TIME_MIN * global.defineManager.HOUR_TO_MILE)
+    dateStr = date.toISOString()
+    return dateStr
+}

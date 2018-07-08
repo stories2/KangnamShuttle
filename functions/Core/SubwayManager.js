@@ -42,6 +42,8 @@ exports.PostfixUpdateSubwaySchedule = function (admin, subwayManager, subwayApiI
 }
 
 exports.UpdateSubwayScheduleToDatabase = function (admin, responseInfo, platformID, direction) {
+    convertManager = require('../Utils/ConvertManager');
+
     global.logManager.PrintLogMessage("SubwayManager", "UpdateSubwayScheduleToDatabase",
         "save data platform ID: " + platformID + " dir: " + direction, global.defineManager.LOG_LEVEL_DEBUG)
 
@@ -54,6 +56,14 @@ exports.UpdateSubwayScheduleToDatabase = function (admin, responseInfo, platform
             platformID, direction)
         global.logManager.PrintLogMessage("SubwayManager", "UpdateSubwayScheduleToDatabase", "update path: " + databasePath,
             global.defineManager.LOG_LEVEL_DEBUG)
+
+        saveSubwayData = {
+            "updatedDateTime": convertManager.ConvertDateTimeToStr(),
+            "data": responseInfo["SearchArrivalTimeOfLine2SubwayByIDService"]["row"]
+        }
+        admin.database().ref(databasePath).set(saveSubwayData);
+        global.logManager.PrintLogMessage("SubwayManager", "UpdateSubwayScheduleToDatabase", "subway data updated",
+            global.defineManager.LOG_LEVEL_INFO)
     }
     else {
         global.logManager.PrintLogMessage("SubwayManager", "UpdateSubwayScheduleToDatabase", "wrong response accepted code: " + responseCode,

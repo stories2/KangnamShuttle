@@ -123,7 +123,7 @@ kakaoAppV2.post('/beta', function (request, response) {
         "key": functions.config().seoul_open_api.key,
         "endpoint": functions.config().seoul_open_api.endpoint
     }
-    subwayManager.PostfixUpdateSubwaySchedule(admin, subwayManager, subwayOpenApiInfo, "1865", global.defineManager.SUBWAY_DIRECTION_UP)
+    subwayManager.PostfixUpdateSubwaySchedule(admin, subwayManager, subwayOpenApiInfo, "4502", global.defineManager.SUBWAY_DIRECTION_UP)
     response.status(global.defineManager.HTTP_SUCCESS).send()
 })
 
