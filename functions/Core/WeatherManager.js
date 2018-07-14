@@ -37,7 +37,14 @@ exports.GetCurrentWeather = function (admin, country, lang, weatherApiKey) {
             weatherData = JSON.parse(serverData)
             global.logManager.PrintLogMessage("WeatherManager", "GetCurrentWeather",
                 "weather data accepted successfully", global.defineManager.LOG_LEVEL_INFO)
-            admin.database().ref(global.defineManager.DATABASE_WEATHER).set(weatherData);
+
+            date = new Date()
+            var currentDate = date
+            date = new Date(currentDate.valueOf() + global.defineManager.GMT_KOREA_TIME_MIN * global.defineManager.HOUR_TO_MILE)
+            dateStr = date.toISOString()
+            weatherData["updatedDateTime"] = dateStr
+
+            admin.database().ref(global.defineManager.DATABASE_SERVICE_V2_0_0_WEATHER_INFO_PATH).set(weatherData);
         })
         response.on('error', function (except) {
             global.logManager.PrintLogMessage("WeatherManager", "GetCurrentWeather",

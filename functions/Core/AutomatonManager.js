@@ -158,6 +158,13 @@ exports.OrderExecute = function (admin, functions, request, currentRoutineLinkIt
             "platform_kangnam_univ": functions.config().seoul_open_api.platform_kangnam_univ
         }
 
+        weatherManager = require('./WeatherManager');
+        weatherOpenApiInfo = {
+            "key": functions.config().weather_open_api.key,
+            "local_name": functions.config().weather_open_api.local_name,
+            "lang": functions.config().weather_open_api.lang
+        }
+
         subwayManager.PostfixUpdateSubwaySchedule(admin, subwayManager, subwayOpenApiInfo, subwayOpenApiInfo["platform_giheung"],
             global.defineManager.SUBWAY_DIRECTION_UP)
         subwayManager.PostfixUpdateSubwaySchedule(admin, subwayManager, subwayOpenApiInfo, subwayOpenApiInfo["platform_giheung"],
@@ -166,6 +173,8 @@ exports.OrderExecute = function (admin, functions, request, currentRoutineLinkIt
             global.defineManager.SUBWAY_DIRECTION_UP)
         subwayManager.PostfixUpdateSubwaySchedule(admin, subwayManager, subwayOpenApiInfo, subwayOpenApiInfo["platform_kangnam_univ"],
             global.defineManager.SUBWAY_DIRECTION_DOWN)
+
+        weatherManager.GetCurrentWeather(admin, weatherOpenApiInfo["local_name"], weatherOpenApiInfo["lang"], weatherOpenApiInfo["key"])
     }
     else if(currentOrderNumber == global.defineManager.AUTOMATON_SUBWAY_PLATFORM_KANGNAM_UNIV_TO_GIHEUNG_ORDER_NUMBER) {
         subwayManager = require('./SubwayManager');
@@ -222,6 +231,16 @@ exports.OrderExecute = function (admin, functions, request, currentRoutineLinkIt
             function (responseText) {
                 makeUpResponse(responseText, null, null)
             })
+    }
+    else if(currentOrderNumber == global.defineManager.AUTOMATON_TODAY_WEATHER_CAST) {
+        weatherManager = require('./WeatherManager');
+        weatherOpenApiInfo = {
+            "key": functions.config().weather_open_api.key,
+            "local_name": functions.config().weather_open_api.local_name,
+            "lang": functions.config().weather_open_api.lang
+        }
+
+        makeUpResponse(currentRoutineLinkItem["responseMsgDic"][currentUserResponseMsgType][global.defineManager.RESPONSE_DEFAULT_SELECTION], null, null)
     }
     else {
 
