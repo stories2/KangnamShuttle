@@ -27,3 +27,20 @@ exports.CreateNewUserTemplate = function (admin, currentUserKey) {
 
     return templateUserData
 }
+
+exports.UpdateUserLastUseDateTime = function (admin, currentUserKey) {
+    global.logManager.PrintLogMessage("UserManager", "UpdateUserLastUseDateTime", "record user last ordered date-time", global.defineManager.LOG_LEVEL_INFO)
+
+    lastUpdatedDateTimePath = global.util.format(global.defineManager.DATABASE_SERVICE_V2_0_0_USER_LAST_USER_DATE_TIME_PATH, currentUserKey)
+
+    global.logManager.PrintLogMessage("UserManager", "UpdateUserLastUseDateTime", "update user last use date-time path: " + lastUpdatedDateTimePath, global.defineManager.LOG_LEVEL_DEBUG)
+
+    date = new Date()
+    var currentDate = date
+    date = new Date(currentDate.valueOf() + global.defineManager.GMT_KOREA_TIME_MIN * global.defineManager.HOUR_TO_MILE)
+    dateStr = date.toISOString()
+
+    admin.database().ref(lastUpdatedDateTimePath).set(dateStr)
+
+    global.logManager.PrintLogMessage("UserManager", "UpdateUserLastUseDateTime", "updated user last use date-time to: " + dateStr, global.defineManager.LOG_LEVEL_DEBUG)
+}

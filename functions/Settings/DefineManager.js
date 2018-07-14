@@ -182,6 +182,7 @@ exports.DATABASE_SERVICE_V2_0_0_BUS_LOCATION_PATH = "/V2/Service/V2_0_0/StaticCo
 exports.DATABASE_SERVICE_V2_0_0_BUS_LOCATION_PAGE_PATH = "/V2/Service/V2_0_0/StaticContent/BusInfo/busLocationUrl"
 exports.DATABASE_SERVICE_V2_0_0_SUBWAY_PLATFORM_INFO_PATH = "/V2/Service/V2_0_0/StaticContent/SubwayInfo/%s/%s"
 exports.DATABASE_SERVICE_V2_0_0_WEATHER_INFO_PATH = "/V2/Service/V2_0_0/StaticContent/WeatherInfo"
+exports.DATABASE_SERVICE_V2_0_0_USER_LAST_USER_DATE_TIME_PATH = "/V2/Users/%s/updatedDateTime"
 
 exports.AUTOMATON_START_NUMBER = 1
 exports.AUTOMATON_DEFAULT_INPUT_NUMBER = 0
