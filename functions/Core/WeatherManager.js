@@ -76,3 +76,32 @@ exports.WeatherCast = function (weatherData, convertManager) {
 
     return weatherCastStr
 }
+
+exports.GenerateTodayWeatherCast = function (admin, responseText, callbackFunc) {
+    global.logManager.PrintLogMessage("WeatherManager", "GenerateTodayWeatherCast", "generate today's weather cast str", global.defineManager.LOG_LEVEL_INFO)
+
+    admin.database().ref(global.defineManager.DATABASE_SERVICE_V2_0_0_WEATHER_INFO_PATH).once('value', function (weatherSnapshot) {
+        weatherSnapshot = JSON.parse(JSON.stringify(weatherSnapshot))
+
+        if(weatherSnapshot["cod"] == global.defineManager.WEATHER_STATUS_CODE) {
+            convertManager = require('../Utils/ConvertManager');
+
+            currentTemp = weatherSnapshot["main"]["temp"]
+            // lowTemp = weatherSnapshot["main"]["temp_min"]
+            // highTemp = weatherSnapshot["main"]["temp_max"]
+            lastUpdatedTime = weatherSnapshot["updatedDateTime"]
+            currentWeather = weatherSnapshot["weather"][0]["description"]
+            currentHumidity = weatherSnapshot["main"]["humidity"]
+            windSpeed = weatherSnapshot["wind"]["speed"]
+
+            currentTemp = Math.floor(convertManager.ConvertKelvinToCelsius(Number(currentTemp)))
+
+            responseText = global.util.format(responseText, currentWeather, currentTemp, currentHumidity, windSpeed, lastUpdatedTime)
+        }
+        else {
+            global.logManager.PrintLogMessage("WeatherManager", "GenerateTodayWeatherCast", "cannot get weather data", global.defineManager.LOG_LEVEL_WARN)
+            responseText = global.defineManager.WEATHER_FAILED_STR
+        }
+        callbackFunc(responseText)
+    })
+}

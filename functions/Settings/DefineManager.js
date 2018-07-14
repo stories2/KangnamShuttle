@@ -217,3 +217,6 @@ exports.DATE_TIME_SATURDAY = 6
 exports.DATE_TIME_SUNDAY = 0
 
 exports.PRINT_TIME_OR_LEFT_MIN_THRES_SEC = 600
+
+exports.WEATHER_STATUS_CODE = "200"
+exports.WEATHER_FAILED_STR = "지금은 날씨 정보를 가지고 올 수 없습니다.\n나중에 다시 시도해주세요"

@@ -240,7 +240,11 @@ exports.OrderExecute = function (admin, functions, request, currentRoutineLinkIt
             "lang": functions.config().weather_open_api.lang
         }
 
-        makeUpResponse(currentRoutineLinkItem["responseMsgDic"][currentUserResponseMsgType][global.defineManager.RESPONSE_DEFAULT_SELECTION], null, null)
+        weatherManager.GenerateTodayWeatherCast(admin,
+            currentRoutineLinkItem["responseMsgDic"][currentUserResponseMsgType][global.defineManager.RESPONSE_DEFAULT_SELECTION],
+            function (responseText) {
+                makeUpResponse(responseText, null, null)
+            })
     }
     else {
 
