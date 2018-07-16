@@ -176,6 +176,8 @@ publicV2.get('/SignUp', function (request, response) {
     })
 })
 
+publicV2.post('/')
+
 publicV2.get('/busLocation', function(request, response) {
     global.logManager.PrintLogMessage("index", "busLocation", "get bus location data",
         global.defineManager.LOG_LEVEL_DEBUG)
