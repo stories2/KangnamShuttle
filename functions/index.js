@@ -89,9 +89,14 @@ kakaoAppV2.post('/message', function (request, response) {
             response.status(global.defineManager.HTTP_SERVER_ERROR).send()
         }
         else {
+            currentRoutineLinkItem = request.databaseSnapshot[currentOrderNumber]
+            if(automatonManager.IsRightTypeOfInput(currentRoutineLinkItem, inputType) != true) {
+                currentOrderNumber = global.defineManager.AUTOMATON_WRONG_INPUT_TYPE_RECEIVED_NUMBER
+                currentRoutineLinkItem = request.databaseSnapshot[currentOrderNumber]
+            }
             userManager.UpdateLastInputOrder(admin, currentUserKey, currentOrderNumber)
             userManager.UpdateUserLastUseDateTime(admin, currentUserKey)
-            automatonManager.OrderExecute(admin, functions, request, request.databaseSnapshot[currentOrderNumber], currentOrderNumber, currentUserData,
+            automatonManager.OrderExecute(admin, functions, request, currentRoutineLinkItem, currentOrderNumber, currentUserData,
                 function (responseData) {
                 responseManager.AutoMsgResponseV2(response, responseData)
             })

@@ -40,8 +40,18 @@ exports.AnalysisCurrentOrderNumber = function (admin, callbackFunc, routineLinke
     }
 }
 
+exports.IsRightTypeOfInput = function(currentRoutineLinkItem, currentRequestInputType) {
+    expectedInputType = currentRoutineLinkItem["acceptInputType"]
+    if(expectedInputType == currentRequestInputType) {
+        global.logManager.PrintLogMessage("AutomatonManager", "IsRightTypeOfInput", "input type is ok", global.defineManager.LOG_LEVEL_INFO)
+        return true
+    }
+    global.logManager.PrintLogMessage("AutomatonManager", "IsRightTypeOfInput", "unexpected input type " + expectedInputType + " <-> " + currentRequestInputType, global.defineManager.LOG_LEVEL_WARN)
+    return false
+}
+
 exports.OrderExecute = function (admin, functions, request, currentRoutineLinkItem, currentOrderNumber, currentUserData, callbackFunc) {
-    global.logManager.PrintLogMessage("AutomatonManager", "OrderExecute", "execute order", global.defineManager.LOG_LEVEL_INFO)
+    global.logManager.PrintLogMessage("AutomatonManager", "OrderExecute", "execute order: " + currentOrderNumber, global.defineManager.LOG_LEVEL_DEBUG)
 
     currentUserResponseMsgType = currentUserData["responseType"]
     makeUpResponse = function (responseText, labelUrl, photoUrl) {
@@ -51,7 +61,7 @@ exports.OrderExecute = function (admin, functions, request, currentRoutineLinkIt
                 "text": responseText,
             },
             "keyboard": {
-                "type": "buttons",
+                "type": currentRoutineLinkItem["nextInputType"],
                 "buttons": currentRoutineLinkItem["inputOrderList"]
             }
         }
@@ -85,7 +95,7 @@ exports.OrderExecute = function (admin, functions, request, currentRoutineLinkIt
         callbackFunc(responseMessage)
     }
 
-    if(currentOrderNumber >= global.defineManager.AUTOMATON_BUS_SEARCH_ORDER_START_NUMBER) {
+    if(currentOrderNumber >= global.defineManager.AUTOMATON_BUS_SEARCH_ORDER_START_NUMBER && currentOrderNumber <= global.defineManager.AUTOMATON_BUS_SEARCH_ORDER_END_NUMBER) {
         busTimeManager = require('./BusTimeManager');
         busTimeListSavedPoint = currentOrderNumber % global.defineManager.AUTOMATON_BUS_SEARCH_ORDER_START_NUMBER
         busTimeManager.SearchFastestShuttleBasedOnStartPointV2(admin, busTimeListSavedPoint, function (resultTimeSec, nextShuttleSec, state) {
