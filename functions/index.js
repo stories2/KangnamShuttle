@@ -5,7 +5,12 @@ global.util = require('util')
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 
-admin.initializeApp(functions.config().firebase);
+var serviceAccount = require("./service-account.json");
+
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL: "https://kangnamshuttle.firebaseio.com/",
+});
 
 const responseManager = require('./Utils/ResponseManager');
 const automatonManager = require('./Core/AutomatonManager');
@@ -176,7 +181,28 @@ publicV2.get('/SignUp', function (request, response) {
     })
 })
 
-publicV2.post('/')
+publicV2.post('/UpdateMyAccount', function (request, response) {
+
+    global.logManager.PrintLogMessage("index", "UpdateMyAccount", "request data: " + JSON.stringify(request.body), global.defineManager.LOG_LEVEL_DEBUG)
+
+    userManager.SignUpUser(admin, request.body, function (isVerifyMailSent, address) {
+        if(isVerifyMailSent) {
+            response.status(global.defineManager.HTTP_SUCCESS).render("verifyEmailSent", {
+                email: address
+            })
+        }
+        else {
+            response.status(global.defineManager.HTTP_SERVER_ERROR).send()
+        }
+    })
+})
+
+publicV2.post('/RemoveMyAccount', function (request, response) {
+
+    global.logManager.PrintLogMessage("index", "RemoveMyAccount", "request data: " + JSON.stringify(request.body), global.defineManager.LOG_LEVEL_DEBUG)
+
+    response.status(global.defineManager.HTTP_SUCCESS).send()
+})
 
 publicV2.get('/busLocation', function(request, response) {
     global.logManager.PrintLogMessage("index", "busLocation", "get bus location data",

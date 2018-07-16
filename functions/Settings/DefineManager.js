@@ -228,3 +228,4 @@ exports.WEATHER_STATUS_CODE = "200"
 exports.WEATHER_FAILED_STR = "지금은 날씨 정보를 가지고 올 수 없습니다.\n나중에 다시 시도해주세요"
 
 exports.USER_UNREGEISTERED_KEY_SHOW_LIMIT = 6
+exports.USER_KANGNAM_UNIV_EMAIL = "@kangnam.ac.kr"
