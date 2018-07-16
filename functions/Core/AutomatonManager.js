@@ -50,7 +50,7 @@ exports.IsRightTypeOfInput = function(currentRoutineLinkItem, currentRequestInpu
     return false
 }
 
-exports.OrderExecute = function (admin, functions, request, currentRoutineLinkItem, currentOrderNumber, currentUserData, callbackFunc) {
+exports.OrderExecute = function (admin, functions, request, currentRoutineLinkItem, currentOrderNumber, currentUserData, currentUserKey, callbackFunc) {
     global.logManager.PrintLogMessage("AutomatonManager", "OrderExecute", "execute order: " + currentOrderNumber, global.defineManager.LOG_LEVEL_DEBUG)
 
     currentUserResponseMsgType = currentUserData["responseType"]
@@ -252,6 +252,15 @@ exports.OrderExecute = function (admin, functions, request, currentRoutineLinkIt
 
         weatherManager.GenerateTodayWeatherCast(admin,
             currentRoutineLinkItem["responseMsgDic"][currentUserResponseMsgType][global.defineManager.RESPONSE_DEFAULT_SELECTION],
+            function (responseText) {
+                makeUpResponse(responseText, null, null)
+            })
+    }
+    else if(currentOrderNumber == global.defineManager.AUTOMATON_USER_WANT_CHANGE_OWN_SETTING_ORDER_NUMBER) {
+        userManager = require('./UserManager');
+        userManager.SayHelloToUser(admin,
+            currentRoutineLinkItem["responseMsgDic"][currentUserResponseMsgType][global.defineManager.RESPONSE_DEFAULT_SELECTION],
+            currentUserKey,
             function (responseText) {
                 makeUpResponse(responseText, null, null)
             })

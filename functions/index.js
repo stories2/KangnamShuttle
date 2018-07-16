@@ -96,7 +96,7 @@ kakaoAppV2.post('/message', function (request, response) {
             }
             userManager.UpdateLastInputOrder(admin, currentUserKey, currentOrderNumber)
             userManager.UpdateUserLastUseDateTime(admin, currentUserKey)
-            automatonManager.OrderExecute(admin, functions, request, currentRoutineLinkItem, currentOrderNumber, currentUserData,
+            automatonManager.OrderExecute(admin, functions, request, currentRoutineLinkItem, currentOrderNumber, currentUserData, currentUserKey,
                 function (responseData) {
                 responseManager.AutoMsgResponseV2(response, responseData)
             })

@@ -44,3 +44,26 @@ exports.UpdateUserLastUseDateTime = function (admin, currentUserKey) {
 
     global.logManager.PrintLogMessage("UserManager", "UpdateUserLastUseDateTime", "updated user last use date-time to: " + dateStr, global.defineManager.LOG_LEVEL_DEBUG)
 }
+
+exports.SayHelloToUser = function (admin, responseText, currentUserKey, callbackFunc) {
+    global.logManager.PrintLogMessage("UserManager", "SayHelloToUser", "hello to " + currentUserKey, global.defineManager.LOG_LEVEL_DEBUG)
+
+    currentUserUidPath = global.util.format(global.defineManager.DATABASE_SERVICE_V2_0_0_USER_UID_PATH, currentUserKey)
+    global.logManager.PrintLogMessage("UserManager", "SayHelloToUser", "user's uid path: " + currentUserUidPath, global.defineManager.LOG_LEVEL_DEBUG)
+
+    admin.database().ref(currentUserUidPath).once('value', function (uidSnapshot) {
+
+        if(uidSnapshot != null) {
+            global.logManager.PrintLogMessage("UserManager", "SayHelloToUser", "current user " + currentUserKey + " registered: " + uidSnapshot, global.defineManager.LOG_LEVEL_WARN)
+        }
+        else {
+            global.logManager.PrintLogMessage("UserManager", "SayHelloToUser", "current user " + currentUserKey + " not registered", global.defineManager.LOG_LEVEL_WARN)
+        }
+
+        currentUserKey = currentUserKey.substring(0, global.defineManager.USER_UNREGEISTERED_KEY_SHOW_LIMIT)
+        responseText = global.util.format(responseText, currentUserKey)
+        global.logManager.PrintLogMessage("UserManager", "SayHelloToUser", "generated str: " + responseText, global.defineManager.LOG_LEVEL_DEBUG)
+
+        callbackFunc(responseText)
+    })
+}
