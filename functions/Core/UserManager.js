@@ -52,9 +52,9 @@ exports.SayHelloToUser = function (admin, responseText, currentUserKey, callback
     global.logManager.PrintLogMessage("UserManager", "SayHelloToUser", "user's uid path: " + currentUserUidPath, global.defineManager.LOG_LEVEL_DEBUG)
 
     admin.database().ref(currentUserUidPath).once('value', function (uidSnapshot) {
-
+        uidSnapshot = JSON.parse(JSON.stringify(uidSnapshot))
         if(uidSnapshot != null) {
-            global.logManager.PrintLogMessage("UserManager", "SayHelloToUser", "current user " + currentUserKey + " registered: " + uidSnapshot, global.defineManager.LOG_LEVEL_WARN)
+            global.logManager.PrintLogMessage("UserManager", "SayHelloToUser", "current user " + currentUserKey + " registered: " + uidSnapshot, global.defineManager.LOG_LEVEL_DEBUG)
         }
         else {
             global.logManager.PrintLogMessage("UserManager", "SayHelloToUser", "current user " + currentUserKey + " not registered", global.defineManager.LOG_LEVEL_WARN)
@@ -75,4 +75,27 @@ exports.GoToMyProfile = function (admin, currentRoutineLinkItem, currentUserKey,
     global.logManager.PrintLogMessage("UserManager", "SayHelloToUser", "generated profile check url: " + profileCheckPath, global.defineManager.LOG_LEVEL_DEBUG)
 
     callbackFunc(profileCheckPath)
+}
+
+exports.IsSignedUpUser = function (admin, currentUserKey, callbackFunc) {
+    if(currentUserKey == null) {
+        global.logManager.PrintLogMessage("UserManager", "IsSignedUpUser", "you must send user key", global.defineManager.LOG_LEVEL_WARN)
+        callbackFunc(false)
+    }
+    global.logManager.PrintLogMessage("UserManager", "IsSignedUpUser", "check user : " + currentUserKey + " signed up", global.defineManager.LOG_LEVEL_DEBUG)
+
+    userUidPath = global.util.format(global.defineManager.DATABASE_SERVICE_V2_0_0_USER_UID_PATH, currentUserKey)
+    global.logManager.PrintLogMessage("UserManager", "IsSignedUpUser", "user uid path: " + userUidPath, global.defineManager.LOG_LEVEL_DEBUG)
+
+    admin.database().ref(userUidPath).once('value', function (uidSnapshot) {
+        uidSnapshot = JSON.parse(JSON.stringify(uidSnapshot))
+        if(uidSnapshot != null) {
+            global.logManager.PrintLogMessage("UserManager", "IsSignedUpUser", "current user " + currentUserKey + " registered: " + uidSnapshot, global.defineManager.LOG_LEVEL_DEBUG)
+            callbackFunc(true)
+        }
+        else {
+            global.logManager.PrintLogMessage("UserManager", "IsSignedUpUser", "current user " + currentUserKey + " not registered", global.defineManager.LOG_LEVEL_WARN)
+            callbackFunc(false)
+        }
+    })
 }

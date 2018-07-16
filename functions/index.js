@@ -153,10 +153,26 @@ publicV2.get('/map', function (request, response) {
     })
 })
 
-publicV2.get('/Profile/:userKey', function (request, response) {
-    userKey = request.params.userKey
-    response.status(global.defineManager.HTTP_SUCCESS).render("template", {
-        test: userKey
+publicV2.get('/Profile', function (request, response) {
+    currentUserKey = request.query.userKey
+
+    userManager.IsSignedUpUser(admin, currentUserKey, function (isUserSignedUp) {
+        if(isUserSignedUp) {
+            response.status(global.defineManager.HTTP_SUCCESS).render("profile", {
+                displayName: currentUserKey
+            })
+        }
+        else {
+            global.logManager.PrintLogMessage("index", "Profile", "user " + currentUserKey + " not signed up. Redirect to signup page", global.defineManager.LOG_LEVEL_WARN)
+            response.redirect('SignUp?userKey=' + currentUserKey)
+        }
+    })
+})
+
+publicV2.get('/SignUp', function (request, response) {
+    currentUserKey = request.query.userKey
+    response.status(global.defineManager.HTTP_SUCCESS).render("signUp", {
+        userKey: currentUserKey
     })
 })
 
