@@ -1,5 +1,10 @@
 # KangnamShuttle
 
+![screen-shot image](src/IMG_2DFB97E01FE7-1.jpeg)
+
+- 강남대학교의 셔틀버스 시간표를 안내하는 카카오톡 채팅 봇 입니다.
+
+# Dev
 ## Set/Get env var
 
 ### Set
