@@ -67,3 +67,12 @@ exports.SayHelloToUser = function (admin, responseText, currentUserKey, callback
         callbackFunc(responseText)
     })
 }
+
+exports.GoToMyProfile = function (admin, currentRoutineLinkItem, currentUserKey, callbackFunc) {
+    global.logManager.PrintLogMessage("UserManager", "SayHelloToUser", "check user profile: " + currentUserKey, global.defineManager.LOG_LEVEL_DEBUG)
+
+    profileCheckPath = global.util.format(currentRoutineLinkItem["labelUrl"], currentUserKey)
+    global.logManager.PrintLogMessage("UserManager", "SayHelloToUser", "generated profile check url: " + profileCheckPath, global.defineManager.LOG_LEVEL_DEBUG)
+
+    callbackFunc(profileCheckPath)
+}

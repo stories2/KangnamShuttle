@@ -265,6 +265,20 @@ exports.OrderExecute = function (admin, functions, request, currentRoutineLinkIt
                 makeUpResponse(responseText, null, null)
             })
     }
+    else if(currentOrderNumber == global.defineManager.AUTOMATON_USER_CHECK_PROFILE_ORDER_NUMBER) {
+        userManager = require('./UserManager');
+        userManager.GoToMyProfile(admin,
+            currentRoutineLinkItem,
+            currentUserKey,
+            function (labelUrl) {
+                makeUpResponse(
+                    currentRoutineLinkItem["responseMsgDic"][currentUserResponseMsgType][global.defineManager.RESPONSE_DEFAULT_SELECTION],
+                    labelUrl,
+                    null
+                )
+            }
+        )
+    }
     else {
 
         makeUpResponse(currentRoutineLinkItem["responseMsgDic"][currentUserResponseMsgType][global.defineManager.RESPONSE_DEFAULT_SELECTION], null, null)

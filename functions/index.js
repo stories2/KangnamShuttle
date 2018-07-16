@@ -153,6 +153,13 @@ publicV2.get('/map', function (request, response) {
     })
 })
 
+publicV2.get('/Profile/:userKey', function (request, response) {
+    userKey = request.params.userKey
+    response.status(global.defineManager.HTTP_SUCCESS).render("template", {
+        test: userKey
+    })
+})
+
 publicV2.get('/busLocation', function(request, response) {
     global.logManager.PrintLogMessage("index", "busLocation", "get bus location data",
         global.defineManager.LOG_LEVEL_DEBUG)
