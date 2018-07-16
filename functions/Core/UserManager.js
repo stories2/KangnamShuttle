@@ -110,19 +110,27 @@ exports.SignUpUser = function (admin, requestBody, callbackFunc) {
     userEmailAddr = studentID + global.defineManager.USER_KANGNAM_UNIV_EMAIL
     global.logManager.PrintLogMessage("UserManager", "SignUpUser", "sign up user : " + userKey + " addr: " + userEmailAddr, global.defineManager.LOG_LEVEL_DEBUG)
 
-    admin.auth().createUser({
-        email: userEmailAddr,
-        displayName: studentID,
-        disabled: false
-    }).then(function (userRecord) {
-        uid = userRecord.uid
-        userUidPath = global.util.format(global.defineManager.DATABASE_SERVICE_V2_0_0_USER_UID_PATH, userKey)
-        global.logManager.PrintLogMessage("UserManager", "SignUpUser", "user created, save uid : " + uid + " to " + userKey, global.defineManager.LOG_LEVEL_DEBUG)
-        admin.database().ref(userUidPath).set(uid)
+    userDataPath = global.util.format(global.defineManager.DATABASE_SERVICE_V2_0_0_USER_DATA_PATH, userKey)
+    admin.database().ref(userDataPath).once('value', function (userDataSnapshot) {
+        userDataSnapshot = JSON.parse(JSON.stringify(userDataSnapshot))
+        if(userDataSnapshot == null) {
+            global.logManager.PrintLogMessage("UserManager", "SignUpUser", "undefined user key: " + userKey, global.defineManager.LOG_LEVEL_WARN)
+            callbackFunc(false, null)
+        }
+        admin.auth().createUser({
+            email: userEmailAddr,
+            displayName: studentID,
+            disabled: false
+        }).then(function (userRecord) {
+            uid = userRecord.uid
+            userUidPath = global.util.format(global.defineManager.DATABASE_SERVICE_V2_0_0_USER_UID_PATH, userKey)
+            global.logManager.PrintLogMessage("UserManager", "SignUpUser", "user created, save uid : " + uid + " to " + userKey, global.defineManager.LOG_LEVEL_DEBUG)
+            admin.database().ref(userUidPath).set(uid)
 
-        callbackFunc(true, userEmailAddr)
-    }).catch(function (error) {
-        global.logManager.PrintLogMessage("UserManager", "SignUpUser", "something goes wrong: " + error, global.defineManager.LOG_LEVEL_ERROR)
-        callbackFunc(false, null)
+            callbackFunc(true, userEmailAddr)
+        }).catch(function (error) {
+            global.logManager.PrintLogMessage("UserManager", "SignUpUser", "something goes wrong: " + error, global.defineManager.LOG_LEVEL_ERROR)
+            callbackFunc(false, null)
+        })
     })
 }
