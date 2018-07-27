@@ -13,6 +13,7 @@ DEACTIVE_STR = "Deactivate"
 // DOMAIN = "https://us-central1-kangnamshuttle.cloudfunctions.net/"
 // DOMAIN = "http://localhost:5000/kangnamshuttle/us-central1/"
 DOMAIN = "/"
+DOMAIN = "/kangnamshuttle/us-central1/"
 
 SUB_DOMAIN_PATH_PUBLIC = "PublicV2/"
 

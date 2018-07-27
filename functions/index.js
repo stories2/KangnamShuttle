@@ -146,9 +146,21 @@ publicV2.set("view engine","ejs");
 publicV2.engine('ejs', require('ejs').__express);
 publicV2.use(express.static('Public'));
 
-publicV2.get('/', function(request, response) {
-    response.status(global.defineManager.HTTP_SUCCESS).render("template", {
-        test: "It Works!"
+publicV2.get('/KangnamShuttle', function(request, response) {
+    subMenu = request.query.page
+    if(subMenu == null) {
+        global.logManager.PrintLogMessage("index", "KangnamShuttle", "request sub menu is null, redirect to main page",
+            global.defineManager.LOG_LEVEL_WARN)
+        subMenu = "#"
+        response.redirect("https://kangnamshuttle.firebaseapp.com/index.html")
+        return
+    }
+    global.logManager.PrintLogMessage("index", "KangnamShuttle", "request sub menu: " + subMenu,
+        global.defineManager.LOG_LEVEL_DEBUG)
+    response.status(global.defineManager.HTTP_SUCCESS).render("BigTemplateMan", {
+        title: "강남대학교 달구지봇",
+        loadPageName: subMenu,
+        loadPageData: {'test': 'data'}
     })
 })
 
