@@ -35,3 +35,8 @@ QUERY_TYPE_QUERY = "query"
 EMAIL_ENDPOINT = "@kangnam.ac.kr"
 
 ALERT_WARN_WRONG_STUDENT_ID = "Wrong student ID"
+ALERT_WARN_WRONG_USER_STATUS = "You are in wrong status"
+
+DATABASE_USER_STATUS_PATH = "/V2/Users/{0}/lastOrder"
+
+USER_STATUS_CHECK_PROFILE = 33

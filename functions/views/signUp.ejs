@@ -63,10 +63,17 @@
         function (userKey, studentEmail, password) {
         authV2Manager.SignUp(userKey, studentEmail, password,
             function (userKey, studentEmail, password) {
-            authV2Manager.SignIn(userKey, studentEmail, password, function (studentEmail) {
-                authV2Manager.SendVerifyEmail(studentEmail, function (studentEmail) {
-                    MoveToEmailSentPage(studentEmail)
-                })
+            userV2Manager.GetCurrentUserStatus(userKey, function (userStatus) {
+                if(userStatus == USER_STATUS_CHECK_PROFILE) {
+                    authV2Manager.SignIn(userKey, studentEmail, password, function (studentEmail) {
+                        authV2Manager.SendVerifyEmail(studentEmail, function (studentEmail) {
+                            MoveToEmailSentPage(studentEmail)
+                        })
+                    })
+                }
+                else {
+                    alert(ALERT_WARN_WRONG_USER_STATUS)
+                }
             })
         })
     })

@@ -58,12 +58,14 @@
 <!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
 <script src="assets/js/main.js"></script>
 <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase.js"></script>
+<script src="js/utils/OverrideCustomFunctionManager.js"></script>
 <script src="js/utils/FirebaseInit.js"></script>
 <script src="js/settings/DefineManager.js"></script>
 <script src="js/utils/LogManager.js"></script>
 <script src="js/utils/DataTransferManager.js"></script>
 <script src="js/core/PageManager.js"></script>
 <script src="js/core/AuthV2Manager.js"></script>
+<script src="js/core/UserV2Manager.js"></script>
 <script>
 
     pageName = "<%= loadPageName %>"
@@ -71,6 +73,7 @@
 
     $(document).ready(function () {
         authV2Manager = new AuthV2Manager(firebase)
+        userV2Manager = new UserV2Manager(firebase)
 
         pageManager = new PageManager()
         pageManager.RenderContentPage(pageName, pageData)
