@@ -33,7 +33,7 @@
             </div>
             <div class="12u$">
                 <ul class="actions">
-                    <li><input type="submit" value="등록된 계정 삭제" class="special" /></li>
+                    <li><input id="btnDropOutAddress" type="submit" value="등록된 계정 삭제" class="special" /></li>
                 </ul>
             </div>
         </div>
@@ -52,9 +52,19 @@
 </div>
 <script src="js/view/SignUpViewManager.js"></script>
 <script>
+
+    DisableEnableBtnDropOutAddress(true)
+
     authV2Manager.InitDropOutForm("dropOutForm")
     authV2Manager.ListenUserStatusChanged(function () {
-        HideSignUpForm()
+            HideSignUpForm()
+            DisableEnableBtnDropOutAddress(false)
+            authV2Manager.InitDropOutForm("dropOutForm", function () {
+                authV2Manager.DropOut("<%= userKey %>", function (responseData) {
+                    alert(responseData)
+                    location.reload();
+                })
+            })
     },
     function () {
 
@@ -63,6 +73,7 @@
         function (userKey, studentEmail, password) {
         authV2Manager.SignUp(userKey, studentEmail, password,
             function (userKey, studentEmail, password, uid) {
+
             userV2Manager.GetCurrentUserStatus(userKey, function (userStatus) {
                 if(userStatus != null) {
                     userV2Manager.SaveCurrentUserUid(userKey, uid)

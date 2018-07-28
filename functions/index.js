@@ -21,6 +21,7 @@ const express = require('express');
 const cors = require('cors')({origin: true});
 const kakaoAppV2 = express();
 const publicV2 = express();
+const privateV2 = express();
 
 const middleWareOfMessage = function (request, response, next) {
     requestPath = url.parse(request.url).pathname
@@ -260,3 +261,58 @@ publicV2.get('/updateBusLocation', function (request, response) {
 })
 
 exports.PublicV2 = functions.https.onRequest(publicV2);
+
+const verifyAuthToken = function (request, response, next) {
+    try {
+        token = request.get('Authorization')
+        admin.auth().verifyIdToken(token)
+            .then(function (decodedToken) {
+                global.logManager.PrintLogMessage("index", "verifyAuthToken", "token verified uid: " + decodedToken.uid, global.defineManager.LOG_LEVEL_INFO)
+                request.user = decodedToken
+                admin.auth().getUser(decodedToken.uid)
+                    .then(function (userRecord) {
+                        global.logManager.PrintLogMessage("index", "verifyAuthToken", "we found user info", global.defineManager.LOG_LEVEL_DEBUG)
+                        userRecordData = userRecord.toJSON()
+                        userRecordDataStr = JSON.stringify(userRecordData)
+                        request.userRecordData = userRecordData
+                        global.logManager.PrintLogMessage("index", "verifyAuthToken", "user info decoded : " + userRecordDataStr, global.defineManager.LOG_LEVEL_INFO)
+                        return next();
+                    })
+                    .catch(function (error) {
+                        global.logManager.PrintLogMessage("index", "verifyAuthToken", "cannot verify user", global.defineManager.LOG_LEVEL_ERROR)
+                        tempResponse = {'msg': global.defineManager.MESSAGE_FAILED}
+
+                        responseManager.TemplateOfResponse(tempResponse, global.defineManager.HTTP_UNAUTHORIZED, response)
+                    })
+            })
+            .catch(function (error) {
+                global.logManager.PrintLogMessage("index", "verifyAuthToken", "cannot verify token", global.defineManager.LOG_LEVEL_ERROR)
+                tempResponse = {'msg': global.defineManager.MESSAGE_FAILED}
+
+                responseManager.TemplateOfResponse(tempResponse, global.defineManager.HTTP_UNAUTHORIZED, response)
+            })
+    }
+    catch (exception) {
+        global.logManager.PrintLogMessage("index", "verifyAuthToken", "server crashed", global.defineManager.LOG_LEVEL_ERROR)
+        tempResponse = {'msg': global.defineManager.MESSAGE_FAILED}
+
+        responseManager.TemplateOfResponse(tempResponse, global.defineManager.HTTP_SERVER_ERROR, response)
+    }
+}
+
+privateV2.use(cors)
+privateV2.use(verifyAuthToken)
+
+privateV2.post('/DropOutUser', function (request, response) {
+
+    responseMsg = {}
+
+    userManager.DropOutUser(admin, request["userKey"], request.userRecordData, function (resultMsg) {
+        responseMsg["msg"] = resultMsg
+        response.setHeader('Content-Type', 'application/json');
+        response.status(200).send(JSON.stringify(resultMsg))
+    })
+
+})
+
+exports.PrivateV2 = functions.https.onRequest(privateV2);

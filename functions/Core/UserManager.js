@@ -134,3 +134,20 @@ exports.SignUpUser = function (admin, requestBody, callbackFunc) {
         })
     })
 }
+
+exports.DropOutUser = function (admin, userKey, userInfo, callbackFunc) {
+    global.logManager.PrintLogMessage("UserManager", "DropOutUser", "try to drop out user key: " + userKey + " email: " + userInfo["email"], global.defineManager.LOG_LEVEL_DEBUG)
+    admin.auth().deleteUser(userInfo["uid"])
+        .then(function() {
+            // console.log("Successfully deleted user");
+
+            callbackFunc(global.defineManager.MESSAGE_SUCCESS)
+        })
+        .catch(function(error) {
+            // console.log("Error deleting user:", error);
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            global.logManager.PrintLogMessage("UserManager", "DropOutUser", "cannot drop out user code: " + errorCode + " msg: " + errorMessage, global.defineManager.LOG_LEVEL_ERROR)
+            callbackFunc(global.defineManager.MESSAGE_FAILED)
+        });
+}

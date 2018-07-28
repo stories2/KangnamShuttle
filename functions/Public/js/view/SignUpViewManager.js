@@ -15,3 +15,7 @@ function MoveToEmailSentPage(emailAddress) {
     }
     pageManager.RenderContentPage("VerifyEmail", pageData)
 }
+
+function DisableEnableBtnDropOutAddress(status) {
+    $("#btnDropOutAddress").prop("disabled", status)
+}
