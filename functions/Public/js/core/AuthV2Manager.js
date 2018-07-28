@@ -13,7 +13,7 @@ AuthV2Manager.prototype.InitSignUpForm = function (signUpFormID, callbackFunc) {
         password = Math.random().toString(36).slice(-8);
         PrintLogMessage("AuthV2Manager", "InitSignUpForm", "submit event accepted student id: " + studentID + " pw: " + password, LOG_LEVEL_DEBUG)
 
-        if(studentID.length == 9 && studentID.match(/^[0-9]+$/) != null) {
+        if(studentID.length == 9 && studentID.match(/^[0-9]+$/) != null && userKey.length > 0) {
             PrintLogMessage("AuthV2Manager", "InitSignUpForm", "student id is valied", LOG_LEVEL_INFO);
             studentEmail = studentID + EMAIL_ENDPOINT
             callbackFunc(userKey, studentEmail, password)
