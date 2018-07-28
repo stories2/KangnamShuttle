@@ -41,10 +41,12 @@ AuthV2Manager.prototype.InitDropOutForm = function (dropOutFormID, callbackFunc)
 
 AuthV2Manager.prototype.SignUp = function (userKey, studentEmail, password, callbackFunc) {
     PrintLogMessage("AuthV2Manager", "SignUp", "sign up process started", LOG_LEVEL_INFO)
-    this.firebase.auth().createUserWithEmailAndPassword(studentEmail, password)
+    firebaseAuth = this.firebase.auth()
+    firebaseAuth.createUserWithEmailAndPassword(studentEmail, password)
         .then(function (result) {
             PrintLogMessage("AuthV2Manager", "SignUp", "signed up user: " + JSON.stringify(result), LOG_LEVEL_INFO)
             // authV2Manager.SignUp(userKey, studentEmail, password, authV2Manager)
+            firebaseAuth.currentUser.updateProfile({displayName: userKey})
             callbackFunc(userKey, studentEmail, password, result["user"]["uid"])
         })
         .catch(function(error) {
