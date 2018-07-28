@@ -63,7 +63,11 @@
         function (userKey, studentEmail, password) {
         authV2Manager.SignUp(userKey, studentEmail, password,
             function (userKey, studentEmail, password) {
-            authV2Manager.SignIn(userKey, studentEmail, password)
+            authV2Manager.SignIn(userKey, studentEmail, password, function (studentEmail) {
+                authV2Manager.SendVerifyEmail(studentEmail, function (studentEmail) {
+                    MoveToEmailSentPage(studentEmail)
+                })
+            })
         })
     })
 </script>

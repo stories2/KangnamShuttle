@@ -178,6 +178,13 @@ publicV2.get('/map', function (request, response) {
     })
 })
 
+publicV2.get('/VerifyEmail', function(request, response){
+    emailAddr = request.query.email
+    response.status(global.defineManager.HTTP_SUCCESS).render("verifyEmailSent", {
+        email: emailAddr
+    })
+})
+
 publicV2.get('/Profile', function (request, response) {
     currentUserKey = request.query.userKey
 
