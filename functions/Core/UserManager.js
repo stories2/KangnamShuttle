@@ -137,17 +137,47 @@ exports.SignUpUser = function (admin, requestBody, callbackFunc) {
 
 exports.DropOutUser = function (admin, userKey, userInfo, callbackFunc) {
     global.logManager.PrintLogMessage("UserManager", "DropOutUser", "try to drop out user key: " + userKey + " email: " + userInfo["email"], global.defineManager.LOG_LEVEL_DEBUG)
-    admin.auth().deleteUser(userInfo["uid"])
-        .then(function() {
-            // console.log("Successfully deleted user");
+    if(userInfo["emailVerified"] == false) {
+        userUidPath = global.util.format(global.defineManager.DATABASE_SERVICE_V2_0_0_USER_UID_PATH, userKey)
+        global.logManager.PrintLogMessage("UserManager", "DropOutUser", "user uid delete path: " + userUidPath, global.defineManager.LOG_LEVEL_DEBUG)
+        admin.database().ref(userUidPath).once('value', function (userUidSnapshot) {
+            userUidSnapshot = JSON.parse(JSON.stringify(userUidSnapshot))
 
-            callbackFunc(global.defineManager.MESSAGE_SUCCESS)
+            if(userUidSnapshot != null) {
+                userUidSnapshot = userUidSnapshot.toString()
+                global.logManager.PrintLogMessage("UserManager", "DropOutUser", "current user's uid is: " + userUidSnapshot, global.defineManager.LOG_LEVEL_DEBUG)
+                if(userUidSnapshot == userInfo["uid"]) {
+                    admin.database().ref(userUidPath).set(null)
+                    admin.auth().deleteUser(userInfo["uid"])
+                        .then(function() {
+                            // console.log("Successfully deleted user");
+                            global.logManager.PrintLogMessage("UserManager", "DropOutUser", "successfully dropped out user", global.defineManager.LOG_LEVEL_INFO)
+                            callbackFunc(global.defineManager.MESSAGE_SUCCESS)
+                        })
+                        .catch(function(error) {
+                            // console.log("Error deleting user:", error);
+                            var errorCode = error.code;
+                            var errorMessage = error.message;
+                            global.logManager.PrintLogMessage("UserManager", "DropOutUser", "cannot drop out user code: " + errorCode + " msg: " + errorMessage, global.defineManager.LOG_LEVEL_ERROR)
+                            callbackFunc(global.defineManager.MESSAGE_FAILED)
+                        });
+                }
+                else {
+                    global.logManager.PrintLogMessage("UserManager", "DropOutUser", "not matching uid and request uid", global.defineManager.LOG_LEVEL_WARN)
+                    callbackFunc(global.defineManager.MESSAGE_FAILED)
+                }
+
+            }
+            else {
+                global.logManager.PrintLogMessage("UserManager", "DropOutUser", "weired user accepted", global.defineManager.LOG_LEVEL_WARN)
+                callbackFunc(global.defineManager.MESSAGE_FAILED)
+            }
         })
-        .catch(function(error) {
-            // console.log("Error deleting user:", error);
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            global.logManager.PrintLogMessage("UserManager", "DropOutUser", "cannot drop out user code: " + errorCode + " msg: " + errorMessage, global.defineManager.LOG_LEVEL_ERROR)
-            callbackFunc(global.defineManager.MESSAGE_FAILED)
-        });
+
+    }
+    else {
+        global.logManager.PrintLogMessage("UserManager", "DropOutUser", "cannot drop out already verified user", global.defineManager.LOG_LEVEL_WARN)
+        callbackFunc(global.defineManager.MESSAGE_FAILED)
+    }
+
 }

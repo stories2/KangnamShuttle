@@ -88,6 +88,7 @@ AuthV2Manager.prototype.DropOut = function(userKey, callbackFunc) {
             payLoadData = {
                 "userKey": userKey
             }
+            PrintLogMessage("AuthV2Manager", "DropOut", "payload data: " + JSON.stringify(payLoadData), LOG_LEVEL_DEBUG)
             dataTransferManagerClient.PostRequestWithCallbackFunc(DOMAIN + SUB_DOMAIN_PATH_PRIVATE + "DropOutUser", payLoadData, function (responseData) {
                 PrintLogMessage("AuthV2Manager", "DropOut", "user dropped out: " + responseData, LOG_LEVEL_DEBUG)
                 if(callbackFunc !== undefined) {

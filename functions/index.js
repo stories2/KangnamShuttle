@@ -307,7 +307,7 @@ privateV2.post('/DropOutUser', function (request, response) {
 
     responseMsg = {}
 
-    userManager.DropOutUser(admin, request["userKey"], request.userRecordData, function (resultMsg) {
+    userManager.DropOutUser(admin, request.body["userKey"], request.userRecordData, function (resultMsg) {
         responseMsg["msg"] = resultMsg
         response.setHeader('Content-Type', 'application/json');
         response.status(200).send(JSON.stringify(resultMsg))
