@@ -1,6 +1,6 @@
 <h1 class="major">회원가입</h1>
 <div class="row">
-    <form class="12u$">
+    <form class="12u$" id="signUpForm">
         <div class="row uniform 12u$">
             <div class="3u 12u$(small)">
                 <label for="userKey">사용자 식별 키</label>
@@ -17,12 +17,6 @@
             <div class="5u$ 7u$(small)">
                 <label for="studentID">@kangnam.ac.kr</label>
             </div>
-            <div class="3u 12u$(small)">
-                <label for="password">비밀번호 (자동생성)</label>
-            </div>
-            <div class="9u 12u$(small)">
-                <input type="password" name="password" id="password" value="" placeholder="Auto generate password" readonly/>
-            </div>
             <div class="12u$">
                 <ul class="actions">
                     <li><input type="submit" value="회원 가입" class="special" /></li>
@@ -32,7 +26,7 @@
     </form>
 
     <h3 class="12u$">학번이 잘못 설정됬을 경우</h3>
-    <form class="12u$">
+    <form class="12u$" id="dropOutForm">
         <div class="row uniform 12u$">
             <div class="9u$ 12u$(small)" hidden="hidden">
                 <input type="text" name="userKey" id="userKey" value="<%= userKey %>" placeholder="User key" hidden="hidden" readonly />
@@ -52,6 +46,11 @@
             <li>유저의 비밀번호는 자동 생성되며 계정과 함께 <a href="https://firebase.google.com/">Google-Firebase</a> 사가 가지고 있게됩니다.</li>
             <li>사용자 식별키는 카카오톡으로 부터 발급받은 여러분의 식별 값입니다.</li>
             <li>학번은 본인의 학번을 작성해주세요. <a href="http://web.kangnam.ac.kr">학교</a> 계정으로 인증 메일이 갈것 입니다.</li>
+            <li>학번은 등록이 잘못 되었다면 [등록된 계정 삭제] 버튼을 눌러주세요. 인증이 되지 않았다면 삭제가 될꺼에요.</li>
         </ul>
     </div>
 </div>
+<script>
+    authV2Manager.InitDropOutForm("dropOutForm")
+    authV2Manager.InitSignUpForm("signUpForm")
+</script>

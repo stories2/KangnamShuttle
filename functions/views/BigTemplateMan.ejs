@@ -63,12 +63,15 @@
 <script src="js/utils/LogManager.js"></script>
 <script src="js/utils/DataTransferManager.js"></script>
 <script src="js/core/PageManager.js"></script>
+<script src="js/core/AuthV2Manager.js"></script>
 <script>
 
     pageName = "<%= loadPageName %>"
     pageData = <%- JSON.stringify(loadPageData) %>
 
     $(document).ready(function () {
+        authV2Manager = new AuthV2Manager(firebase)
+
         pageManager = new PageManager()
         pageManager.RenderContentPage(pageName, pageData)
     })
