@@ -147,20 +147,28 @@ publicV2.engine('ejs', require('ejs').__express);
 publicV2.use(express.static('Public'));
 
 publicV2.get('/KangnamShuttle', function(request, response) {
-    subMenu = request.query.page
-    if(subMenu == null) {
+
+    subMenu = ""
+    queryParseManager = require('./Core/QueryParseManager');
+    parsedQueryData = queryParseManager.PublicApiParseRequestQuery(request.query)
+
+    if(parsedQueryData.hasOwnProperty("page") != true ||
+        parsedQueryData["page"][global.defineManager.PUBLIC_V2_QUERY_TYPE] != global.defineManager.PUBLIC_V2_QUERY_TYPE_MENU) {
+
         global.logManager.PrintLogMessage("index", "KangnamShuttle", "request sub menu is null, redirect to main page",
             global.defineManager.LOG_LEVEL_WARN)
         subMenu = "#"
         response.redirect("https://kangnamshuttle.firebaseapp.com/index.html")
         return
     }
+    subMenu = parsedQueryData["page"][global.defineManager.PUBLIC_V2_QUERY_VALUE]
+
     global.logManager.PrintLogMessage("index", "KangnamShuttle", "request sub menu: " + subMenu,
         global.defineManager.LOG_LEVEL_DEBUG)
     response.status(global.defineManager.HTTP_SUCCESS).render("BigTemplateMan", {
         title: "강남대학교 달구지봇",
         loadPageName: subMenu,
-        loadPageData: {'test': 'data'}
+        loadPageData: parsedQueryData
     })
 })
 
