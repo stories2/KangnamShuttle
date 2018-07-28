@@ -27,3 +27,7 @@ BUS_DISABLE_ICON = "https://firebasestorage.googleapis.com/v0/b/kangnamshuttle.a
 BUS_STATUS_ENABLE = "1"
 
 COMMUNICATION_FAILED_MSG = "Failed to get bus location response data."
+
+QUERY_TYPE = "type"
+QUERY_VALUE = "value"
+QUERY_TYPE_QUERY = "query"
