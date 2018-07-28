@@ -31,3 +31,7 @@ COMMUNICATION_FAILED_MSG = "Failed to get bus location response data."
 QUERY_TYPE = "type"
 QUERY_VALUE = "value"
 QUERY_TYPE_QUERY = "query"
+
+EMAIL_ENDPOINT = "@kangnam.ac.kr"
+
+ALERT_WARN_WRONG_STUDENT_ID = "Wrong student ID"

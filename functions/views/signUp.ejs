@@ -50,7 +50,20 @@
         </ul>
     </div>
 </div>
+<script src="js/view/SignUpViewManager.js"></script>
 <script>
     authV2Manager.InitDropOutForm("dropOutForm")
-    authV2Manager.InitSignUpForm("signUpForm")
+    authV2Manager.ListenUserStatusChanged(function () {
+        HideSignUpForm()
+    },
+    function () {
+
+    })
+    authV2Manager.InitSignUpForm("signUpForm",
+        function (userKey, studentEmail, password) {
+        authV2Manager.SignUp(userKey, studentEmail, password,
+            function (userKey, studentEmail, password) {
+            authV2Manager.SignIn(userKey, studentEmail, password)
+        })
+    })
 </script>
