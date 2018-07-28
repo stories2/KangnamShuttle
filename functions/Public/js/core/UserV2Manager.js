@@ -8,7 +8,7 @@ UserV2Manager.prototype.GetCurrentUserStatus = function (userKey, callbackFunc) 
     userInfoDatabasePath = DATABASE_USER_STATUS_PATH.format(userKey)
     PrintLogMessage("UserV2Manager", "GetCurrentUserStatus", "get user status path: " + userInfoDatabasePath, LOG_LEVEL_DEBUG)
 
-    firebase.database().ref(userInfoDatabasePath).once('value').then(function(snapshot) {
+    this.database.ref(userInfoDatabasePath).once('value').then(function(snapshot) {
         var userStatus = snapshot.val()
         // ...
         PrintLogMessage("UserV2Manager", "GetCurrentUserStatus", "current user status is: " + userStatus, LOG_LEVEL_DEBUG)
@@ -16,4 +16,15 @@ UserV2Manager.prototype.GetCurrentUserStatus = function (userKey, callbackFunc) 
             callbackFunc(userStatus)
         }
     });
+}
+
+UserV2Manager.prototype.SaveCurrentUserUid = function (userKey, uid, callbackFunc) {
+
+    userInfoDatabasePath = DATABASE_USER_UID_PATH.format(userKey)
+    PrintLogMessage("UserV2Manager", "SaveCurrentUserUid", "user key: " + userKey + " set uid: " + uid + " path: " + userInfoDatabasePath, LOG_LEVEL_DEBUG)
+    this.database.ref(userInfoDatabasePath).set(uid)
+
+    if(callbackFunc !== undefined) {
+        callbackFunc()
+    }
 }

@@ -40,7 +40,7 @@ AuthV2Manager.prototype.SignUp = function (userKey, studentEmail, password, call
         .then(function (result) {
             PrintLogMessage("AuthV2Manager", "SignUp", "signed up user: " + JSON.stringify(result), LOG_LEVEL_INFO)
             // authV2Manager.SignUp(userKey, studentEmail, password, authV2Manager)
-            callbackFunc(userKey, studentEmail, password)
+            callbackFunc(userKey, studentEmail, password, result["user"]["uid"])
         })
         .catch(function(error) {
         // Handle Errors here.

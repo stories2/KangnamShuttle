@@ -62,9 +62,10 @@
     authV2Manager.InitSignUpForm("signUpForm",
         function (userKey, studentEmail, password) {
         authV2Manager.SignUp(userKey, studentEmail, password,
-            function (userKey, studentEmail, password) {
+            function (userKey, studentEmail, password, uid) {
             userV2Manager.GetCurrentUserStatus(userKey, function (userStatus) {
-                if(userStatus == USER_STATUS_CHECK_PROFILE) {
+                if(userStatus != null) {
+                    userV2Manager.SaveCurrentUserUid(userKey, uid)
                     authV2Manager.SignIn(userKey, studentEmail, password, function (studentEmail) {
                         authV2Manager.SendVerifyEmail(studentEmail, function (studentEmail) {
                             MoveToEmailSentPage(studentEmail)
