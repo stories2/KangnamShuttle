@@ -146,3 +146,22 @@ AuthV2Manager.prototype.SendVerifyEmail = function (emailAddr, callbackFunc) {
             alert(errorMessage)
         })
 }
+
+AuthV2Manager.prototype.IsUserEmailVerified = function (callbackFunc) {
+    PrintLogMessage("AuthV2Manager", "IsUserEmailVerified", "check current user email verified", LOG_LEVEL_INFO)
+    currentUser = this.firebase.auth().currentUser
+    if(currentUser) {
+        if(currentUser["emailVerified"] == true) {
+            PrintLogMessage("AuthV2Manager", "IsUserEmailVerified", "user verified", LOG_LEVEL_INFO)
+            callbackFunc(true)
+        }
+        else {
+            PrintLogMessage("AuthV2Manager", "IsUserEmailVerified", "user not verified", LOG_LEVEL_INFO)
+            callbackFunc(false)
+        }
+    }
+    else {
+        PrintLogMessage("AuthV2Manager", "IsUserEmailVerified", "failed to load user info", LOG_LEVEL_WARN)
+        callbackFunc(false)
+    }
+}

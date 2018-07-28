@@ -25,19 +25,26 @@
         </div>
     </form>
 
-    <h3 class="12u$">학번이 잘못 설정됬을 경우</h3>
-    <form class="12u$" id="dropOutForm">
-        <div class="row uniform 12u$">
-            <div class="9u$ 12u$(small)" hidden="hidden">
-                <input type="text" name="userKey" id="userKey" value="<%= userKey %>" placeholder="User key" hidden="hidden" readonly />
+    <section id="dropOutSection">
+        <h3 class="12u$">학번이 잘못 설정됬을 경우</h3>
+        <form class="12u$" id="dropOutForm">
+            <div class="row uniform 12u$">
+                <div class="9u$ 12u$(small)" hidden="hidden">
+                    <input type="text" name="userKey" id="userKey" value="<%= userKey %>" placeholder="User key" hidden="hidden" readonly />
+                </div>
+                <div class="12u$">
+                    <ul class="actions">
+                        <li><input id="btnDropOutAddress" type="submit" value="등록된 계정 삭제" class="special" /></li>
+                    </ul>
+                </div>
             </div>
-            <div class="12u$">
-                <ul class="actions">
-                    <li><input id="btnDropOutAddress" type="submit" value="등록된 계정 삭제" class="special" /></li>
-                </ul>
-            </div>
-        </div>
-    </form>
+        </form>
+    </section>
+
+    <section id="successSection">
+        <h2>이메일 인증이 완료되었습니다.</h2>
+        <div>이제 다시 제자리로 가서 치킨을 뜯으시면 됩니다.</div><br>
+    </section>
     <div class="12u$">
         <h3>회원 가입 안내</h3>
     </div>
@@ -52,7 +59,7 @@
 </div>
 <script src="js/view/SignUpViewManager.js"></script>
 <script>
-
+    HideSuccessSection()
     DisableEnableBtnDropOutAddress(true)
 
     authV2Manager.InitDropOutForm("dropOutForm")
@@ -65,6 +72,15 @@
                     location.reload();
                 })
             })
+        authV2Manager.IsUserEmailVerified(function (status) {
+            if(status) {
+                HideDropOutSection()
+                ShowSuccessSection()
+            }
+            else {
+                HideSuccessSection()
+            }
+        })
     },
     function () {
 
