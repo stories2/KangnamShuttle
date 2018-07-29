@@ -16,16 +16,64 @@ exports.UploadFoodMenuImage = function (admin, bucketManager, foodMenuManager, r
     });
 
     // This code will process each file uploaded.
-    busboy.on('file', function(fieldname, file, filename) {
+    busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
         // Note: os.tmpdir() points to an in-memory file system on GCF
         // Thus, any files in it must fit in the instance's memory.
         console.log(`Processed file ${filename}`);
         const filepath = path.join(tmpdir, filename);
         uploads[fieldname] = filepath;
         fileStream = fs.createWriteStream(filepath)
-        fileStream.on('finish', function () {
-            global.logManager.PrintLogMessage("FoodMenuManager", "UploadFoodMenuImage", "try to upload file: " + filename, global.defineManager.LOG_LEVEL_DEBUG)
-            foodMenuManager.UploadFileToGoogleStorage(file, bucketManager)
+
+        var fileBuffer = new Buffer('')
+        file.on('data', function (data) {
+            fileBuffer = Buffer.concat([fileBuffer, data])
+        })
+
+        file.on('end', function() {
+            const file_object = {
+                fieldname,
+                originalname: filename,
+                encoding,
+                mimetype,
+                buffer: fileBuffer,
+            }
+
+            global.logManager.PrintLogMessage("FoodMenuManager", "UploadFoodMenuImage", "fileObj generated field name: " +
+                fieldname + " file name: " + filename + " encoding: " + encoding + " mimetype: " + mimetype, global.defineManager.LOG_LEVEL_DEBUG)
+
+            foodMenuManager.UploadFileToGoogleStorage(file_object, bucketManager)
+                .then(function (success) {
+                    global.logManager.PrintLogMessage("FoodMenuManager", "UploadFoodMenuImage", "success url: " + success, global.defineManager.LOG_LEVEL_DEBUG)
+
+                    date = new Date()
+                    var currentDate = date
+                    date = new Date(currentDate.valueOf() + global.defineManager.GMT_KOREA_TIME_MIN * global.defineManager.HOUR_TO_MILE)
+                    dateStr = date.toISOString()
+
+                    uploadFileType = fields["imgType"]
+
+                    foodMenuData = {}
+                    foodMenuData[uploadFileType + "Img"] = success
+                    foodMenuData[uploadFileType + "LastUploadDateTime"] = dateStr
+                    foodMenuData[uploadFileType + "LastUploader"] = uploaderEmail
+
+                    global.logManager.PrintLogMessage("FoodMenuManager", "UploadFoodMenuImage", "set food menu data: " + JSON.stringify(foodMenuData), global.defineManager.LOG_LEVEL_DEBUG)
+
+                    foodMenuDatabasePath = global.util.format(global.defineManager.DATABASE_SERVICE_V2_0_0_FOOD_MENU_PATH, uploadFileType)
+
+                    global.logManager.PrintLogMessage("FoodMenuManager", "UploadFoodMenuImage", "upload food menu type: " + uploadFileType, global.defineManager.LOG_LEVEL_DEBUG)
+
+                    admin.database().ref(foodMenuDatabasePath).set(foodMenuData)
+
+                    callbackFunc(global.defineManager.MESSAGE_SUCCESS)
+                })
+                .catch(function (except) {
+
+                    global.logManager.PrintLogMessage("FoodMenuManager", "UploadFoodMenuImage", "failed to upload: " + except, global.defineManager.LOG_LEVEL_ERROR)
+                    callbackFunc(global.defineManager.MESSAGE_FAILED)
+                })
+
+            request.file = file_object
         })
         file.pipe(fileStream);
     });
@@ -39,68 +87,12 @@ exports.UploadFoodMenuImage = function (admin, bucketManager, foodMenuManager, r
 
             global.logManager.PrintLogMessage("FoodMenuManager", "UploadFoodMenuImage", "finished process name: " + file, global.defineManager.LOG_LEVEL_DEBUG)
 
-            this.UploadFileToGoogleStorage(file, bucketManager)
-                .then(function (success) {
-
-                })
-                .catch(function (error) {
-
-                })
-
             fs.unlinkSync(file);
         }
         // res.send();
-        callbackFunc("dev")
     });
 
     request.pipe(busboy);
-
-    // uploadFileType = requestBodyInfo["imgType"]
-    // if(uploadFile != null && uploadFileType != null) {
-    //     global.logManager.PrintLogMessage("FoodMenuManager", "UploadFoodMenuImage", "file uploaded name: " +
-    //         uploadFile.originalname, global.defineManager.LOG_LEVEL_DEBUG)
-    //     global.logManager.PrintLogMessage("FoodMenuManager", "UploadFoodMenuImage", "uploader user key: " +
-    //         requestBodyInfo["userKey"] + " type: " + requestBodyInfo["imgType"], global.defineManager.LOG_LEVEL_DEBUG)
-    //
-    //     this.UploadFileToGoogleStorage(uploadFile, bucketManager)
-    //         .then(function (success) {
-    //             global.logManager.PrintLogMessage("FoodMenuManager", "UploadFoodMenuImage", "file upload successfully url: " + success, global.defineManager.LOG_LEVEL_DEBUG)
-    //
-    //             foodMenuDatabasePath = global.util.format(global.defineManager.DATABASE_SERVICE_V2_0_0_FOOD_MENU_PATH, uploadFileType)
-    //             global.logManager.PrintLogMessage("FoodMenuManager", "UploadFoodMenuImage", "food menu database path: " + foodMenuDatabasePath, global.defineManager.LOG_LEVEL_DEBUG)
-    //
-    //             date = new Date()
-    //             var currentDate = date
-    //             date = new Date(currentDate.valueOf() + global.defineManager.GMT_KOREA_TIME_MIN * global.defineManager.HOUR_TO_MILE)
-    //             dateStr = date.toISOString()
-    //
-    //             foodMenuData = {}
-    //             foodMenuData[uploadFileType + "Img"] = success
-    //             foodMenuData[uploadFileType + "LastUploadDateTime"] = dateStr
-    //             foodMenuData[uploadFileType + "LastUploader"] = uploaderEmail
-    //
-    //             global.logManager.PrintLogMessage("FoodMenuManager", "UploadFoodMenuImage", "set food menu data: " + JSON.stringify(foodMenuData), global.defineManager.LOG_LEVEL_DEBUG)
-    //
-    //             admin.database().ref(foodMenuDatabasePath).set(foodMenuData)
-    //             if(callbackFunc != null) {
-    //                 callbackFunc(global.defineManager.MESSAGE_SUCCESS, success)
-    //             }
-    //         })
-    //         .catch(function (except) {
-    //             global.logManager.PrintLogMessage("FoodMenuManager", "UploadFoodMenuImage", "failed to upload file: " + except, global.defineManager.LOG_LEVEL_ERROR)
-    //
-    //             if(callbackFunc != null) {
-    //                 callbackFunc(global.defineManager.MESSAGE_FAILED)
-    //             }
-    //         })
-    // }
-    // else {
-    //     global.logManager.PrintLogMessage("FoodMenuManager", "UploadFoodMenuImage", "failed to upload image", global.defineManager.LOG_LEVEL_WARN)
-    //
-    //     if(callbackFunc != null) {
-    //         callbackFunc(global.defineManager.MESSAGE_FAILED)
-    //     }
-    // }
 }
 
 exports.UploadFileToGoogleStorage = function (file, bucket) {
@@ -118,7 +110,7 @@ exports.UploadFileToGoogleStorage = function (file, bucket) {
 
         blobStream = fileUploader.createWriteStream({
             metadata: {
-                contentType: file.mimetype
+                contentType: "image/jpeg"
             }
         })
 
