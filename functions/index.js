@@ -179,59 +179,6 @@ publicV2.get('/map', function (request, response) {
     })
 })
 
-publicV2.get('/VerifyEmail', function(request, response){
-    emailAddr = request.query.email
-    response.status(global.defineManager.HTTP_SUCCESS).render("verifyEmailSent", {
-        email: emailAddr
-    })
-})
-
-publicV2.get('/Profile', function (request, response) {
-    currentUserKey = request.query.userKey
-
-    userManager.IsSignedUpUser(admin, currentUserKey, function (isUserSignedUp) {
-        if(isUserSignedUp) {
-            response.status(global.defineManager.HTTP_SUCCESS).render("profile", {
-                displayName: currentUserKey
-            })
-        }
-        else {
-            global.logManager.PrintLogMessage("index", "Profile", "user " + currentUserKey + " not signed up. Redirect to signup page", global.defineManager.LOG_LEVEL_WARN)
-            response.redirect('SignUp?userKey=' + currentUserKey)
-        }
-    })
-})
-
-publicV2.get('/SignUp', function (request, response) {
-    currentUserKey = request.query.userKey
-    response.status(global.defineManager.HTTP_SUCCESS).render("signUp", {
-        userKey: currentUserKey
-    })
-})
-
-publicV2.post('/UpdateMyAccount', function (request, response) {
-
-    global.logManager.PrintLogMessage("index", "UpdateMyAccount", "request data: " + JSON.stringify(request.body), global.defineManager.LOG_LEVEL_DEBUG)
-
-    userManager.SignUpUser(admin, request.body, function (isVerifyMailSent, address) {
-        if(isVerifyMailSent) {
-            response.status(global.defineManager.HTTP_SUCCESS).render("verifyEmailSent", {
-                email: address
-            })
-        }
-        else {
-            response.status(global.defineManager.HTTP_SERVER_ERROR).send()
-        }
-    })
-})
-
-publicV2.post('/RemoveMyAccount', function (request, response) {
-
-    global.logManager.PrintLogMessage("index", "RemoveMyAccount", "request data: " + JSON.stringify(request.body), global.defineManager.LOG_LEVEL_DEBUG)
-
-    response.status(global.defineManager.HTTP_SUCCESS).send()
-})
-
 publicV2.get('/busLocation', function(request, response) {
     global.logManager.PrintLogMessage("index", "busLocation", "get bus location data",
         global.defineManager.LOG_LEVEL_DEBUG)
