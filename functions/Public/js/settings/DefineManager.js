@@ -40,5 +40,6 @@ ALERT_WARN_WRONG_USER_STATUS = "You are in wrong status"
 
 DATABASE_USER_STATUS_PATH = "/V2/Users/{0}/lastOrder"
 DATABASE_USER_UID_PATH = "/V2/Users/{0}/uid"
+DATABASE_SERVICE_V2_0_0_FOOD_MENU_INFO_PATH = "/V2/Service/V2_0_0/StaticContent/FoodMenuInfo"
 
 USER_STATUS_CHECK_PROFILE = 33

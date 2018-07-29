@@ -94,10 +94,24 @@
     </div>
 </div>
 <script src="js/view/FoodMenuViewManager.js"></script>
+<script src="js/core/FoodMenuManager.js"></script>
 <script>
+    HideUploadForm("shalom")
+    HideUploadForm("personnel")
+    DisableEnableSubmit("shalom", true)
+    DisableEnableSubmit("personnel", true)
+    foodMenuManager = new FoodMenuManager(firebase)
     authV2Manager.ListenUserStatusChanged(
         function () {
-
+            authV2Manager.IsUserEmailVerified(function (status) {
+                if(status) {
+                    foodMenuManager.GetLatestFoodMenu()
+                    ShowUploadForm("shalom")
+                    ShowUploadForm("personnel")
+                    DisableEnableSubmit("shalom", false)
+                    DisableEnableSubmit("personnel", false)
+                }
+            })
         },
         function () {
 

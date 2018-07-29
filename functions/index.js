@@ -173,6 +173,20 @@ publicV2.get('/KangnamShuttle', function(request, response) {
     })
 })
 
+publicV2.get('/SignUp', function (request, response) {
+    currentUserKey = request.query.userKey
+    response.status(global.defineManager.HTTP_SUCCESS).render("signUp", {
+        userKey: currentUserKey
+    })
+})
+
+publicV2.get('/VerifyEmail', function(request, response){
+    emailAddr = request.query.email
+    response.status(global.defineManager.HTTP_SUCCESS).render("verifyEmailSent", {
+        email: emailAddr
+    })
+})
+
 publicV2.get('/map', function (request, response) {
     response.status(global.defineManager.HTTP_SUCCESS).render("map", {
 
