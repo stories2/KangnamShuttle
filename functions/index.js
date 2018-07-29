@@ -10,6 +10,8 @@ var serviceAccount = require("./service-account.json");
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
     databaseURL: "https://kangnamshuttle.firebaseio.com/",
+    storageBucket: functions.config().project.bucket,
+    projectId: functions.config().project.project_id
 });
 
 const responseManager = require('./Utils/ResponseManager');
