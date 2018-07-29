@@ -20,6 +20,7 @@ const userManager = require('./Core/UserManager');
 
 const url = require('url')
 const express = require('express');
+const {fileParser} = require('express-multipart-file-parser')
 const cors = require('cors')({origin: true});
 const kakaoAppV2 = express();
 const publicV2 = express();
@@ -280,6 +281,17 @@ const uploadConfig = Multer({
     }
 })
 
+// privateV2.use(fileParser)
+privateV2.use(fileParser({
+    rawBodyOptions: {
+        limit: '5mb',
+    },
+    busboyOptions: {
+        limits: {
+            fields: 1
+        }
+    },
+}))
 privateV2.use(cors)
 privateV2.use(verifyAuthToken)
 
@@ -297,9 +309,24 @@ privateV2.post('/DropOutUser', function (request, response) {
 
 privateV2.post('/uploadFoodMenuImage', uploadConfig.single('file'), function (request, response) {
     foodMenuManager = require('./Core/FoodMenuManager');
+    // const {
+    //     fieldname,
+    //     originalname,
+    //     encoding,
+    //     mimetype,
+    //     buffer,
+    // } = request.files[0]
 
-    global.logManager.PrintLogMessage("index", "uploadFoodMenuImage", "food menu image upload", global.defineManager.LOG_LEVEL_INFO)
+    global.logManager.PrintLogMessage("index", "uploadFoodMenuImage", "food menu image upload with multipart parser option", global.defineManager.LOG_LEVEL_INFO)
     requestFile = request.file
+    requestBody = request.body
+    global.logManager.PrintLogMessage("index", "uploadFoodMenuImage", "debug body: " + JSON.stringify(requestBody), global.defineManager.LOG_LEVEL_DEBUG)
+    if(requestFile == null) {
+        global.logManager.PrintLogMessage("index", "uploadFoodMenuImage", "shit body file is null", global.defineManager.LOG_LEVEL_WARN)
+    }
+    else {
+        global.logManager.PrintLogMessage("index", "uploadFoodMenuImage", "body file exist", global.defineManager.LOG_LEVEL_INFO)
+    }
     foodMenuManager.UploadFoodMenuImage(admin, bucketManager, requestFile, request.body, request.userRecordData["email"], function(resultMsg) {
         processResultResponse = {
             "msg": resultMsg
