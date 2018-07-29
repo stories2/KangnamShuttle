@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@line/bot-sdk": "^6.0.1",
+    "body-parser": "^1.18.3",
     "bus-boy": "0.0.5",
     "busboy": "^0.2.14",
     "cheerio": "^1.0.0-rc.2",

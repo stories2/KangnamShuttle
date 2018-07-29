@@ -21,6 +21,7 @@ const userManager = require('./Core/UserManager');
 const url = require('url')
 const express = require('express');
 const {fileParser} = require('express-multipart-file-parser')
+const bodyParser = require('body-parser')
 const cors = require('cors')({origin: true});
 const kakaoAppV2 = express();
 const publicV2 = express();
@@ -290,7 +291,9 @@ privateV2.post('/DropOutUser', function (request, response) {
 
 })
 
-privateV2.post('/uploadFoodMenuImage', function (request, response) {
+privateV2.post('/uploadFoodMenuImage',[bodyParser.json(), bodyParser.urlencoded({
+    extended: true,
+})],  function (request, response) {
     foodMenuManager = require('./Core/FoodMenuManager');
 
     const busboy = new Busboy({ headers: request.headers });
