@@ -94,3 +94,13 @@ exports.UploadFileToGoogleStorage = function (file, bucket) {
 
     return subPromise
 }
+
+exports.GenerateUpdateFoodMenuUrl = function (currentRoutineLinkItem, currentUserKey, callbackFunc) {
+    global.logManager.PrintLogMessage("FoodMenuManager", "GenerateUpdateFoodMenuUrl", "generate user update food menu url", global.defineManager.LOG_LEVEL_INFO)
+    generatedUrl = global.util.format(currentRoutineLinkItem["labelUrl"], currentUserKey)
+    global.logManager.PrintLogMessage("FoodMenuManager", "GenerateUpdateFoodMenuUrl", "here is your url: " + generatedUrl, global.defineManager.LOG_LEVEL_DEBUG)
+
+    if(callbackFunc != null) {
+        callbackFunc(generatedUrl)
+    }
+}

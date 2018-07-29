@@ -279,6 +279,19 @@ exports.OrderExecute = function (admin, functions, request, currentRoutineLinkIt
             }
         )
     }
+    else if(currentOrderNumber == global.defineManager.AUTOMATON_USER_UPDATE_SCHOOL_FOOD_MENU_ORDER_NUMBER) {
+        foodMenuManager = require('./FoodMenuManager');
+        foodMenuManager.GenerateUpdateFoodMenuUrl(
+            currentRoutineLinkItem,
+            currentUserKey,
+            function (labelUrl) {
+                makeUpResponse(
+                    currentRoutineLinkItem["responseMsgDic"][currentUserResponseMsgType][global.defineManager.RESPONSE_DEFAULT_SELECTION],
+                    labelUrl,
+                    null
+                )
+            })
+    }
     else {
 
         makeUpResponse(currentRoutineLinkItem["responseMsgDic"][currentUserResponseMsgType][global.defineManager.RESPONSE_DEFAULT_SELECTION], null, null)
