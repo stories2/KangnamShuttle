@@ -19,13 +19,13 @@
         <div class="12u$">
             <h2>메뉴판 갱신하기</h2>
         </div>
-        <form class="12u$" id="shalomUploadMenuForm">
+        <form class="12u$" id="shalomUploadMenuForm" enctype="multipart/form-data">
             <div class="row uniform">
                 <div class="12u$ 12u$(xsmall)">
-                    <input type="file" name="foodMenuImg" id="foodMenuImg" value="" placeholder="Food menu image" accept="image/jpeg"/>
+                    <input type="file" name="file" id="file" value="" placeholder="Food menu image" accept="image/jpeg"/>
                 </div>
                 <div class="12u$" hidden="hidden">
-                    <input type="text" name="userKey" id="userKey" placeholder="User key" hidden="hidden" readonly/>
+                    <input type="text" name="userKey" id="userKey" placeholder="User key" value="<%= userKey %>" hidden="hidden" readonly/>
                 </div>
                 <div class="12u$" hidden="hidden">
                     <input type="text" name="imgType" id="imgType" placeholder="Upload image type" hidden="hidden" value="shalom" readonly/>
@@ -61,13 +61,13 @@
         <div class="12u$">
             <h2>메뉴판 갱신하기</h2>
         </div>
-        <form class="12u$" id="personnelUploadMenuForm">
+        <form class="12u$" id="personnelUploadMenuForm" enctype="multipart/form-data">
             <div class="row uniform">
                 <div class="12u$ 12u$(xsmall)">
-                    <input type="file" name="foodMenuImg" id="foodMenuImg" value="" placeholder="Food menu image" accept="image/jpeg"/>
+                    <input type="file" name="file" id="file" value="" placeholder="Food menu image" accept="image/jpeg"/>
                 </div>
                 <div class="12u$" hidden="hidden">
-                    <input type="text" name="userKey" id="userKey" placeholder="User key" hidden="hidden" readonly/>
+                    <input type="text" name="userKey" id="userKey" placeholder="User key" value="<%= userKey %>" hidden="hidden" readonly/>
                 </div>
                 <div class="12u$" hidden="hidden">
                     <input type="text" name="imgType" id="imgType" placeholder="Upload image type" hidden="hidden" value="personnel" readonly/>
@@ -113,32 +113,19 @@
                 }
             })
 
-            foodMenuManager.InitUploadFoodMenuImageForm("shalomUploadMenuForm",
-                function (foodMenuImg, userKey, imgType) {
-                    authV2Manager.GetUserToken(function (token) {
-                        if(token != null) {
-                            DisableEnableSubmit("shalom", true)
-                            foodMenuManager.UploadFoodMenuImage(foodMenuImg, userKey, imgType, token)
-                        }
-                        else {
+            authV2Manager.GetUserToken(function (token) {
+                    foodMenuManager.InitUploadFoodMenuImageForm("shalomUploadMenuForm", token,
+                        function (formData) {
 
-                        }
+                        })
+            })
+
+            authV2Manager.GetUserToken(function (token) {
+                foodMenuManager.InitUploadFoodMenuImageForm("personnelUploadMenuForm", token,
+                    function (formData) {
+
                     })
-                })
-
-            foodMenuManager.InitUploadFoodMenuImageForm("personnelUploadMenuForm",
-                function (foodMenuImg, userKey, imgType) {
-                    authV2Manager.GetUserToken(function (token) {
-                        if(token != null) {
-                            DisableEnableSubmit("personnel", true)
-                            foodMenuManager.UploadFoodMenuImage(foodMenuImg, userKey, imgType, token)
-                        }
-                        else {
-
-                        }
-                    })
-                })
-
+            })
         },
         function () {
 

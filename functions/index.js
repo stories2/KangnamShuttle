@@ -222,8 +222,9 @@ publicV2.get('/updateBusLocation', function (request, response) {
 })
 
 publicV2.get('/foodMenu', function (request, response) {
+    currentUserKey = request.query.userKey
     response.status(global.defineManager.HTTP_SUCCESS).render("FoodMenu", {
-
+        userKey: currentUserKey
     })
 })
 

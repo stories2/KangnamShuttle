@@ -2,6 +2,7 @@ function FoodMenuManager(firebase) {
     PrintLogMessage("FoodMenuManager", "FoodMenuManager", "init", LOG_LEVEL_INFO)
     this.firebase = firebase
     this.database = this.firebase.database()
+    this.dataTransferManager = new DataTransferManager()
 }
 
 FoodMenuManager.prototype.GetLatestFoodMenu = function () {
@@ -17,8 +18,10 @@ FoodMenuManager.prototype.GetLatestFoodMenu = function () {
     })
 }
 
-FoodMenuManager.prototype.InitUploadFoodMenuImageForm = function(foodMenuImageUploadType, callbackFunc) {
+FoodMenuManager.prototype.InitUploadFoodMenuImageForm = function(foodMenuImageUploadType, token, callbackFunc) {
     PrintLogMessage("FoodMenuManager", "InitUploadFoodMenuImageForm", "init form: " + foodMenuImageUploadType, LOG_LEVEL_DEBUG)
+    dataTransferManagerClient = this.dataTransferManager
+
     $("#" + foodMenuImageUploadType).on("submit", function(event) {
         event.preventDefault();
         if(callbackFunc !== undefined) {
@@ -29,21 +32,23 @@ FoodMenuManager.prototype.InitUploadFoodMenuImageForm = function(foodMenuImageUp
 
             PrintLogMessage("FoodMenuManager", "InitUploadFoodMenuImageForm", "user key: " + userKey + " type: " + imgType, LOG_LEVEL_DEBUG)
 
+            dataTransferManagerClient.PostFileRequestWithCallbackFunc(
+                DOMAIN + SUB_DOMAIN_PATH_PRIVATE + "uploadFoodMenuImage",
+                new FormData(this),
+                function (result) {
+                    PrintLogMessage("FoodMenuManager", "UploadFoodMenuImage", "ok data uploaded result: " + result, LOG_LEVEL_INFO)
+                    // callbackFunc()
+                },
+                function (error) {
+                    PrintLogMessage("FoodMenuManager", "UploadFoodMenuImage", "failed to upload image: " + error, LOG_LEVEL_ERROR)
+                    // callbackFunc()
+                },
+                token
+            )
+
             if(callbackFunc !== undefined) {
-                callbackFunc(foodMenuImg, userKey, imgType)
+                // callbackFunc(foodMenuImg, userKey, imgType, formData)
             }
         }
     })
-}
-
-FoodMenuManager.prototype.UploadFoodMenuImage = function (foodMenuImg, userKey, imgType, token) {
-    firebaseAuth = this.firebase.auth()
-    currentUser = firebaseAuth.currentUser
-    if(currentUser) {
-        PrintLogMessage("FoodMenuManager", "UploadFoodMenuImage", "user signed in token: " + token, LOG_LEVEL_DEBUG)
-
-    }
-    else {
-        PrintLogMessage("FoodMenuManager", "UploadFoodMenuImage", "user not signed in", LOG_LEVEL_WARN)
-    }
 }

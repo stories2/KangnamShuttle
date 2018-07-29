@@ -89,6 +89,43 @@ DataTransferManager.prototype.PostRequestWithCallbackFunc = function (url, data,
         });
 }
 
+DataTransferManager.prototype.PostFileRequestWithCallbackFunc = function (url, data, successFunc, failFunc, token) {
+    PrintLogMessage("DataTransferManager", "PostFileRequestWithCallbackFunc", "send data to url: " + url, LOG_LEVEL_INFO)
+    // data["seconds"] = this.PreventCache()
+    $.ajax({
+        type: "POST",
+        url: url,
+        cache: false,
+        contentType: false,
+        data: data,
+        crossDomain : true,
+        processData: false,
+        // headers: {
+        //     "Authorization": token
+        // },
+        xhrFields: {
+            withCredentials: false
+        },
+        beforeSend: function (xhr) {
+            if(typeof token != 'undefined') {
+                PrintLogMessage("DataTransferManager", "PostFileRequestWithCallbackFunc", "auth: " + token, LOG_LEVEL_DEBUG)
+                xhr.setRequestHeader ("Authorization", token);
+            }
+            else {
+                PrintLogMessage("DataTransferManager", "PostFileRequestWithCallbackFunc", "no token sending", LOG_LEVEL_WARN)
+            }
+        }
+    })
+        .done(function( receivedData ) {
+            PrintLogMessage("DataTransferManager", "PostFileRequestWithCallbackFunc", "data received successfully", LOG_LEVEL_INFO)
+            successFunc(receivedData)
+        })
+        .fail( function(xhr, textStatus, errorThrown) {
+            PrintLogMessage("DataTransferManager", "PostFileRequestWithCallbackFunc", "something has problem: " + textStatus, LOG_LEVEL_ERROR)
+            failFunc(xhr.responseText, textStatus)
+        });
+}
+
 DataTransferManager.prototype.GetRequest = function (url, data, callbackObj, token) {
     PrintLogMessage("DataTransferManager", "GetRequest", "send data to url: " + url, LOG_LEVEL_INFO)
     // data["seconds"] = this.PreventCache()
