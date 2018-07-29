@@ -272,26 +272,9 @@ const verifyAuthToken = function (request, response, next) {
     }
 }
 
+const os = require('os');
+const Busboy = require('busboy');
 
-const Multer = require('multer')
-const uploadConfig = Multer({
-    storage: Multer.memoryStorage(),
-    limits: {
-        fileSize: 5 * 1024 * 1024
-    }
-})
-
-// privateV2.use(fileParser)
-privateV2.use(fileParser({
-    rawBodyOptions: {
-        limit: '5mb',
-    },
-    busboyOptions: {
-        limits: {
-            fields: 1
-        }
-    },
-}))
 privateV2.use(cors)
 privateV2.use(verifyAuthToken)
 
@@ -307,34 +290,20 @@ privateV2.post('/DropOutUser', function (request, response) {
 
 })
 
-privateV2.post('/uploadFoodMenuImage', uploadConfig.single('file'), function (request, response) {
+privateV2.post('/uploadFoodMenuImage', function (request, response) {
     foodMenuManager = require('./Core/FoodMenuManager');
-    // const {
-    //     fieldname,
-    //     originalname,
-    //     encoding,
-    //     mimetype,
-    //     buffer,
-    // } = request.files[0]
 
-    global.logManager.PrintLogMessage("index", "uploadFoodMenuImage", "food menu image upload with multipart parser option", global.defineManager.LOG_LEVEL_INFO)
-    requestFile = request.file
-    requestBody = request.body
-    global.logManager.PrintLogMessage("index", "uploadFoodMenuImage", "debug body: " + JSON.stringify(requestBody), global.defineManager.LOG_LEVEL_DEBUG)
-    if(requestFile == null) {
-        global.logManager.PrintLogMessage("index", "uploadFoodMenuImage", "shit body file is null", global.defineManager.LOG_LEVEL_WARN)
-    }
-    else {
-        global.logManager.PrintLogMessage("index", "uploadFoodMenuImage", "body file exist", global.defineManager.LOG_LEVEL_INFO)
-    }
-    foodMenuManager.UploadFoodMenuImage(admin, bucketManager, requestFile, request.body, request.userRecordData["email"], function(resultMsg) {
+    const busboy = new Busboy({ headers: request.headers });
+    const tmpdir = os.tmpdir();
+
+    global.logManager.PrintLogMessage("index", "uploadFoodMenuImage", "food menu image upload", global.defineManager.LOG_LEVEL_INFO)
+
+    foodMenuManager.UploadFoodMenuImage(admin, bucketManager, foodMenuManager, request, busboy, tmpdir, request.body, request.userRecordData["email"], function(resultMsg) {
         processResultResponse = {
             "msg": resultMsg
         }
         response.status(200).send(JSON.stringify(processResultResponse))
     })
-    // fileManager.UploadFile(admin, bucket, request, response, responseManager, requestFile)
-
 })
 
 exports.PrivateV2 = functions.https.onRequest(privateV2);
