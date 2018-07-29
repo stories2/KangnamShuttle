@@ -22,6 +22,8 @@ const url = require('url')
 const express = require('express');
 const {fileParser} = require('express-multipart-file-parser')
 const bodyParser = require('body-parser')
+const getRawBody = require('raw-body')
+const contentType = require('content-type')
 const cors = require('cors')({origin: true});
 const kakaoAppV2 = express();
 const publicV2 = express();
@@ -273,11 +275,46 @@ const verifyAuthToken = function (request, response, next) {
     }
 }
 
+const getRawBodyManager = function (request, response, next) {
+    try {
+        if (
+            request.rawBody === undefined &&
+            request.method === 'POST' &&
+            request.headers['content-type'].startsWith('multipart/form-data')
+        ) {
+            getRawBody(
+                request,
+                {
+                    length: request.headers['content-length'],
+                    limit: '5mb',
+                    encoding: contentType.parse(request).parameters.charset,
+                },
+                function(err, string) {
+                    if (err) {
+                        responseManager.TemplateOfResponse(tempResponse, global.defineManager.HTTP_SERVER_ERROR, response)
+                        return
+                    }
+                    global.logManager.PrintLogMessage("index", "getRawBodyManager", "raw body converted", global.defineManager.LOG_LEVEL_DEBUG)
+                    request.rawBody = string
+                    next()
+                }
+            )
+        } else {
+            global.logManager.PrintLogMessage("index", "getRawBodyManager", "just pass raw body", global.defineManager.LOG_LEVEL_INFO)
+            next()
+        }
+    }
+    catch (except) {
+        responseManager.TemplateOfResponse(tempResponse, global.defineManager.HTTP_SERVER_ERROR, response)
+    }
+}
+
 const os = require('os');
 const Busboy = require('busboy');
 
 privateV2.use(cors)
 privateV2.use(verifyAuthToken)
+privateV2.use(getRawBodyManager)
 
 privateV2.post('/DropOutUser', function (request, response) {
 

@@ -92,6 +92,7 @@ exports.UploadFoodMenuImage = function (admin, bucketManager, foodMenuManager, r
         // res.send();
     });
 
+    busboy.end(request.rawBody)
     request.pipe(busboy);
 }
 
