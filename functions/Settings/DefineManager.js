@@ -185,6 +185,7 @@ exports.DATABASE_SERVICE_V2_0_0_WEATHER_INFO_PATH = "/V2/Service/V2_0_0/StaticCo
 exports.DATABASE_SERVICE_V2_0_0_USER_LAST_USER_DATE_TIME_PATH = "/V2/Users/%s/updatedDateTime"
 exports.DATABASE_SERVICE_V2_0_0_USER_UID_PATH = "/V2/Users/%s/uid"
 exports.DATABASE_SERVICE_V2_0_0_USER_DATA_PATH = "/V2/Users/%s"
+exports.DATABASE_SERVICE_V2_0_0_FOOD_MENU_PATH = "/V2/Service/V2_0_0/StaticContent/FoodMenuInfo/%s"
 
 exports.AUTOMATON_START_NUMBER = 1
 exports.AUTOMATON_DEFAULT_INPUT_NUMBER = 0
@@ -235,3 +236,5 @@ exports.PUBLIC_V2_QUERY_VALUE = "value"
 exports.PUBLIC_V2_QUERY_TYPE = "type"
 
 exports.PUBLIC_V2_QUERY_TYPE_MENU = "menu"
+
+exports.BUCKET_FOOD_MENU_PATH = "FoodMenu/"

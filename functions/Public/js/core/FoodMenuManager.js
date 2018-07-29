@@ -18,12 +18,13 @@ FoodMenuManager.prototype.GetLatestFoodMenu = function () {
     })
 }
 
-FoodMenuManager.prototype.InitUploadFoodMenuImageForm = function(foodMenuImageUploadType, token, callbackFunc) {
+FoodMenuManager.prototype.InitUploadFoodMenuImageForm = function(foodMenuImageUploadType, submitType, token, callbackFunc) {
     PrintLogMessage("FoodMenuManager", "InitUploadFoodMenuImageForm", "init form: " + foodMenuImageUploadType, LOG_LEVEL_DEBUG)
     dataTransferManagerClient = this.dataTransferManager
 
     $("#" + foodMenuImageUploadType).on("submit", function(event) {
         event.preventDefault();
+        DisableEnableSubmit(submitType, true)
         if(callbackFunc !== undefined) {
 
             foodMenuImg = $(this).find('[name=foodMenuImg]').val();
@@ -36,12 +37,21 @@ FoodMenuManager.prototype.InitUploadFoodMenuImageForm = function(foodMenuImageUp
                 DOMAIN + SUB_DOMAIN_PATH_PRIVATE + "uploadFoodMenuImage",
                 new FormData(this),
                 function (result) {
+                    DisableEnableSubmit(submitType, false)
                     PrintLogMessage("FoodMenuManager", "UploadFoodMenuImage", "ok data uploaded result: " + result, LOG_LEVEL_INFO)
+                    resultResponseObj = JSON.parse(result)
+                    if(callbackFunc !== undefined) {
+                        callbackFunc(resultResponseObj["msg"])
+                    }
                     // callbackFunc()
                 },
                 function (error) {
+                    DisableEnableSubmit(submitType, false)
                     PrintLogMessage("FoodMenuManager", "UploadFoodMenuImage", "failed to upload image: " + error, LOG_LEVEL_ERROR)
                     // callbackFunc()
+                    if(callbackFunc !== undefined) {
+                        callbackFunc(error)
+                    }
                 },
                 token
             )

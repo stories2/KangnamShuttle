@@ -114,16 +114,18 @@
             })
 
             authV2Manager.GetUserToken(function (token) {
-                    foodMenuManager.InitUploadFoodMenuImageForm("shalomUploadMenuForm", token,
-                        function (formData) {
-
+                    foodMenuManager.InitUploadFoodMenuImageForm("shalomUploadMenuForm", "shalom", token,
+                        function (result) {
+                            alert(result)
+                            location.reload();
                         })
             })
 
             authV2Manager.GetUserToken(function (token) {
-                foodMenuManager.InitUploadFoodMenuImageForm("personnelUploadMenuForm", token,
-                    function (formData) {
-
+                foodMenuManager.InitUploadFoodMenuImageForm("personnelUploadMenuForm", "personnel", token,
+                    function (result) {
+                        alert(result)
+                        location.reload();
                     })
             })
         },

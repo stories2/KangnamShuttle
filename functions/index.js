@@ -24,6 +24,7 @@ const cors = require('cors')({origin: true});
 const kakaoAppV2 = express();
 const publicV2 = express();
 const privateV2 = express();
+const bucketManager = admin.storage().bucket();
 
 const middleWareOfMessage = function (request, response, next) {
     requestPath = url.parse(request.url).pathname
@@ -299,7 +300,7 @@ privateV2.post('/uploadFoodMenuImage', uploadConfig.single('file'), function (re
 
     global.logManager.PrintLogMessage("index", "uploadFoodMenuImage", "food menu image upload", global.defineManager.LOG_LEVEL_INFO)
     requestFile = request.file
-    foodMenuManager.UploadFoodMenuImage(admin, requestFile, request.body, function(resultMsg) {
+    foodMenuManager.UploadFoodMenuImage(admin, bucketManager, requestFile, request.body, request.userRecordData["email"], function(resultMsg) {
         processResultResponse = {
             "msg": resultMsg
         }
