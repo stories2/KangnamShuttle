@@ -112,6 +112,33 @@
                     DisableEnableSubmit("personnel", false)
                 }
             })
+
+            foodMenuManager.InitUploadFoodMenuImageForm("shalomUploadMenuForm",
+                function (foodMenuImg, userKey, imgType) {
+                    authV2Manager.GetUserToken(function (token) {
+                        if(token != null) {
+                            DisableEnableSubmit("shalom", true)
+                            foodMenuManager.UploadFoodMenuImage(foodMenuImg, userKey, imgType, token)
+                        }
+                        else {
+
+                        }
+                    })
+                })
+
+            foodMenuManager.InitUploadFoodMenuImageForm("personnelUploadMenuForm",
+                function (foodMenuImg, userKey, imgType) {
+                    authV2Manager.GetUserToken(function (token) {
+                        if(token != null) {
+                            DisableEnableSubmit("personnel", true)
+                            foodMenuManager.UploadFoodMenuImage(foodMenuImg, userKey, imgType, token)
+                        }
+                        else {
+
+                        }
+                    })
+                })
+
         },
         function () {
 

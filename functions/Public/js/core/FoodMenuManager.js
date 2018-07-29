@@ -16,3 +16,34 @@ FoodMenuManager.prototype.GetLatestFoodMenu = function () {
         }
     })
 }
+
+FoodMenuManager.prototype.InitUploadFoodMenuImageForm = function(foodMenuImageUploadType, callbackFunc) {
+    PrintLogMessage("FoodMenuManager", "InitUploadFoodMenuImageForm", "init form: " + foodMenuImageUploadType, LOG_LEVEL_DEBUG)
+    $("#" + foodMenuImageUploadType).on("submit", function(event) {
+        event.preventDefault();
+        if(callbackFunc !== undefined) {
+
+            foodMenuImg = $(this).find('[name=foodMenuImg]').val();
+            userKey = $(this).find('[name=userKey]').val();
+            imgType = $(this).find('[name=imgType]').val();
+
+            PrintLogMessage("FoodMenuManager", "InitUploadFoodMenuImageForm", "user key: " + userKey + " type: " + imgType, LOG_LEVEL_DEBUG)
+
+            if(callbackFunc !== undefined) {
+                callbackFunc(foodMenuImg, userKey, imgType)
+            }
+        }
+    })
+}
+
+FoodMenuManager.prototype.UploadFoodMenuImage = function (foodMenuImg, userKey, imgType, token) {
+    firebaseAuth = this.firebase.auth()
+    currentUser = firebaseAuth.currentUser
+    if(currentUser) {
+        PrintLogMessage("FoodMenuManager", "UploadFoodMenuImage", "user signed in token: " + token, LOG_LEVEL_DEBUG)
+
+    }
+    else {
+        PrintLogMessage("FoodMenuManager", "UploadFoodMenuImage", "user not signed in", LOG_LEVEL_WARN)
+    }
+}

@@ -165,3 +165,23 @@ AuthV2Manager.prototype.IsUserEmailVerified = function (callbackFunc) {
         callbackFunc(false)
     }
 }
+
+AuthV2Manager.prototype.GetUserToken = function (callbackFunc) {
+    firebaseAuth = this.firebase.auth()
+    firebaseAuth.currentUser.getIdToken(/* forceRefresh */ true)
+        .then(function(idToken) {
+            // Send token to your backend via HTTPS
+            PrintLogMessage("AuthV2Manager", "GetUserToken", "ok token generated: " + idToken, LOG_LEVEL_DEBUG)
+            if(callbackFunc !== undefined) {
+                callbackFunc(idToken)
+            }
+        })
+        .catch(function (error) {
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            PrintLogMessage("AuthV2Manager", "GetUserToken", "cannot get token code: " + errorCode + " msg: " + errorMessage, LOG_LEVEL_ERROR)
+            if(callbackFunc !== undefined) {
+                callbackFunc(null)
+            }
+        })
+}

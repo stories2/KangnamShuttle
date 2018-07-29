@@ -267,6 +267,15 @@ const verifyAuthToken = function (request, response, next) {
     }
 }
 
+
+const Multer = require('multer')
+const uploadConfig = Multer({
+    storage: Multer.memoryStorage(),
+    limits: {
+        fileSize: 5 * 1024 * 1024
+    }
+})
+
 privateV2.use(cors)
 privateV2.use(verifyAuthToken)
 
@@ -280,6 +289,16 @@ privateV2.post('/DropOutUser', function (request, response) {
         response.status(200).send(JSON.stringify(resultMsg))
     })
 
+})
+
+privateV2.post('/uploadFoodMenuImage', uploadConfig.single('file'), function (request, response) {
+    foodMenuManager = require('./Core/FoodMenuManager');
+
+    global.logManager.PrintLogMessage("index", "uploadFoodMenuImage", "food menu image upload", global.defineManager.LOG_LEVEL_INFO)
+    requestFile = request.file
+    foodMenuManager.UploadFoodMenuImage(admin, requestFile, request.body)
+    // fileManager.UploadFile(admin, bucket, request, response, responseManager, requestFile)
+    response.status(200).send()
 })
 
 exports.PrivateV2 = functions.https.onRequest(privateV2);
