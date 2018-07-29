@@ -1,0 +1,105 @@
+<h3>샬롬관 주간 메뉴표</h3>
+<div class="box alt">
+    <div class="row uniform">
+        <div class="12u$">
+            <span class="image fit"><img id="shalomImg" src="images/pic04.jpg" alt="" /></span>
+        </div>
+        <div class="4u 12u$(small)">
+            <label>마지막 업로드 날짜</label>
+        </div>
+        <div class="8u 12u$(small)" id="shalomLastUploadDateTime">
+            2018-07-29T02:10:12.958Z
+        </div>
+        <div class="4u 12u$(small)">
+            <label>마지막 업로더</label>
+        </div>
+        <div class="8u 12u$(small)" id="shalomLastUploader">
+            201501180@kangnam.ac.kr
+        </div>
+        <div class="12u$">
+            <h2>메뉴판 갱신하기</h2>
+        </div>
+        <form class="12u$" id="shalomUploadMenuForm">
+            <div class="row uniform">
+                <div class="12u$ 12u$(xsmall)">
+                    <input type="file" name="foodMenuImg" id="foodMenuImg" value="" placeholder="Food menu image" accept="image/jpeg"/>
+                </div>
+                <div class="12u$" hidden="hidden">
+                    <input type="text" name="userKey" id="userKey" placeholder="User key" hidden="hidden" readonly/>
+                </div>
+                <div class="12u$" hidden="hidden">
+                    <input type="text" name="imgType" id="imgType" placeholder="Upload image type" hidden="hidden" value="shalom" readonly/>
+                </div>
+                <div class="12u$">
+                    <ul class="actions">
+                        <li><input id="shalomSubmit" type="submit" value="Upload food menu" class="special" /></li>
+                        <li><input type="reset" value="Reset" /></li>
+                    </ul>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<h3>인사관 주간 메뉴표</h3>
+<div class="box alt">
+    <div class="row uniform">
+        <div class="12u$">
+            <span class="image fit"><img id="personnelImg" src="images/pic04.jpg" alt="" /></span>
+        </div>
+        <div class="4u 12u$(small)">
+            <label>마지막 업로드 날짜</label>
+        </div>
+        <div class="8u 12u$(small)" id="personnelLastUploadDateTime">
+            2018-07-29T02:10:12.958Z
+        </div>
+        <div class="4u 12u$(small)">
+            <label>마지막 업로더</label>
+        </div>
+        <div class="8u 12u$(small)" id="personnelLastUploader">
+            201501180@kangnam.ac.kr
+        </div>
+        <div class="12u$">
+            <h2>메뉴판 갱신하기</h2>
+        </div>
+        <form class="12u$" id="personnelUploadMenuForm">
+            <div class="row uniform">
+                <div class="12u$ 12u$(xsmall)">
+                    <input type="file" name="foodMenuImg" id="foodMenuImg" value="" placeholder="Food menu image" accept="image/jpeg"/>
+                </div>
+                <div class="12u$" hidden="hidden">
+                    <input type="text" name="userKey" id="userKey" placeholder="User key" hidden="hidden" readonly/>
+                </div>
+                <div class="12u$" hidden="hidden">
+                    <input type="text" name="imgType" id="imgType" placeholder="Upload image type" hidden="hidden" value="personnel" readonly/>
+                </div>
+                <div class="12u$">
+                    <ul class="actions">
+                        <li><input id="personnelSubmit" type="submit" value="Upload food menu" class="special" /></li>
+                        <li><input type="reset" value="Reset" /></li>
+                    </ul>
+                </div>
+            </div>
+        </form>
+        <div class="12u$">
+            <h3>메뉴판 업로드 안내</h3>
+        </div>
+        <div class="12u$">
+            <ul class="alt">
+                <li>업로는 jpeg 확장자만 가능하며 사이즈는 5MB 이하여야 합니다.</li>
+                <li>업로더는 회원 가입 및 로그인 절차가 완료된 상태여야 합니다.</li>
+                <li>업로드가 완료되면 마지막 업로드 날짜와 마지막 업로더의 메일 주소가 본인 것 으로 갱신됩니다.</li>
+                <li>모든 업로드 관련 정보는 로그로 남게됩니다.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<script src="js/view/FoodMenuViewManager.js"></script>
+<script>
+    authV2Manager.ListenUserStatusChanged(
+        function () {
+
+        },
+        function () {
+
+        })
+</script>

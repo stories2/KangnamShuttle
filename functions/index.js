@@ -207,6 +207,12 @@ publicV2.get('/updateBusLocation', function (request, response) {
     responseManager.TemplateOfResponse(responseData, global.defineManager.HTTP_SUCCESS, response)
 })
 
+publicV2.get('/foodMenu', function (request, response) {
+    response.status(global.defineManager.HTTP_SUCCESS).render("FoodMenu", {
+
+    })
+})
+
 exports.PublicV2 = functions.https.onRequest(publicV2);
 
 const verifyAuthToken = function (request, response, next) {
