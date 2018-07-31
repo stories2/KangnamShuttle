@@ -153,3 +153,14 @@ exports.GenerateUpdateFoodMenuUrl = function (currentRoutineLinkItem, currentUse
         callbackFunc(generatedUrl)
     }
 }
+
+exports.GenerateDownloadFoodMenuUrl = function (admin, currentRoutineLinkItem, foodMenuType, callbackFunc) {
+    targetFoodMenuInfoUrl = global.util.format(global.defineManager.DATABASE_SERVICE_V2_0_0_FOOD_MENU_PATH, foodMenuType)
+    global.logManager.PrintLogMessage("FoodMenuManager", "GenerateUpdateFoodMenuUrl", "find food menu url from database -> url: " + targetFoodMenuInfoUrl, global.defineManager.LOG_LEVEL_DEBUG);
+    admin.database().ref(targetFoodMenuInfoUrl).once('value', function (foodMenuSnapshot) {
+        foodMenuSnapshot = JSON.parse(JSON.stringify(foodMenuSnapshot))
+        if(callbackFunc != null) {
+            callbackFunc(foodMenuSnapshot[foodMenuType + "Img"][0])
+        }
+    })
+}

@@ -292,6 +292,28 @@ exports.OrderExecute = function (admin, functions, request, currentRoutineLinkIt
                 )
             })
     }
+    else if(currentOrderNumber == global.defineManager.AUTOMATON_FOOD_MENU_SHALOM_ORDER_NUMBER) {
+        foodMenuManager = require('./FoodMenuManager');
+        foodMenuManager.GenerateDownloadFoodMenuUrl(admin, currentRoutineLinkItem, global.defineManager.FOOD_MENU_TYPE_SHALOM,
+            function(imgUrl){
+                makeUpResponse(
+                    currentRoutineLinkItem["responseMsgDic"][currentUserResponseMsgType][global.defineManager.RESPONSE_DEFAULT_SELECTION],
+                    imgUrl,
+                    imgUrl
+                )
+        })
+    }
+    else if(currentOrderNumber == global.defineManager.AUTOMATON_FOOD_MENU_PERSONNEL_ORDER_NUMBER) {
+        foodMenuManager = require('./FoodMenuManager');
+        foodMenuManager.GenerateDownloadFoodMenuUrl(admin, currentRoutineLinkItem, global.defineManager.FOOD_MENU_TYPE_PERSONNEL,
+            function(imgUrl){
+                makeUpResponse(
+                    currentRoutineLinkItem["responseMsgDic"][currentUserResponseMsgType][global.defineManager.RESPONSE_DEFAULT_SELECTION],
+                    imgUrl,
+                    imgUrl
+                )
+            })
+    }
     else {
 
         makeUpResponse(currentRoutineLinkItem["responseMsgDic"][currentUserResponseMsgType][global.defineManager.RESPONSE_DEFAULT_SELECTION], null, null)
