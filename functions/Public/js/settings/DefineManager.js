@@ -13,7 +13,7 @@ DEACTIVE_STR = "Deactivate"
 // DOMAIN = "https://us-central1-kangnamshuttle.cloudfunctions.net/"
 // DOMAIN = "http://localhost:5000/kangnamshuttle/us-central1/"
 DOMAIN = "/"
-DOMAIN = "/kangnamshuttle/us-central1/"
+// DOMAIN = "/kangnamshuttle/us-central1/"
 
 SUB_DOMAIN_PATH_PUBLIC = "PublicV2/"
 SUB_DOMAIN_PATH_PRIVATE = "PrivateV2/"
@@ -37,6 +37,7 @@ EMAIL_ENDPOINT = "@kangnam.ac.kr"
 
 ALERT_WARN_WRONG_STUDENT_ID = "Wrong student ID"
 ALERT_WARN_WRONG_USER_STATUS = "You are in wrong status"
+ALERT_WARN_NOT_SIGNED_IN = "You must signed in"
 
 DATABASE_USER_STATUS_PATH = "/V2/Users/{0}/lastOrder"
 DATABASE_USER_UID_PATH = "/V2/Users/{0}/uid"
@@ -45,3 +46,4 @@ DATABASE_SERVICE_V2_0_0_FOOD_MENU_INFO_PATH = "/V2/Service/V2_0_0/StaticContent/
 USER_STATUS_CHECK_PROFILE = 33
 
 API_PRIVATE_V2_SET_USER_UID = "SetUserUid"
+API_PRIVATE_V2_WIFI_INFO = "wifiInfo"

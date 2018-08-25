@@ -182,11 +182,11 @@ exports.GetSchoolWifiInfo = function (admin, secure, callbackFunc) {
 
         wifiList = []
 
-        if(secure) {
-            for(index in wifiInfoListSnapshot) {
+        for(index in wifiInfoListSnapshot) {
+            if(secure) {
                 wifiInfoListSnapshot[index]["wifiPassword"] = ""
-                wifiList.push(wifiInfoListSnapshot[index])
             }
+            wifiList.push(wifiInfoListSnapshot[index])
         }
 
         global.logManager.PrintLogMessage("SchoolManager", "GetSchoolWifiInfo", "return wifi list with secure option: " + secure, global.defineManager.LOG_LEVEL_DEBUG)

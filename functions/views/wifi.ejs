@@ -7,7 +7,7 @@
         </div>
         <div class="12u$">
             <ul class="alt">
-                <li>PW: <%= wifiList[i]["wifiPassword"] %></li>
+                <li id="index<%= i %>">PW: <%= wifiList[i]["wifiPassword"] %></li>
             </ul>
         </div>
         <% } %>
@@ -24,3 +24,21 @@
         </div>
     </div>
 </div>
+<script src="js/core/SchoolManager.js"></script>
+<script src="js/view/WifiViewManager.js"></script>
+<script>
+
+    schoolManager = new SchoolManager()
+
+    authV2Manager.ListenUserStatusChanged(
+        function (signedInUserInfo) {
+            schoolManager.GetSchoolWifiInfo(function (wifiInfo) {
+                // console.log("info", JSON.stringify(wifiInfo))
+                UpdateWifiInfoList(wifiInfo["wifiList"])
+            })
+        },
+        function () {
+            alert(ALERT_WARN_NOT_SIGNED_IN)
+        }
+    )
+</script>

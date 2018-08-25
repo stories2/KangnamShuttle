@@ -376,8 +376,9 @@ privateV2.get('/wifiInfo', function (request, response) {
     responseMsg = {}
 
     schoolManager = require('./Core/SchoolManager');
-    schoolManager.GetSchoolWifiInfo(admin, function(wifiList){
+    schoolManager.GetSchoolWifiInfo(admin, false, function(wifiList){
         responseMsg["wifiList"] = wifiList
+        console.log("ret", JSON.stringify(responseMsg), "list", JSON.stringify(wifiList))
         response.setHeader('Content-Type', 'application/json');
         response.status(global.defineManager.HTTP_SUCCESS).send(JSON.stringify(responseMsg))
     })
