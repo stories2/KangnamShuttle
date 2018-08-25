@@ -32,11 +32,21 @@
 
     authV2Manager.ListenUserStatusChanged(
         function (signedInUserInfo) {
-            schoolManager.GetSchoolWifiInfo(function (wifiInfo) {
-                // console.log("info", JSON.stringify(wifiInfo))
-                UpdateWifiInfoList(wifiInfo["wifiList"])
-                pageManager.SetShowHideSpinner(false)
+
+            authV2Manager.IsUserEmailVerified(function(status) {
+                if(status) {
+                    schoolManager.GetSchoolWifiInfo(function (wifiInfo) {
+                        // console.log("info", JSON.stringify(wifiInfo))
+                        UpdateWifiInfoList(wifiInfo["wifiList"])
+                        pageManager.SetShowHideSpinner(false)
+                    })
+                }
+                else {
+                    pageManager.SetShowHideSpinner(false)
+                    alert(ALERT_WARN_NOT_SIGNED_IN)
+                }
             })
+
         },
         function () {
             pageManager.SetShowHideSpinner(false)
