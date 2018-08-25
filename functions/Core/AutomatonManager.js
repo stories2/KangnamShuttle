@@ -314,6 +314,17 @@ exports.OrderExecute = function (admin, functions, request, currentRoutineLinkIt
                 )
             })
     }
+    else if(currentOrderNumber == global.defineManager.AUTOMATON_WIFI_INFO_ORDER_NUMBER) {
+        schoolManager = require('./SchoolManager');
+        schoolManager.GetSchoolWifiInfoUrl(currentUserKey, currentRoutineLinkItem,
+            function(urlLink){
+                makeUpResponse(
+                    currentRoutineLinkItem["responseMsgDic"][currentUserResponseMsgType][global.defineManager.RESPONSE_DEFAULT_SELECTION],
+                    urlLink,
+                    null
+                )
+            })
+    }
     else {
 
         makeUpResponse(currentRoutineLinkItem["responseMsgDic"][currentUserResponseMsgType][global.defineManager.RESPONSE_DEFAULT_SELECTION], null, null)

@@ -196,3 +196,14 @@ exports.GetSchoolWifiInfo = function (admin, secure, callbackFunc) {
         }
     })
 }
+
+exports.GetSchoolWifiInfoUrl = function (currentUserKey, currentRoutineLinkItem, callbackFunc) {
+
+    urlLink = global.util.format(currentRoutineLinkItem["labelUrl"], currentUserKey)
+
+    global.logManager.PrintLogMessage("SchoolManager", "GetSchoolWifiInfoUrl", "wifi generated url: " + urlLink, global.defineManager.LOG_LEVEL_DEBUG)
+
+    if(callbackFunc !== undefined) {
+        callbackFunc(urlLink)
+    }
+}
