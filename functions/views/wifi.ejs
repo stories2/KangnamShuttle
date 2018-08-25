@@ -27,6 +27,9 @@
 <script src="js/core/SchoolManager.js"></script>
 <script src="js/view/WifiViewManager.js"></script>
 <script>
+    $(document).ready(function () {
+        pageManager.SetShowHideSpinner(false)
+    })
 
     schoolManager = new SchoolManager()
 

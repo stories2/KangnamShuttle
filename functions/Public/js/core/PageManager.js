@@ -27,3 +27,12 @@ PageManager.prototype.MakeUrlBasedOnReceivedQueryData = function (pageName, page
 
     return pageName
 }
+
+PageManager.prototype.SetShowHideSpinner = function (spinnerStatus) {
+    if(spinnerStatus) {
+        $("#spinnerView").show()
+    }
+    else {
+        $("#spinnerView").hide()
+    }
+}

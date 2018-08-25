@@ -96,6 +96,9 @@
 <script src="js/view/FoodMenuViewManager.js"></script>
 <script src="js/core/FoodMenuManager.js"></script>
 <script>
+    $(document).ready(function () {
+        pageManager.SetShowHideSpinner(false)
+    })
     HideUploadForm("shalom")
     HideUploadForm("personnel")
     DisableEnableSubmit("shalom", true)
