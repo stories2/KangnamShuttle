@@ -20,7 +20,7 @@ const userManager = require('./Core/UserManager');
 
 const url = require('url')
 const express = require('express');
-const {fileParser} = require('express-multipart-file-parser')
+// const {fileParser} = require('express-multipart-file-parser')
 const bodyParser = require('body-parser')
 const getRawBody = require('raw-body')
 const contentType = require('content-type')
@@ -28,7 +28,6 @@ const cors = require('cors')({origin: true});
 const kakaoAppV2 = express();
 const publicV2 = express();
 const privateV2 = express();
-const bucketManager = admin.storage().bucket();
 
 const middleWareOfMessage = function (request, response, next) {
     requestPath = url.parse(request.url).pathname
@@ -309,9 +308,6 @@ const getRawBodyManager = function (request, response, next) {
     }
 }
 
-const os = require('os');
-const Busboy = require('busboy');
-
 privateV2.use(cors)
 privateV2.use(verifyAuthToken)
 privateV2.use(getRawBodyManager)
@@ -332,6 +328,10 @@ privateV2.post('/uploadFoodMenuImage',[bodyParser.json(), bodyParser.urlencoded(
     extended: true,
 })],  function (request, response) {
     foodMenuManager = require('./Core/FoodMenuManager');
+
+    const os = require('os');
+    const Busboy = require('busboy');
+    const bucketManager = admin.storage().bucket();
 
     const busboy = new Busboy({ headers: request.headers });
     const tmpdir = os.tmpdir();
