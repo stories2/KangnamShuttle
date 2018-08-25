@@ -110,6 +110,18 @@ exports.OrderExecute = function (admin, functions, request, currentRoutineLinkIt
             makeUpResponse(responseMsgStr, null, null)
         })
     }
+    else if(currentOrderNumber == global.defineManager.AUTOMATON_BUS_INFO_SELECTION_ORDER_NUMBER) {
+        busTimeManager = require('./BusTimeManager');
+        busTimeManager.GenerateIsConfusionTime(admin,
+            currentRoutineLinkItem["responseMsgDic"][currentUserResponseMsgType][global.defineManager.RESPONSE_DEFAULT_SELECTION],
+            function (responseStr) {
+                makeUpResponse(
+                    responseStr,
+                    null,
+                    null
+                )
+            })
+    }
     else if(currentOrderNumber == global.defineManager.AUTOMATON_PRINT_ALL_SHUTTLE_SCHEDULE_ORDER_NUMBER) {
         makeUpResponse(
             currentRoutineLinkItem["responseMsgDic"][currentUserResponseMsgType][global.defineManager.RESPONSE_DEFAULT_SELECTION],

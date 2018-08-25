@@ -271,3 +271,30 @@ exports.GenerateBusScheduleReview = function (responseMsgDic, resultTimeSec, nex
 exports.TimeToSec = function(hour, min, sec) {
     return hour * 3600 + min * 60 + sec * 1
 }
+
+exports.GenerateIsConfusionTime = function (admin, responseStr, callbackFunc) {
+
+    var currentDate = new Date();
+    var hour = (currentDate.getHours() + global.defineManager.GMT_KOREA_TIME) % global.defineManager.DAY_TO_HOUR
+
+    busConfusionTimeStatusDatabasePath = global.util.format(global.defineManager.DATABASE_SERVICE_V2_0_0_BUS_CONFUSION_TIME_INFO_PATH, hour)
+
+    global.logManager.PrintLogMessage("BusTimeManager", "GenerateIsConfusionTime", "bus confusion time status path: " + busConfusionTimeStatusDatabasePath, global.defineManager.LOG_LEVEL_DEBUG)
+
+    admin.database().ref(busConfusionTimeStatusDatabasePath).once('value', function (confusionTimeSnapshot) {
+
+        busConfusionStatus = JSON.stringify(confusionTimeSnapshot)
+        busConfusionStrDatabasePath = global.util.format(global.defineManager.DATABASE_SERVICE_V2_0_0_BUS_CONFUSION_TIME_STR_PATH, busConfusionStatus)
+        global.logManager.PrintLogMessage("BusTimeManager", "GenerateIsConfusionTime", "bus confusion str path: " + busConfusionStrDatabasePath, global.defineManager.LOG_LEVEL_DEBUG)
+
+        admin.database().ref(busConfusionStrDatabasePath).once('value', function (confusionTimeStrSnapshot) {
+
+            responseStr = global.util.format(responseStr, confusionTimeStrSnapshot.val())
+            global.logManager.PrintLogMessage("BusTimeManager", "GenerateIsConfusionTime", "generated result: " + responseStr, global.defineManager.LOG_LEVEL_DEBUG)
+
+            if(callbackFunc !== undefined) {
+                callbackFunc(responseStr)
+            }
+        })
+    })
+}
