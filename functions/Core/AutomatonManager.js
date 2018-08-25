@@ -351,6 +351,13 @@ exports.OrderExecute = function (admin, functions, request, currentRoutineLinkIt
             }
         )
     }
+    else if(currentOrderNumber == global.defineManager.AUTOMATON_SEARCH_PROFESSOR) {
+        makeUpResponse(
+            currentRoutineLinkItem["responseMsgDic"][currentUserResponseMsgType][global.defineManager.RESPONSE_DEFAULT_SELECTION],
+            currentRoutineLinkItem["labelUrl"],
+            null
+        )
+    }
     else {
 
         makeUpResponse(currentRoutineLinkItem["responseMsgDic"][currentUserResponseMsgType][global.defineManager.RESPONSE_DEFAULT_SELECTION], null, null)
