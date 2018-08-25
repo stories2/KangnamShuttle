@@ -24,6 +24,8 @@ FoodMenuManager.prototype.InitUploadFoodMenuImageForm = function(foodMenuImageUp
 
     $("#" + foodMenuImageUploadType).on("submit", function(event) {
         event.preventDefault();
+
+        pageManager.SetShowHideSpinner(true)
         DisableEnableSubmit(submitType, true)
         if(callbackFunc !== undefined) {
 

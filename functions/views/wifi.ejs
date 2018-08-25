@@ -27,9 +27,6 @@
 <script src="js/core/SchoolManager.js"></script>
 <script src="js/view/WifiViewManager.js"></script>
 <script>
-    $(document).ready(function () {
-        pageManager.SetShowHideSpinner(false)
-    })
 
     schoolManager = new SchoolManager()
 
@@ -38,9 +35,11 @@
             schoolManager.GetSchoolWifiInfo(function (wifiInfo) {
                 // console.log("info", JSON.stringify(wifiInfo))
                 UpdateWifiInfoList(wifiInfo["wifiList"])
+                pageManager.SetShowHideSpinner(false)
             })
         },
         function () {
+            pageManager.SetShowHideSpinner(false)
             alert(ALERT_WARN_NOT_SIGNED_IN)
         }
     )

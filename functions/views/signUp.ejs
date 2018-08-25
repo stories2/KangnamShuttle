@@ -100,12 +100,14 @@
                     userV2Manager.SaveCurrentUserUid(userKey, uid)
                     authV2Manager.SignIn(userKey, studentEmail, password, function (studentEmail) {
                         authV2Manager.SendVerifyEmail(studentEmail, function (studentEmail) {
+                            pageManager.SetShowHideSpinner(false)
                             MoveToEmailSentPage(studentEmail)
                         })
                     })
                 }
                 else {
                     alert(ALERT_WARN_WRONG_USER_STATUS)
+                    pageManager.SetShowHideSpinner(false)
                 }
             })
         })

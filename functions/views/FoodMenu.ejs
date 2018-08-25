@@ -96,9 +96,6 @@
 <script src="js/view/FoodMenuViewManager.js"></script>
 <script src="js/core/FoodMenuManager.js"></script>
 <script>
-    $(document).ready(function () {
-        pageManager.SetShowHideSpinner(false)
-    })
     HideUploadForm("shalom")
     HideUploadForm("personnel")
     DisableEnableSubmit("shalom", true)
@@ -114,11 +111,13 @@
                     DisableEnableSubmit("shalom", false)
                     DisableEnableSubmit("personnel", false)
                 }
+                pageManager.SetShowHideSpinner(false)
             })
 
             authV2Manager.GetUserToken(function (token) {
                     foodMenuManager.InitUploadFoodMenuImageForm("shalomUploadMenuForm", "shalom", token,
                         function (result) {
+                            pageManager.SetShowHideSpinner(false)
                             alert(result)
                             location.reload();
                         })
@@ -127,12 +126,14 @@
             authV2Manager.GetUserToken(function (token) {
                 foodMenuManager.InitUploadFoodMenuImageForm("personnelUploadMenuForm", "personnel", token,
                     function (result) {
+                        pageManager.SetShowHideSpinner(false)
                         alert(result)
                         location.reload();
                     })
             })
         },
         function () {
+            pageManager.SetShowHideSpinner(false)
             alert(ALERT_WARN_NOT_SIGNED_IN)
         })
 </script>

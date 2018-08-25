@@ -7,6 +7,9 @@ function AuthV2Manager(firebase) {
 AuthV2Manager.prototype.InitSignUpForm = function (signUpFormID, callbackFunc) {
     PrintLogMessage("AuthV2Manager", "InitSignUpForm", "init sign up form: " + signUpFormID, LOG_LEVEL_DEBUG)
     $("#" + signUpFormID).on("submit", function(event) {
+
+        pageManager.SetShowHideSpinner(true)
+
         HideSignUpForm()
         event.preventDefault();
         userKey = $(this).find('[name=userKey]').val();
@@ -29,6 +32,7 @@ AuthV2Manager.prototype.InitSignUpForm = function (signUpFormID, callbackFunc) {
 AuthV2Manager.prototype.InitDropOutForm = function (dropOutFormID, callbackFunc) {
     PrintLogMessage("AuthV2Manager", "InitDropOutForm", "init drop out form: " + dropOutFormID, LOG_LEVEL_DEBUG)
     $("#" + dropOutFormID).on("submit", function(event) {
+        pageManager.SetShowHideSpinner(true)
         event.preventDefault();
         userKey = $(this).find('[name=userKey]').val();
         PrintLogMessage("AuthV2Manager", "InitSignUpForm", "submit event accepted", LOG_LEVEL_INFO)
