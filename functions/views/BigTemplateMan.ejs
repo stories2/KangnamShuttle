@@ -14,6 +14,7 @@
     <!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
     <!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
     <link rel="stylesheet" href="css/MapView.css"/>
+    <link rel="stylesheet" href="css/Spinner.css">
 </head>
 <body>
 
@@ -33,8 +34,21 @@
 
     <!-- Main -->
     <section id="main" class="wrapper">
-        <div class="inner" id="contentLoader">
+        <div id="spinnerView">
+            <div class="loading-background">
 
+            </div>
+            <div class="spinner">
+                <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+            </div>
+            <div class="loading-text">
+                잠시만요! <br>지금 아주 중요한 무언가가 돌아가고 있어요!
+                <footer class="spinner-created-by">
+                    spinner created by https://loading.io/css/
+                </footer>
+            </div>
+        </div>
+        <div class="inner" id="contentLoader">
         </div>
     </section>
 
