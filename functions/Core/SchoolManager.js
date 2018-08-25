@@ -171,3 +171,28 @@ exports.RecursivePortScan = function (portScanIPStack, portScanPortStack, portSc
         schoolManager.RecursivePortScan(portScanIPStack, portScanPortStack, portScanStackPoint + 1, schoolManager, response, resultData)
     })
 }
+
+exports.GetSchoolWifiInfo = function (admin, secure, callbackFunc) {
+
+    admin.database().ref(global.defineManager.DATABASE_SERVICE_V2_0_0_WIFI_INFO_PATH).once('value', function (wifiInfoListSnapshot) {
+
+        global.logManager.PrintLogMessage("SchoolManager", "GetSchoolWifiInfo", "return wifi list: " + JSON.stringify(wifiInfoListSnapshot), global.defineManager.LOG_LEVEL_DEBUG)
+
+        wifiInfoListSnapshot = JSON.parse(JSON.stringify(wifiInfoListSnapshot))
+
+        wifiList = []
+
+        if(secure) {
+            for(index in wifiInfoListSnapshot) {
+                wifiInfoListSnapshot[index]["wifiPassword"] = ""
+                wifiList.push(wifiInfoListSnapshot[index])
+            }
+        }
+
+        global.logManager.PrintLogMessage("SchoolManager", "GetSchoolWifiInfo", "return wifi list with secure option: " + secure, global.defineManager.LOG_LEVEL_DEBUG)
+
+        if(callbackFunc !== undefined) {
+            callbackFunc(wifiList)
+        }
+    })
+}

@@ -186,6 +186,7 @@ exports.DATABASE_SERVICE_V2_0_0_USER_LAST_USER_DATE_TIME_PATH = "/V2/Users/%s/up
 exports.DATABASE_SERVICE_V2_0_0_USER_UID_PATH = "/V2/Users/%s/uid"
 exports.DATABASE_SERVICE_V2_0_0_USER_DATA_PATH = "/V2/Users/%s"
 exports.DATABASE_SERVICE_V2_0_0_FOOD_MENU_PATH = "/V2/Service/V2_0_0/StaticContent/FoodMenuInfo/%s"
+exports.DATABASE_SERVICE_V2_0_0_WIFI_INFO_PATH = "/V2/Service/V2_0_0/StaticContent/WifiInfo"
 
 exports.AUTOMATON_START_NUMBER = 1
 exports.AUTOMATON_DEFAULT_INPUT_NUMBER = 0

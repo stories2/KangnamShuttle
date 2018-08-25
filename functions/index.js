@@ -199,6 +199,20 @@ publicV2.get('/map', function (request, response) {
     })
 })
 
+publicV2.get('/wifi', function (request, response) {
+
+    payload = {
+        'wifiList': [
+        ]
+    }
+
+    schoolManager = require('./Core/SchoolManager');
+    schoolManager.GetSchoolWifiInfo(admin, true, function(wifiList){
+        payload["wifiList"] = wifiList
+        response.status(global.defineManager.HTTP_SUCCESS).render("wifi", payload)
+    })
+})
+
 publicV2.get('/busLocation', function(request, response) {
     global.logManager.PrintLogMessage("index", "busLocation", "get bus location data",
         global.defineManager.LOG_LEVEL_DEBUG)
@@ -355,6 +369,17 @@ privateV2.post('/uploadFoodMenuImage',[bodyParser.json(), bodyParser.urlencoded(
             "msg": resultMsg
         }
         response.status(global.defineManager.HTTP_SUCCESS).send(JSON.stringify(processResultResponse))
+    })
+})
+
+privateV2.get('/wifiInfo', function (request, response) {
+    responseMsg = {}
+
+    schoolManager = require('./Core/SchoolManager');
+    schoolManager.GetSchoolWifiInfo(admin, function(wifiList){
+        responseMsg["wifiList"] = wifiList
+        response.setHeader('Content-Type', 'application/json');
+        response.status(global.defineManager.HTTP_SUCCESS).send(JSON.stringify(responseMsg))
     })
 })
 

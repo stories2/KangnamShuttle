@@ -1,0 +1,26 @@
+<h1 class="major">교내 무선 인터넷 정보</h1>
+<div class="row">
+    <div class="12u$(medium) 6u">
+        <% for (var i = 0; i < wifiList.length; i ++) { %>
+        <div class="12u$">
+            <h3>WIFI: <%= wifiList[i]["wifiName"] %></h3>
+        </div>
+        <div class="12u$">
+            <ul class="alt">
+                <li>PW: <%= wifiList[i]["wifiPassword"] %></li>
+            </ul>
+        </div>
+        <% } %>
+    </div>
+    <div class="12u$(medium) 6u$">
+        <div class="12u$">
+            <h3>교내 무선 인터넷 정보 안내</h3>
+        </div>
+        <div class="12u$">
+            <ul class="alt">
+                <li>무선 인터넷 정보는 인증된 사용자이어야 확인이 가능합니다.</li>
+                <li>교내 정책에 따라 무선 인터넷 정보가 변경되었을 수도 있습니다.</li>
+            </ul>
+        </div>
+    </div>
+</div>
