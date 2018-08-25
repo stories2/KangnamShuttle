@@ -325,6 +325,32 @@ exports.OrderExecute = function (admin, functions, request, currentRoutineLinkIt
                 )
             })
     }
+    else if(currentOrderNumber == global.defineManager.AUTOMATON_GAME_DIE_ORDER_NUMBER) {
+        gameManager = require('./GameManager');
+        gameManager.RollingDie(
+            currentRoutineLinkItem["responseMsgDic"][currentUserResponseMsgType][global.defineManager.RESPONSE_DEFAULT_SELECTION],
+            function (resultStr) {
+                makeUpResponse(
+                    resultStr,
+                    null,
+                    null
+                )
+            }
+        )
+    }
+    else if(currentOrderNumber == global.defineManager.AUTOMATON_GAME_ROCK_SCISSORS_PAPER_ORDER_NUMBER) {
+        gameManager = require('./GameManager');
+        gameManager.RockScissorsPaper(
+            currentRoutineLinkItem["responseMsgDic"][currentUserResponseMsgType][global.defineManager.RESPONSE_DEFAULT_SELECTION],
+            function (resultStr) {
+                makeUpResponse(
+                    resultStr,
+                    null,
+                    null
+                )
+            }
+        )
+    }
     else {
 
         makeUpResponse(currentRoutineLinkItem["responseMsgDic"][currentUserResponseMsgType][global.defineManager.RESPONSE_DEFAULT_SELECTION], null, null)
