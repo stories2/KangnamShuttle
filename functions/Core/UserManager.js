@@ -181,3 +181,17 @@ exports.DropOutUser = function (admin, userKey, userInfo, callbackFunc) {
     }
 
 }
+
+exports.SetUserUid = function (admin, userKey, uid, callbackFunc) {
+    global.logManager.PrintLogMessage("UserManager", "SetUserUid", "set uid: " + uid + " to user key: " + userKey, global.defineManager.LOG_LEVEL_DEBUG)
+
+    userUidDatabasePath = global.util.format(global.defineManager.DATABASE_SERVICE_V2_0_0_USER_UID_PATH, userKey)
+
+    global.logManager.PrintLogMessage("UserManager", "SetUserUid", "save uid path: " + userUidDatabasePath, global.defineManager.LOG_LEVEL_DEBUG)
+
+    admin.database().ref(userUidDatabasePath).set(uid)
+
+    if(callbackFunc !== undefined) {
+        callbackFunc(global.defineManager.MESSAGE_SUCCESS)
+    }
+}

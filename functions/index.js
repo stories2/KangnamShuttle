@@ -319,7 +319,19 @@ privateV2.post('/DropOutUser', function (request, response) {
     userManager.DropOutUser(admin, request.body["userKey"], request.userRecordData, function (resultMsg) {
         responseMsg["msg"] = resultMsg
         response.setHeader('Content-Type', 'application/json');
-        response.status(200).send(JSON.stringify(resultMsg))
+        response.status(global.defineManager.HTTP_SUCCESS).send(JSON.stringify(resultMsg))
+    })
+
+})
+
+privateV2.post('/SetUserUid', function (request, response) {
+
+    responseMsg = {}
+
+    userManager.SetUserUid(admin, request.body["userKey"], request.body["uid"], function (resultMsg) {
+        responseMsg["msg"] = resultMsg
+        response.setHeader('Content-Type', 'application/json');
+        response.status(global.defineManager.HTTP_SUCCESS).send(JSON.stringify(resultMsg))
     })
 
 })
@@ -342,7 +354,7 @@ privateV2.post('/uploadFoodMenuImage',[bodyParser.json(), bodyParser.urlencoded(
         processResultResponse = {
             "msg": resultMsg
         }
-        response.status(200).send(JSON.stringify(processResultResponse))
+        response.status(global.defineManager.HTTP_SUCCESS).send(JSON.stringify(processResultResponse))
     })
 })
 
