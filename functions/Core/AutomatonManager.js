@@ -370,6 +370,15 @@ exports.OrderExecute = function (admin, functions, request, currentRoutineLinkIt
             null
         )
     }
+    else if(currentOrderNumber >= global.defineManager.AUTOMATON_HELP_SPEED_WAGON_ORDER_START_NUMBER &&
+                currentOrderNumber <= global.defineManager.AUTOMATON_HELP_SPEED_WAGON_ORDER_END_NUMBER) {
+
+        makeUpResponse(
+            currentRoutineLinkItem["responseMsgDic"][currentUserResponseMsgType][global.defineManager.RESPONSE_DEFAULT_SELECTION],
+            currentRoutineLinkItem["labelUrl"],
+            null
+        )
+    }
     else {
 
         makeUpResponse(currentRoutineLinkItem["responseMsgDic"][currentUserResponseMsgType][global.defineManager.RESPONSE_DEFAULT_SELECTION], null, null)
