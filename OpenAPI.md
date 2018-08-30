@@ -18,4 +18,4 @@
 
 #### API
 - 버스 도착 전체 노선 정보
-http://ws.bus.go.kr/api/rest/arrive/getArrInfoByRouteAll?serviceKey=<SERVICE_KEY>&busRouteId=<BUS UNIQUE ROUTE ID>
+`http://ws.bus.go.kr/api/rest/arrive/getArrInfoByRouteAll?serviceKey=<SERVICE_KEY>&busRouteId=<BUS UNIQUE ROUTE ID>`
