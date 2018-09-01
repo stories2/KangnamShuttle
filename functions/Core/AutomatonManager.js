@@ -379,6 +379,42 @@ exports.OrderExecute = function (admin, functions, request, currentRoutineLinkIt
             null
         )
     }
+    else if(currentOrderNumber == global.defineManager.AUTOMATON_PUBLIC_BUS_KANGNAM_UNIV_ORDER_NUMBER) {
+        busManager = require('./BusManager');
+
+        busOpenApiInfo = {
+            "endpoint": functions.config().seoul_open_api.public_bus_endpoint,
+            "key": functions.config().seoul_open_api.bus_service_key,
+            "endpoint_path": functions.config().seoul_open_api.public_bus_endpoint_path,
+            "stationId": functions.config().seoul_open_api.bus_station_kangnam_univ_platform
+        }
+
+        busManager.UpdatePublicBusLocation(admin, request.body["content"], busOpenApiInfo)
+
+        makeUpResponse(
+            currentRoutineLinkItem["responseMsgDic"][currentUserResponseMsgType][global.defineManager.RESPONSE_DEFAULT_SELECTION],
+            null,
+            null
+        )
+    }
+    else if(currentOrderNumber == global.defineManager.AUTOMATON_PUBLIC_BUS_NEXT_TO_KANGNAM_UNIV_ORDER_NUMBER) {
+        busManager = require('./BusManager');
+
+        busOpenApiInfo = {
+            "endpoint": functions.config().seoul_open_api.public_bus_endpoint,
+            "key": functions.config().seoul_open_api.bus_service_key,
+            "endpoint_path": functions.config().seoul_open_api.public_bus_endpoint_path,
+            "stationId": functions.config().seoul_open_api.bus_station_next_to_kangnam_univ_platform
+        }
+
+        busManager.UpdatePublicBusLocation(admin, request.body["content"], busOpenApiInfo)
+
+        makeUpResponse(
+            currentRoutineLinkItem["responseMsgDic"][currentUserResponseMsgType][global.defineManager.RESPONSE_DEFAULT_SELECTION],
+            null,
+            null
+        )
+    }
     else {
 
         makeUpResponse(currentRoutineLinkItem["responseMsgDic"][currentUserResponseMsgType][global.defineManager.RESPONSE_DEFAULT_SELECTION], null, null)

@@ -13,3 +13,7 @@ exports.GetAllBusStation = function (admin, responseText, callbackFunc) {
         callbackFunc(responseText)
     })
 }
+
+exports.UpdatePublicBusLocation = function(admin, busRoutineName, openApiInfo) {
+    global.logManager.PrintLogMessage("BusManager", "UpdatePublicBusLocation", "update routine name: " + busRoutineName + " api info: " + JSON.stringify(openApiInfo), global.defineManager.LOG_LEVEL_DEBUG)
+}
