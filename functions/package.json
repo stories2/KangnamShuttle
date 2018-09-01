@@ -34,7 +34,8 @@
     "raw-body": "^2.3.3",
     "request": "^2.85.0",
     "request-promise": "^4.2.2",
-    "url": "^0.11.0"
+    "url": "^0.11.0",
+    "x2js": "^3.2.1"
   },
   "private": true
 }
