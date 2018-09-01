@@ -32,7 +32,7 @@ exports.UpdatePublicBusLocation = function(admin, busRoutineName, openApiInfo) {
                 publicBusRoutine = publicBusStation["busRoutines"][busRoutineName]
                 global.logManager.PrintLogMessage("BusManager", "UpdatePublicBusLocation", "name: " + busRoutineName + " routine: " + publicBusRoutine, global.defineManager.LOG_LEVEL_DEBUG)
                 openApiPath = global.util.format(openApiInfo["endpoint_path"], openApiInfo["key"], publicBusRoutine)
-                publicBusLocationPath = global.util.format(global.defineManager.DATABASE_SERVICE_V2_0_0_PUBLIC_BUS_LOCATION_INFO_PATH, publicBusRoutine)
+                publicBusLocationPath = global.util.format(global.defineManager.DATABASE_SERVICE_V2_0_0_PUBLIC_BUS_LOCATION_INFO_PATH, openApiInfo["stationId"], publicBusRoutine)
 
                 fakeHeaderOptions = {
                     hostname: openApiInfo["endpoint"],
@@ -85,8 +85,9 @@ exports.UpdatePublicBusLocation = function(admin, busRoutineName, openApiInfo) {
             }
         }
     })
+}
 
-
+exports.GetLatestPublicBusLocation = function (admin, busRoutineName, callbackFunc) {
 
 
 }

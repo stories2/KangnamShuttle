@@ -192,7 +192,7 @@ exports.DATABASE_SERVICE_V2_0_0_BUS_CONFUSION_TIME_STR_PATH = "/V2/Service/V2_0_
 exports.DATABASE_SERVICE_V2_0_0_PUBLIC_BUS_KANGNAM_UNIV_ROUTINE_PATH = "/V2/Service/V2_0_0/StaticContent/BusInfo/publicBusInfo/station/kangnamUnivStation"
 exports.DATABASE_SERVICE_V2_0_0_PUBLIC_BUS_NEXT_TO_KANGNAM_UNIV_ROUTINE_PATH = "/V2/Service/V2_0_0/StaticContent/BusInfo/publicBusInfo/station/nextToKangnamUnivStation"
 exports.DATABASE_SERVICE_V2_0_0_PUBLIC_BUS_STATION_PATH = "/V2/Service/V2_0_0/StaticContent/BusInfo/publicBusInfo/station"
-exports.DATABASE_SERVICE_V2_0_0_PUBLIC_BUS_LOCATION_INFO_PATH = "/V2/Service/V2_0_0/StaticContent/BusInfo/publicBusInfo/%s"
+exports.DATABASE_SERVICE_V2_0_0_PUBLIC_BUS_LOCATION_INFO_PATH = "/V2/Service/V2_0_0/StaticContent/BusInfo/publicBusInfo/%s/%s"
 
 exports.AUTOMATON_START_NUMBER = 1
 exports.AUTOMATON_DEFAULT_INPUT_NUMBER = 0
