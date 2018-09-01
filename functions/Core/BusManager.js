@@ -108,7 +108,7 @@ exports.GetLatestPublicBusLocation = function (admin, busRoutineName, openApiInf
 
                     savedPublicBusLocationSnapshot = JSON.parse(JSON.stringify(savedPublicBusLocationSnapshot))
 
-                    if(savedPublicBusLocationSnapshot !== undefined) {
+                    if(savedPublicBusLocationSnapshot != null) {
 
                         updatedDateTime = savedPublicBusLocationSnapshot["updatedDateTime"]
 
