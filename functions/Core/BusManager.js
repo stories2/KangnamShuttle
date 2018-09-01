@@ -87,7 +87,55 @@ exports.UpdatePublicBusLocation = function(admin, busRoutineName, openApiInfo) {
     })
 }
 
-exports.GetLatestPublicBusLocation = function (admin, busRoutineName, callbackFunc) {
+exports.GetLatestPublicBusLocation = function (admin, busRoutineName, openApiInfo, callbackFunc) {
 
+    stationId = openApiInfo["stationId"]
+    updatedDateTime = "---"
+    thisPublicBusLoc = "---"
+    nextPublicBusLoc = "---"
 
+    admin.database().ref(global.defineManager.DATABASE_SERVICE_V2_0_0_PUBLIC_BUS_STATION_PATH).once('value', function(publicBusStationListSnapshot) {
+        publicBusStationListSnapshot = JSON.parse(JSON.stringify(publicBusStationListSnapshot))
+
+        for(key in publicBusStationListSnapshot) {
+            publicBusStation = publicBusStationListSnapshot[key]
+            if(publicBusStation["id"] == stationId) {
+                global.logManager.PrintLogMessage("BusManager", "GetLatestPublicBusLocation", "debug: " + JSON.stringify(publicBusStation), global.defineManager.LOG_LEVEL_DEBUG)
+                publicBusRoutine = publicBusStation["busRoutines"][busRoutineName]
+                publicBusLocationPath = global.util.format(global.defineManager.DATABASE_SERVICE_V2_0_0_PUBLIC_BUS_LOCATION_INFO_PATH, stationId, publicBusRoutine)
+
+                admin.database().ref(publicBusLocationPath).once('value', function(savedPublicBusLocationSnapshot) {
+
+                    savedPublicBusLocationSnapshot = JSON.parse(JSON.stringify(savedPublicBusLocationSnapshot))
+
+                    if(savedPublicBusLocationSnapshot !== undefined) {
+
+                        updatedDateTime = savedPublicBusLocationSnapshot["updatedDateTime"]
+
+                        for(index in savedPublicBusLocationSnapshot["ServiceResult"]["msgBody"]["itemList"]) {
+                            indexOfStation = savedPublicBusLocationSnapshot["ServiceResult"]["msgBody"]["itemList"][index]
+                            if(indexOfStation["stId"] == stationId) {
+                                global.logManager.PrintLogMessage("BusManager", "GetLatestPublicBusLocation", "found station id: " + stationId + " at: " + index, global.defineManager.LOG_LEVEL_DEBUG)
+                                thisPublicBusLoc = indexOfStation["arrmsg1"]
+                                nextPublicBusLoc = indexOfStation["arrmsg2"]
+                                break;
+                            }
+                        }
+                    }
+
+                    if(callbackFunc !== undefined) {
+                        callbackFunc(busRoutineName, thisPublicBusLoc, nextPublicBusLoc, updatedDateTime)
+                    }
+                })
+                break;
+            }
+        }
+    })
+}
+
+exports.GeneratePublicBusInfoStr = function (responseStr, busRoutineName, thisPublicBusLoc, nextPublicBusLoc, updatedDateTime, callbackFunc) {
+    responseStr = global.util.format(responseStr, busRoutineName, thisPublicBusLoc, nextPublicBusLoc, updatedDateTime)
+    if(callbackFunc !== undefined) {
+        callbackFunc(responseStr)
+    }
 }

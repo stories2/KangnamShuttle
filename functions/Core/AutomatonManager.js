@@ -389,13 +389,27 @@ exports.OrderExecute = function (admin, functions, request, currentRoutineLinkIt
             "stationId": functions.config().seoul_open_api.bus_station_kangnam_univ_platform
         }
 
+        busManager.GetLatestPublicBusLocation(admin, request.body["content"], busOpenApiInfo,
+            function (busRoutineName, thisPublicBusLoc, nextPublicBusLoc, updatedDateTime) {
+                global.logManager.PrintLogMessage("AutomatonManager", "OrderExecute",
+                    "result: " + busRoutineName + ", " + thisPublicBusLoc + ", " + nextPublicBusLoc + ", " + updatedDateTime,
+                    global.defineManager.LOG_LEVEL_DEBUG)
+
+                busManager.GeneratePublicBusInfoStr(
+                    currentRoutineLinkItem["responseMsgDic"][currentUserResponseMsgType][global.defineManager.RESPONSE_DEFAULT_SELECTION],
+                    busRoutineName, thisPublicBusLoc, nextPublicBusLoc, updatedDateTime,
+                    function (responseStr) {
+                        makeUpResponse(
+                            responseStr,
+                            null,
+                            null
+                        )
+                    })
+            })
+
         busManager.UpdatePublicBusLocation(admin, request.body["content"], busOpenApiInfo)
 
-        makeUpResponse(
-            currentRoutineLinkItem["responseMsgDic"][currentUserResponseMsgType][global.defineManager.RESPONSE_DEFAULT_SELECTION],
-            null,
-            null
-        )
+
     }
     else if(currentOrderNumber == global.defineManager.AUTOMATON_PUBLIC_BUS_NEXT_TO_KANGNAM_UNIV_ORDER_NUMBER) {
         busManager = require('./BusManager');
@@ -407,13 +421,25 @@ exports.OrderExecute = function (admin, functions, request, currentRoutineLinkIt
             "stationId": functions.config().seoul_open_api.bus_station_next_to_kangnam_univ_platform
         }
 
-        busManager.UpdatePublicBusLocation(admin, request.body["content"], busOpenApiInfo)
+        busManager.GetLatestPublicBusLocation(admin, request.body["content"], busOpenApiInfo,
+            function (busRoutineName, thisPublicBusLoc, nextPublicBusLoc, updatedDateTime) {
+                global.logManager.PrintLogMessage("AutomatonManager", "OrderExecute",
+                    "result: " + busRoutineName + ", " + thisPublicBusLoc + ", " + nextPublicBusLoc + ", " + updatedDateTime,
+                    global.defineManager.LOG_LEVEL_DEBUG)
 
-        makeUpResponse(
-            currentRoutineLinkItem["responseMsgDic"][currentUserResponseMsgType][global.defineManager.RESPONSE_DEFAULT_SELECTION],
-            null,
-            null
-        )
+                busManager.GeneratePublicBusInfoStr(
+                    currentRoutineLinkItem["responseMsgDic"][currentUserResponseMsgType][global.defineManager.RESPONSE_DEFAULT_SELECTION],
+                    busRoutineName, thisPublicBusLoc, nextPublicBusLoc, updatedDateTime,
+                    function (responseStr) {
+                        makeUpResponse(
+                            responseStr,
+                            null,
+                            null
+                        )
+                    })
+            })
+
+        busManager.UpdatePublicBusLocation(admin, request.body["content"], busOpenApiInfo)
     }
     else {
 
