@@ -15,7 +15,7 @@ exports.SimpleMsgAndButtonResponseV2 = function (response, currentOrderNumber, b
     response.status(200).send(responseStr)
 }
 
-exports.AutoMsgResponseV2 = function (admin, response, responseMsg, currentUserKey, inputContent, inputType) {
+exports.AutoMsgResponseV2 = function (admin, response, responseMsg, currentUserKey, inputContent, inputType, currentOrderNumber) {
     responseMsgStr = JSON.stringify(responseMsg)
     global.logManager.PrintLogMessage("ResponseManager", "AutoMsgResponseV2", "response msg: " + responseMsgStr, global.defineManager.LOG_LEVEL_DEBUG)
     response.setHeader('Content-Type', 'application/json');
@@ -30,7 +30,8 @@ exports.AutoMsgResponseV2 = function (admin, response, responseMsg, currentUserK
         data: responseMsgStr,
         "userKey": currentUserKey,
         "content": inputContent,
-        "inputType": inputType
+        "inputType": inputType,
+        "orderNumber": currentOrderNumber
     }
 
     admin.database().ref(global.defineManager.DATABASE_LOGS_PATH).push().set(logData)
