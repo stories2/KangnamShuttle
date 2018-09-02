@@ -15,11 +15,22 @@ exports.SimpleMsgAndButtonResponseV2 = function (response, currentOrderNumber, b
     response.status(200).send(responseStr)
 }
 
-exports.AutoMsgResponseV2 = function (response, responseMsg) {
+exports.AutoMsgResponseV2 = function (admin, response, responseMsg) {
     responseMsgStr = JSON.stringify(responseMsg)
     global.logManager.PrintLogMessage("ResponseManager", "AutoMsgResponseV2", "response msg: " + responseMsgStr, global.defineManager.LOG_LEVEL_DEBUG)
     response.setHeader('Content-Type', 'application/json');
     response.status(200).send(responseMsgStr)
+
+
+    convertManager = require('../Utils/ConvertManager');
+
+    logData = {
+        dateTime: convertManager.ConvertDateTimeToStr(),
+        type: global.defineManager.LOG_TYPE_RESPONSE_MSG,
+        data: responseMsgStr
+    }
+
+    admin.database().ref(global.defineManager.DATABASE_LOGS_PATH).push().set(logData)
 }
 
 exports.TemplateResponse = function (admin, convertManager, generateManager, response, requestMessage, responseMsg, responseButton) {
