@@ -441,6 +441,23 @@ exports.OrderExecute = function (admin, functions, request, currentRoutineLinkIt
 
         busManager.UpdatePublicBusLocation(admin, request.body["content"], busOpenApiInfo)
     }
+    else if(currentOrderNumber == global.defineManager.AUTOMATON_PUBLIC_TRANSPORT_INFO_ORDER_NUMBER) {
+
+        busOpenApiInfo = {
+            "endpoint": functions.config().seoul_open_api.public_bus_endpoint,
+            "key": functions.config().seoul_open_api.bus_service_key,
+            "endpoint_path": functions.config().seoul_open_api.public_bus_endpoint_path,
+            "stationId": functions.config().seoul_open_api.bus_station_kangnam_univ_platform
+        }
+        busManager = require('./BusManager');
+        busManager.UpdateAllPublicBusLocation(admin, busOpenApiInfo)
+
+        makeUpResponse(
+            currentRoutineLinkItem["responseMsgDic"][currentUserResponseMsgType][global.defineManager.RESPONSE_DEFAULT_SELECTION],
+            null,
+            null
+        )
+    }
     else {
 
         makeUpResponse(currentRoutineLinkItem["responseMsgDic"][currentUserResponseMsgType][global.defineManager.RESPONSE_DEFAULT_SELECTION], null, null)
