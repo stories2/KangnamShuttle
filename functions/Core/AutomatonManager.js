@@ -23,7 +23,7 @@ exports.AnalysisCurrentOrderNumber = function (admin, callbackFunc, routineLinke
 
                 lastUsedOrderIndex = routineLinkedList[lastOrderNumber]
                 inputOrderList = lastUsedOrderIndex["inputOrderList"]
-                currentOrderNumber = global.defineManager.AUTOMATON_MAIN_ORDER_NUMBER
+                currentOrderNumber = lastOrderNumber//global.defineManager.AUTOMATON_MAIN_ORDER_NUMBER
                 for(key in inputOrderList) {
                     if(inputOrderList[key] == inputMsg) {
                         currentOrderNumber = lastUsedOrderIndex["nextOrderList"][key]
