@@ -135,13 +135,21 @@ kakaoAppV2.delete('/chat_room/:user_key', function (request, response) {
 
 kakaoAppV2.post('/beta', function (request, response) {
     global.logManager.PrintLogMessage("index", "beta", "testing beta api", global.defineManager.LOG_LEVEL_INFO)
-    subwayManager = require('./Core/SubwayManager');
-    subwayOpenApiInfo = {
-        "endpoint_path": functions.config().seoul_open_api.endpoint_path,
-        "key": functions.config().seoul_open_api.key,
-        "endpoint": functions.config().seoul_open_api.endpoint
+    // subwayManager = require('./Core/SubwayManager');
+    // subwayOpenApiInfo = {
+    //     "endpoint_path": functions.config().seoul_open_api.endpoint_path,
+    //     "key": functions.config().seoul_open_api.key,
+    //     "endpoint": functions.config().seoul_open_api.endpoint
+    // }
+    // subwayManager.PostfixUpdateSubwaySchedule(admin, subwayManager, subwayOpenApiInfo, "4502", global.defineManager.SUBWAY_DIRECTION_UP)
+    busOpenApiInfo = {
+        "endpoint": functions.config().seoul_open_api.public_bus_endpoint,
+        "key": functions.config().seoul_open_api.bus_service_key,
+        "endpoint_path": functions.config().seoul_open_api.public_bus_endpoint_path,
+        "stationId": functions.config().seoul_open_api.bus_station_kangnam_univ_platform
     }
-    subwayManager.PostfixUpdateSubwaySchedule(admin, subwayManager, subwayOpenApiInfo, "4502", global.defineManager.SUBWAY_DIRECTION_UP)
+    busManager = require('./Core/BusManager');
+    busManager.UpdateAllPublicBusLocation(admin, busOpenApiInfo)
     response.status(global.defineManager.HTTP_SUCCESS).send()
 })
 

@@ -14,6 +14,85 @@ exports.GetAllBusStation = function (admin, responseText, callbackFunc) {
     })
 }
 
+exports.UpdateAllPublicBusLocation = function(admin, openApiInfo) {
+    var httpManager = require("http");
+    var x2js = require("x2js")
+    convertManager = require('../Utils/ConvertManager');
+
+    x2jsManager = new x2js()
+    global.logManager.PrintLogMessage("BusManager", "UpdatePublicBusLocation", "bus api info: " + JSON.stringify(openApiInfo), global.defineManager.LOG_LEVEL_DEBUG)
+
+    admin.database().ref(global.defineManager.DATABASE_SERVICE_V2_0_0_PUBLIC_BUS_STATION_PATH).once('value', function(publicBusStationListSnapshot) {
+        publicBusStationListSnapshot = JSON.parse(JSON.stringify(publicBusStationListSnapshot))
+
+        for(key in publicBusStationListSnapshot) {
+            publicBusStation = publicBusStationListSnapshot[key]
+            stationId = publicBusStation["id"]
+            for(busRoutineName in publicBusStation["busRoutines"]) {
+                global.logManager.PrintLogMessage("BusManager", "UpdatePublicBusLocation", "debug: " + JSON.stringify(publicBusStation), global.defineManager.LOG_LEVEL_DEBUG)
+                publicBusRoutine = publicBusStation["busRoutines"][busRoutineName]
+                global.logManager.PrintLogMessage("BusManager", "UpdatePublicBusLocation", "name: " + busRoutineName + " routine: " + publicBusRoutine, global.defineManager.LOG_LEVEL_DEBUG)
+                openApiPath = global.util.format(openApiInfo["endpoint_path"], openApiInfo["key"], publicBusRoutine)
+                publicBusLocationPath = global.util.format(global.defineManager.DATABASE_SERVICE_V2_0_0_PUBLIC_BUS_LOCATION_INFO_PATH, stationId, publicBusRoutine)
+                global.logManager.PrintLogMessage("BusManager", "UpdatePublicBusLocation", "db path: " + publicBusLocationPath, global.defineManager.LOG_LEVEL_DEBUG)
+
+                fakeHeaderOptions = {
+                    hostname: openApiInfo["endpoint"],
+                    path: openApiPath,
+                }
+
+                global.logManager.PrintLogMessage("BusManager", "UpdatePublicBusLocation", "api request rdy: " + JSON.stringify(fakeHeaderOptions), global.defineManager.LOG_LEVEL_DEBUG)
+
+                httpRequestCallback = function(httpRequestResponse, publicBusLocationPath) {
+                    global.logManager.PrintLogMessage("BusManager", "httpRequestCallback",
+                        "status code: " + httpRequestResponse.statusCode + " headers: " + httpRequestResponse.headers, global.defineManager.LOG_LEVEL_DEBUG)
+                    global.logManager.PrintLogMessage("BusManager", "httpRequestCallback","public bus loc db path: " + publicBusLocationPath, global.defineManager.LOG_LEVEL_DEBUG)
+
+                    var str = ''
+                    httpRequestResponse.on('data', function (chunk) {
+                        str += chunk;
+                    });
+
+                    httpRequestResponse.on('end', function () {
+                        // console.log(str);
+                        // global.logManager.PrintLogMessage("BusManager", "httpRequestCallback", "response accepted: " + str,
+                        //     global.defineManager.LOG_LEVEL_DEBUG)
+
+                        busResponseInfo = x2jsManager.xml2js(str)
+                        openApiResponseCode = busResponseInfo["ServiceResult"]["msgHeader"]["headerCd"]
+                        if(openApiResponseCode == global.defineManager.PUBLIC_BUS_OPEN_API_RESULT_OK) {
+
+                            global.logManager.PrintLogMessage("BusManager", "httpRequestCallback", "bus location info save path: " + publicBusLocationPath + " code: " + openApiResponseCode,
+                                global.defineManager.LOG_LEVEL_DEBUG)
+
+                            busResponseInfo["updatedDateTime"] = convertManager.ConvertDateTimeToStr()
+
+                            admin.database().ref(publicBusLocationPath).set(busResponseInfo)
+                        }
+                        else {
+                            global.logManager.PrintLogMessage("BusManager", "httpRequestCallback", "api returns wrong code: " + openApiResponseCode,
+                                global.defineManager.LOG_LEVEL_WARN)
+                        }
+
+                    });
+                    httpRequestResponse.on('error', function (except) {
+                        global.logManager.PrintLogMessage("BusManager", "httpRequestCallback", "somthing goes wrong: " + except,
+                            global.defineManager.LOG_LEVEL_ERROR)
+                    })
+                }
+                let dbPath = publicBusLocationPath
+                global.logManager.PrintLogMessage("BusManager", "httpRequestCallback", "station id: " + stationId + " bus routine: " + publicBusRoutine + " let db path: " + dbPath, global.defineManager.LOG_LEVEL_DEBUG)
+                var httpRequest = httpManager.request(fakeHeaderOptions, function(httpRequestResponse) {
+                    httpRequestCallback(httpRequestResponse, dbPath)
+                });
+                httpRequest.end();
+
+                // break;
+            }
+        }
+    })
+}
+
 exports.UpdatePublicBusLocation = function(admin, busRoutineName, openApiInfo) {
     var httpManager = require("http");
     var x2js = require("x2js")
