@@ -441,6 +441,13 @@ exports.OrderExecute = function (admin, functions, request, currentRoutineLinkIt
 
         busManager.UpdatePublicBusLocation(admin, request.body["content"], busOpenApiInfo)
     }
+    else if(currentOrderNumber == global.defineManager.AUTOMATON_MAIN_INFO_SYSTEM_ORDER_NUMBER) {
+        makeUpResponse(
+            currentRoutineLinkItem["responseMsgDic"][currentUserResponseMsgType][global.defineManager.RESPONSE_DEFAULT_SELECTION],
+            currentRoutineLinkItem["labelUrl"],
+            null
+        )
+    }
     // else if(currentOrderNumber == global.defineManager.AUTOMATON_PUBLIC_TRANSPORT_INFO_ORDER_NUMBER) {
     //
     //     busOpenApiInfo = {
