@@ -3,7 +3,7 @@
 <img src="src/IMG_2DFB97E01FE7-1.jpeg" width="200" />
 
 - 강남대학교의 셔틀버스 시간표를 안내하는 카카오톡 채팅 봇 입니다.
-- 2019.01.05에 3.0버전이 배포되어 본 레파지토리는 더 이상 추가 커밋이 없습니다. (새 레파지토리 링크)[https://github.com/stories2/KangnamShuttle-3.0]
+- `2019.01.05`에 `3.0`버전이 배포되어 본 레파지토리는 더 이상 추가 커밋이 없습니다. [새 레파지토리 링크](https://github.com/stories2/KangnamShuttle-3.0)
 
 # Dev
 ## Set/Get env var
